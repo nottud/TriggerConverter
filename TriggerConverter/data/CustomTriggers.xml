@@ -213,6 +213,30 @@
             <param name="Player" dispname="Player" vartype="player">1</param>
             <expression>trCurrentPlayer() == %Player%</expression>
         </condition>
+        <condition name="String: Starts With">
+            <param name="String" dispname="String" vartype="stringid">""</param>
+            <param name="Value" dispname="Value" vartype="stringid">""</param>
+            <param name="CaseSensitive" dispname="Case Sensitive" vartype="bool" donotrelax="">true</param>
+            <expression>xsStringStartsWith(%String%, %Value%, %CaseSensitive%)</expression>
+        </condition>
+        <condition name="String: Ends With">
+            <param name="String" dispname="String" vartype="stringid">""</param>
+            <param name="Value" dispname="Value" vartype="stringid">""</param>
+            <param name="CaseSensitive" dispname="Case Sensitive" vartype="bool" donotrelax="">true</param>
+            <expression>xsStringEndsWith(%String%, %Value%, %CaseSensitive%)</expression>
+        </condition>
+        <condition name="String: Contains">
+            <param name="String" dispname="String" vartype="stringid">""</param>
+            <param name="Value" dispname="Value" vartype="stringid">""</param>
+            <param name="CaseSensitive" dispname="Case Sensitive" vartype="bool" donotrelax="">true</param>
+            <expression>xsStringContains(%String%, %Value%, %CaseSensitive%)</expression>
+        </condition>
+        <condition name="String: Length">
+            <param name="String" dispname="String" vartype="stringid">""</param>
+            <param name="Op" dispname="Comparison" vartype="operator">==</param>
+            <param name="Length" dispname="Length" vartype="long">0</param>
+            <expression>xsStringLength(%String%) %Op% %Length%)</expression>
+        </condition>
     </conditions>
     <effects>
         <effect name="Initialise: Nottud Trigger Loader">
@@ -4095,6 +4119,25 @@
             <param name="Name" dispname="Name" vartype="stringid">floatVariable</param>
             <param name="Area" dispname="" vartype="area">0, 0, 0</param>
             <command>/**/%Name% = __worldGetSteepness(vector(%Area%));</command>
+        </effect>
+        <effect name="Lighting: Set Color Attribute Parameter (BugFix)">
+            <param name="ParamID" dispname="Parameter" vartype="lightingcolorattr">0</param>
+            <param name="RedAttr" dispname="Red Attrib." vartype="float">0.0</param>
+            <param name="GreenAttr" dispname="Green Attrib." vartype="float">0.0</param>
+            <param name="BlueAttr" dispname="Blue Attrib." vartype="float">0.0</param>
+            <command>trLightingSetParamColorAttr(%ParamID%, %RedAttr%, %GreenAttr%, %BlueAttr%);</command>
+        </effect>
+        <effect name="Lighting: Set Boolean Parameter AoInShadowsOnly (BugFix)">
+            <param name="Value" dispname="Value" vartype="bool">false</param>
+            <command>trLightingSetParamBool(cXSLightingAOInShadowsOnly, %Value%);</command>
+        </effect>
+        <effect name="Lighting: Set Boolean Parameter HeightFogEnabled (BugFix)">
+            <param name="Value" dispname="Value" vartype="bool">false</param>
+            <command>trLightingSetParamBool(cXSLightingHeightFogEnabled, %Value%);</command>
+        </effect>
+        <effect name="Lighting: Set Boolean Parameter DistanceFogEnabled (BugFix)">
+            <param name="Value" dispname="Value" vartype="bool">false</param>
+            <command>trLightingSetParamBool(cXSLightingDistanceFogEnabled, %Value%);</command>
         </effect>
     </effects>
 </trigger>

@@ -70,7 +70,7 @@ namespace TriggerConverter
                 GetCheckedVarTypes(checkedListBoxRelax),
                 checkBoxRemoveDuplicates.Checked);
             Writer writer = new Writer();
-            textBoxResult.Text = writer.ToXml(processed);
+            textBoxResult.Text = writer.ToXml(TriggerAll.StripOriginal(processed, originalTriggers));
             tabControl1.SelectTab(tabPageResult);
         }
 

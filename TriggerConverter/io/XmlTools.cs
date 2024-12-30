@@ -11,6 +11,10 @@ namespace TriggerConverter.io
         public string EscapeXml(string output)
         {
             return output.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;");
+        }  
+        public string EscapeXmlAttribute(string output)
+        {
+            return output.Replace("\"", "&quot;");
         }
     }
 }

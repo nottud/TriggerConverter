@@ -28,7 +28,7 @@ namespace TriggerConverter.io
         {
             foreach (TriggerParameter parameter in triggerParameters)
             {
-                Write(lines, 3, "<Param name=\"" + parameter.Name + "\" dispname=\"" + parameter.Display + "\" vartype=\"" + parameter.VarType + "\"" + (parameter.DisplayRadius ? " dispradius=\"\"" : "") + (parameter.DoNotRelax ? " donotrelax=\"\"" : "") + ">" + xmlTools.EscapeXml(parameter.DefaultValue) + "</Param>");
+                Write(lines, 3, "<Param name=\"" + parameter.Name + "\" dispname=\"" + xmlTools.EscapeXmlAttribute(parameter.Display) + "\" vartype=\"" + parameter.VarType + "\"" + (parameter.DisplayRadius ? " dispradius=\"\"" : "") + (parameter.DoNotRelax ? " donotrelax=\"\"" : "") + ">" + xmlTools.EscapeXml(parameter.DefaultValue) + "</Param>");
             }
         }
 

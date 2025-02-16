@@ -32,11 +32,16 @@ namespace TriggerConverter.io
             }
         }
 
-        private void WriteCommands(List<string> lines, TriggerCommand[] triggerCommands)
+        private void WriteCommands(List<string> lines, TriggerCommand[] triggerCommands, bool directCode)
         {
             foreach (TriggerCommand parameter in triggerCommands)
             {
-                Write(lines, 3, "<Command" + (parameter.Loop ? " loop=\"\"" : "") + (parameter.LoopSourceObject != null ? " loopparm=\""+ parameter.LoopSourceObject + "\"" : "") + ">" + xmlTools.EscapeXml(parameter.CommandCode) + "</Command>");
+                string commandCode = xmlTools.EscapeXml(parameter.CommandCode);
+                if(!directCode && commandCode.StartsWith("%"))
+                {
+                    commandCode = "/**/" + commandCode;
+                }
+                Write(lines, 3, "<Command" + (parameter.Loop ? " loop=\"\"" : "") + (parameter.LoopSourceObject != null ? " loopparm=\""+ parameter.LoopSourceObject + "\"" : "") + ">" + commandCode + "</Command>");
             }
         }
 
@@ -47,7 +52,7 @@ namespace TriggerConverter.io
             {
                 Write(lines, 2, "<Condition name=\"" + condition.Name + "\"" + (condition.DirectCode ? " directcode=\"\"" : "") + ">");
                 WriteParameters(lines, condition.Params);
-                WriteCommands(lines, condition.Commands);
+                WriteCommands(lines, condition.Commands, condition.DirectCode);
                 Write(lines, 3, "<Expression>" + xmlTools.EscapeXml(condition.Expression.Expression) + "</Expression>");
                 Write(lines, 2, "</Condition>");
             }
@@ -61,7 +66,7 @@ namespace TriggerConverter.io
             {
                 Write(lines, 2, "<Effect name=\"" + effect.Name + "\"" + (effect.DirectCode ? " directcode=\"\"" : "") + ">");
                 WriteParameters(lines, effect.Params);
-                WriteCommands(lines, effect.Commands);
+                WriteCommands(lines, effect.Commands, effect.DirectCode);
                 Write(lines, 2, "</Effect>");
             }
             Write(lines, 1, "</Effects>");

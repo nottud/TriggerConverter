@@ -67,6 +67,11 @@
             <param name="Value" dispname="Value" vartype="stringid">""</param>
             <expression>/**/%Name% == %Value%</expression>
         </condition>
+        <condition name="Variable: Vector Is Value">
+            <param name="Name" dispname="Name" vartype="stringid">vectorVariable</param>
+            <param name="Value" dispname="Value" vartype="stringid">vector(0.0, 0.0, 0.0)</param>
+            <expression>/**/%Name% == %Value%</expression>
+        </condition>
         <condition name="Variable: Vector X Is Value">
             <param name="Name" dispname="Name" vartype="stringid">vectorVariable</param>
             <param name="Op" dispname="Comparison" vartype="operator">&gt;=</param>
@@ -339,6 +344,540 @@
             <command>float __xsVectorGetZ(vector v = cOriginVector){</command>
             <command>   return v.z;</command>
             <command>}</command>
+            <command></command>
+            <command>class __Parameters {</command>
+            <command>    bool[] bools = default;</command>
+            <command>    int[] ints = default;</command>
+            <command>    float[] floats = default;</command>
+            <command>    string[] strings = default;</command>
+            <command>    vector[] vectors = default;</command>
+            <command>    void addBool0(){}</command>
+            <command>    void addBool1(bool arg0 = false){</command>
+            <command>       bools.add(arg0);</command>
+            <command>    }</command>
+            <command>    void addBool2(bool arg0 = false, bool arg1 = false){</command>
+            <command>       bools.add(arg0);</command>
+            <command>       bools.add(arg1);</command>
+            <command>    }</command>
+            <command>    void addBool3(bool arg0 = false, bool arg1 = false, bool arg2 = false){</command>
+            <command>       bools.add(arg0);</command>
+            <command>       bools.add(arg1);</command>
+            <command>       bools.add(arg2);</command>
+            <command>    }</command>
+            <command>    void addBool4(bool arg0 = false, bool arg1 = false, bool arg2 = false, bool arg3 = false){</command>
+            <command>       bools.add(arg0);</command>
+            <command>       bools.add(arg1);</command>
+            <command>       bools.add(arg2);</command>
+            <command>       bools.add(arg3);</command>
+            <command>    }</command>
+            <command>    void addBool5(bool arg0 = false, bool arg1 = false, bool arg2 = false, bool arg3 = false, bool arg4 = false){</command>
+            <command>       bools.add(arg0);</command>
+            <command>       bools.add(arg1);</command>
+            <command>       bools.add(arg2);</command>
+            <command>       bools.add(arg3);</command>
+            <command>       bools.add(arg4);</command>
+            <command>    }</command>
+            <command>    void addBool6(bool arg0 = false, bool arg1 = false, bool arg2 = false, bool arg3 = false, bool arg4 = false, bool arg5 = false){</command>
+            <command>       bools.add(arg0);</command>
+            <command>       bools.add(arg1);</command>
+            <command>       bools.add(arg2);</command>
+            <command>       bools.add(arg3);</command>
+            <command>       bools.add(arg4);</command>
+            <command>       bools.add(arg5);</command>
+            <command>    }</command>
+            <command>    void addBool7(bool arg0 = false, bool arg1 = false, bool arg2 = false, bool arg3 = false, bool arg4 = false, bool arg5 = false, bool arg6 = false){</command>
+            <command>       bools.add(arg0);</command>
+            <command>       bools.add(arg1);</command>
+            <command>       bools.add(arg2);</command>
+            <command>       bools.add(arg3);</command>
+            <command>       bools.add(arg4);</command>
+            <command>       bools.add(arg5);</command>
+            <command>       bools.add(arg6);</command>
+            <command>    }</command>
+            <command>    void addBool8(bool arg0 = false, bool arg1 = false, bool arg2 = false, bool arg3 = false, bool arg4 = false, bool arg5 = false, bool arg6 = false, bool arg7 = false){</command>
+            <command>       bools.add(arg0);</command>
+            <command>       bools.add(arg1);</command>
+            <command>       bools.add(arg2);</command>
+            <command>       bools.add(arg3);</command>
+            <command>       bools.add(arg4);</command>
+            <command>       bools.add(arg5);</command>
+            <command>       bools.add(arg6);</command>
+            <command>       bools.add(arg7);</command>
+            <command>    }</command>
+            <command>    void addBool9(bool arg0 = false, bool arg1 = false, bool arg2 = false, bool arg3 = false, bool arg4 = false, bool arg5 = false, bool arg6 = false, bool arg7 = false, bool arg8 = false){</command>
+            <command>       bools.add(arg0);</command>
+            <command>       bools.add(arg1);</command>
+            <command>       bools.add(arg2);</command>
+            <command>       bools.add(arg3);</command>
+            <command>       bools.add(arg4);</command>
+            <command>       bools.add(arg5);</command>
+            <command>       bools.add(arg6);</command>
+            <command>       bools.add(arg7);</command>
+            <command>       bools.add(arg8);</command>
+            <command>    }</command>
+            <command>    void addBool10(bool arg0 = false, bool arg1 = false, bool arg2 = false, bool arg3 = false, bool arg4 = false, bool arg5 = false, bool arg6 = false, bool arg7 = false, bool arg8 = false, bool arg9 = false){</command>
+            <command>       bools.add(arg0);</command>
+            <command>       bools.add(arg1);</command>
+            <command>       bools.add(arg2);</command>
+            <command>       bools.add(arg3);</command>
+            <command>       bools.add(arg4);</command>
+            <command>       bools.add(arg5);</command>
+            <command>       bools.add(arg6);</command>
+            <command>       bools.add(arg7);</command>
+            <command>       bools.add(arg8);</command>
+            <command>       bools.add(arg9);</command>
+            <command>    }</command>
+            <command>    void addBool11(bool arg0 = false, bool arg1 = false, bool arg2 = false, bool arg3 = false, bool arg4 = false, bool arg5 = false, bool arg6 = false, bool arg7 = false, bool arg8 = false, bool arg9 = false, </command>
+            <command>           bool arg10 = false){</command>
+            <command>       bools.add(arg0);</command>
+            <command>       bools.add(arg1);</command>
+            <command>       bools.add(arg2);</command>
+            <command>       bools.add(arg3);</command>
+            <command>       bools.add(arg4);</command>
+            <command>       bools.add(arg5);</command>
+            <command>       bools.add(arg6);</command>
+            <command>       bools.add(arg7);</command>
+            <command>       bools.add(arg8);</command>
+            <command>       bools.add(arg9);</command>
+            <command>       bools.add(arg10);</command>
+            <command>    }</command>
+            <command>    void addBool12(bool arg0 = false, bool arg1 = false, bool arg2 = false, bool arg3 = false, bool arg4 = false, bool arg5 = false, bool arg6 = false, bool arg7 = false, bool arg8 = false, bool arg9 = false, </command>
+            <command>           bool arg10 = false, bool arg11 = false){</command>
+            <command>       bools.add(arg0);</command>
+            <command>       bools.add(arg1);</command>
+            <command>       bools.add(arg2);</command>
+            <command>       bools.add(arg3);</command>
+            <command>       bools.add(arg4);</command>
+            <command>       bools.add(arg5);</command>
+            <command>       bools.add(arg6);</command>
+            <command>       bools.add(arg7);</command>
+            <command>       bools.add(arg8);</command>
+            <command>       bools.add(arg9);</command>
+            <command>       bools.add(arg10);</command>
+            <command>       bools.add(arg11);</command>
+            <command>    }</command>
+            <command>    void addInt0(){}</command>
+            <command>    void addInt1(int arg0 = 0){</command>
+            <command>       ints.add(arg0);</command>
+            <command>    }</command>
+            <command>    void addInt2(int arg0 = 0, int arg1 = 0){</command>
+            <command>       ints.add(arg0);</command>
+            <command>       ints.add(arg1);</command>
+            <command>    }</command>
+            <command>    void addInt3(int arg0 = 0, int arg1 = 0, int arg2 = 0){</command>
+            <command>       ints.add(arg0);</command>
+            <command>       ints.add(arg1);</command>
+            <command>       ints.add(arg2);</command>
+            <command>    }</command>
+            <command>    void addInt4(int arg0 = 0, int arg1 = 0, int arg2 = 0, int arg3 = 0){</command>
+            <command>       ints.add(arg0);</command>
+            <command>       ints.add(arg1);</command>
+            <command>       ints.add(arg2);</command>
+            <command>       ints.add(arg3);</command>
+            <command>    }</command>
+            <command>    void addInt5(int arg0 = 0, int arg1 = 0, int arg2 = 0, int arg3 = 0, int arg4 = 0){</command>
+            <command>       ints.add(arg0);</command>
+            <command>       ints.add(arg1);</command>
+            <command>       ints.add(arg2);</command>
+            <command>       ints.add(arg3);</command>
+            <command>       ints.add(arg4);</command>
+            <command>    }</command>
+            <command>    void addInt6(int arg0 = 0, int arg1 = 0, int arg2 = 0, int arg3 = 0, int arg4 = 0, int arg5 = 0){</command>
+            <command>       ints.add(arg0);</command>
+            <command>       ints.add(arg1);</command>
+            <command>       ints.add(arg2);</command>
+            <command>       ints.add(arg3);</command>
+            <command>       ints.add(arg4);</command>
+            <command>       ints.add(arg5);</command>
+            <command>    }</command>
+            <command>    void addInt7(int arg0 = 0, int arg1 = 0, int arg2 = 0, int arg3 = 0, int arg4 = 0, int arg5 = 0, int arg6 = 0){</command>
+            <command>       ints.add(arg0);</command>
+            <command>       ints.add(arg1);</command>
+            <command>       ints.add(arg2);</command>
+            <command>       ints.add(arg3);</command>
+            <command>       ints.add(arg4);</command>
+            <command>       ints.add(arg5);</command>
+            <command>       ints.add(arg6);</command>
+            <command>    }</command>
+            <command>    void addInt8(int arg0 = 0, int arg1 = 0, int arg2 = 0, int arg3 = 0, int arg4 = 0, int arg5 = 0, int arg6 = 0, int arg7 = 0){</command>
+            <command>       ints.add(arg0);</command>
+            <command>       ints.add(arg1);</command>
+            <command>       ints.add(arg2);</command>
+            <command>       ints.add(arg3);</command>
+            <command>       ints.add(arg4);</command>
+            <command>       ints.add(arg5);</command>
+            <command>       ints.add(arg6);</command>
+            <command>       ints.add(arg7);</command>
+            <command>    }</command>
+            <command>    void addInt9(int arg0 = 0, int arg1 = 0, int arg2 = 0, int arg3 = 0, int arg4 = 0, int arg5 = 0, int arg6 = 0, int arg7 = 0, int arg8 = 0){</command>
+            <command>       ints.add(arg0);</command>
+            <command>       ints.add(arg1);</command>
+            <command>       ints.add(arg2);</command>
+            <command>       ints.add(arg3);</command>
+            <command>       ints.add(arg4);</command>
+            <command>       ints.add(arg5);</command>
+            <command>       ints.add(arg6);</command>
+            <command>       ints.add(arg7);</command>
+            <command>       ints.add(arg8);</command>
+            <command>    }</command>
+            <command>    void addInt10(int arg0 = 0, int arg1 = 0, int arg2 = 0, int arg3 = 0, int arg4 = 0, int arg5 = 0, int arg6 = 0, int arg7 = 0, int arg8 = 0, int arg9 = 0){</command>
+            <command>       ints.add(arg0);</command>
+            <command>       ints.add(arg1);</command>
+            <command>       ints.add(arg2);</command>
+            <command>       ints.add(arg3);</command>
+            <command>       ints.add(arg4);</command>
+            <command>       ints.add(arg5);</command>
+            <command>       ints.add(arg6);</command>
+            <command>       ints.add(arg7);</command>
+            <command>       ints.add(arg8);</command>
+            <command>       ints.add(arg9);</command>
+            <command>    }</command>
+            <command>    void addInt11(int arg0 = 0, int arg1 = 0, int arg2 = 0, int arg3 = 0, int arg4 = 0, int arg5 = 0, int arg6 = 0, int arg7 = 0, int arg8 = 0, int arg9 = 0, int arg10 = 0){</command>
+            <command>       ints.add(arg0);</command>
+            <command>       ints.add(arg1);</command>
+            <command>       ints.add(arg2);</command>
+            <command>       ints.add(arg3);</command>
+            <command>       ints.add(arg4);</command>
+            <command>       ints.add(arg5);</command>
+            <command>       ints.add(arg6);</command>
+            <command>       ints.add(arg7);</command>
+            <command>       ints.add(arg8);</command>
+            <command>       ints.add(arg9);</command>
+            <command>       ints.add(arg10);</command>
+            <command>    }</command>
+            <command>    void addInt12(int arg0 = 0, int arg1 = 0, int arg2 = 0, int arg3 = 0, int arg4 = 0, int arg5 = 0, int arg6 = 0, int arg7 = 0, int arg8 = 0, int arg9 = 0, int arg10 = 0, int arg11 = 0){</command>
+            <command>       ints.add(arg0);</command>
+            <command>       ints.add(arg1);</command>
+            <command>       ints.add(arg2);</command>
+            <command>       ints.add(arg3);</command>
+            <command>       ints.add(arg4);</command>
+            <command>       ints.add(arg5);</command>
+            <command>       ints.add(arg6);</command>
+            <command>       ints.add(arg7);</command>
+            <command>       ints.add(arg8);</command>
+            <command>       ints.add(arg9);</command>
+            <command>       ints.add(arg10);</command>
+            <command>       ints.add(arg11);</command>
+            <command>    }</command>
+            <command>    void addFloat0(){}</command>
+            <command>    void addFloat1(float arg0 = 0.0){</command>
+            <command>       floats.add(arg0);</command>
+            <command>    }</command>
+            <command>    void addFloat2(float arg0 = 0.0, float arg1 = 0.0){</command>
+            <command>       floats.add(arg0);</command>
+            <command>       floats.add(arg1);</command>
+            <command>    }</command>
+            <command>    void addFloat3(float arg0 = 0.0, float arg1 = 0.0, float arg2 = 0.0){</command>
+            <command>       floats.add(arg0);</command>
+            <command>       floats.add(arg1);</command>
+            <command>       floats.add(arg2);</command>
+            <command>    }</command>
+            <command>    void addFloat4(float arg0 = 0.0, float arg1 = 0.0, float arg2 = 0.0, float arg3 = 0.0){</command>
+            <command>       floats.add(arg0);</command>
+            <command>       floats.add(arg1);</command>
+            <command>       floats.add(arg2);</command>
+            <command>       floats.add(arg3);</command>
+            <command>    }</command>
+            <command>    void addFloat5(float arg0 = 0.0, float arg1 = 0.0, float arg2 = 0.0, float arg3 = 0.0, float arg4 = 0.0){</command>
+            <command>       floats.add(arg0);</command>
+            <command>       floats.add(arg1);</command>
+            <command>       floats.add(arg2);</command>
+            <command>       floats.add(arg3);</command>
+            <command>       floats.add(arg4);</command>
+            <command>    }</command>
+            <command>    void addFloat6(float arg0 = 0.0, float arg1 = 0.0, float arg2 = 0.0, float arg3 = 0.0, float arg4 = 0.0, float arg5 = 0.0){</command>
+            <command>       floats.add(arg0);</command>
+            <command>       floats.add(arg1);</command>
+            <command>       floats.add(arg2);</command>
+            <command>       floats.add(arg3);</command>
+            <command>       floats.add(arg4);</command>
+            <command>       floats.add(arg5);</command>
+            <command>    }</command>
+            <command>    void addFloat7(float arg0 = 0.0, float arg1 = 0.0, float arg2 = 0.0, float arg3 = 0.0, float arg4 = 0.0, float arg5 = 0.0, float arg6 = 0.0){</command>
+            <command>       floats.add(arg0);</command>
+            <command>       floats.add(arg1);</command>
+            <command>       floats.add(arg2);</command>
+            <command>       floats.add(arg3);</command>
+            <command>       floats.add(arg4);</command>
+            <command>       floats.add(arg5);</command>
+            <command>       floats.add(arg6);</command>
+            <command>    }</command>
+            <command>    void addFloat8(float arg0 = 0.0, float arg1 = 0.0, float arg2 = 0.0, float arg3 = 0.0, float arg4 = 0.0, float arg5 = 0.0, float arg6 = 0.0, float arg7 = 0.0){</command>
+            <command>       floats.add(arg0);</command>
+            <command>       floats.add(arg1);</command>
+            <command>       floats.add(arg2);</command>
+            <command>       floats.add(arg3);</command>
+            <command>       floats.add(arg4);</command>
+            <command>       floats.add(arg5);</command>
+            <command>       floats.add(arg6);</command>
+            <command>       floats.add(arg7);</command>
+            <command>    }</command>
+            <command>    void addFloat9(float arg0 = 0.0, float arg1 = 0.0, float arg2 = 0.0, float arg3 = 0.0, float arg4 = 0.0, float arg5 = 0.0, float arg6 = 0.0, float arg7 = 0.0, float arg8 = 0.0){</command>
+            <command>       floats.add(arg0);</command>
+            <command>       floats.add(arg1);</command>
+            <command>       floats.add(arg2);</command>
+            <command>       floats.add(arg3);</command>
+            <command>       floats.add(arg4);</command>
+            <command>       floats.add(arg5);</command>
+            <command>       floats.add(arg6);</command>
+            <command>       floats.add(arg7);</command>
+            <command>       floats.add(arg8);</command>
+            <command>    }</command>
+            <command>    void addFloat10(float arg0 = 0.0, float arg1 = 0.0, float arg2 = 0.0, float arg3 = 0.0, float arg4 = 0.0, float arg5 = 0.0, float arg6 = 0.0, float arg7 = 0.0, float arg8 = 0.0, float arg9 = 0.0){</command>
+            <command>       floats.add(arg0);</command>
+            <command>       floats.add(arg1);</command>
+            <command>       floats.add(arg2);</command>
+            <command>       floats.add(arg3);</command>
+            <command>       floats.add(arg4);</command>
+            <command>       floats.add(arg5);</command>
+            <command>       floats.add(arg6);</command>
+            <command>       floats.add(arg7);</command>
+            <command>       floats.add(arg8);</command>
+            <command>       floats.add(arg9);</command>
+            <command>    }</command>
+            <command>    void addFloat11(float arg0 = 0.0, float arg1 = 0.0, float arg2 = 0.0, float arg3 = 0.0, float arg4 = 0.0, float arg5 = 0.0, float arg6 = 0.0, float arg7 = 0.0, float arg8 = 0.0, float arg9 = 0.0, </command>
+            <command>           float arg10 = 0.0){</command>
+            <command>       floats.add(arg0);</command>
+            <command>       floats.add(arg1);</command>
+            <command>       floats.add(arg2);</command>
+            <command>       floats.add(arg3);</command>
+            <command>       floats.add(arg4);</command>
+            <command>       floats.add(arg5);</command>
+            <command>       floats.add(arg6);</command>
+            <command>       floats.add(arg7);</command>
+            <command>       floats.add(arg8);</command>
+            <command>       floats.add(arg9);</command>
+            <command>       floats.add(arg10);</command>
+            <command>    }</command>
+            <command>    void addFloat12(float arg0 = 0.0, float arg1 = 0.0, float arg2 = 0.0, float arg3 = 0.0, float arg4 = 0.0, float arg5 = 0.0, float arg6 = 0.0, float arg7 = 0.0, float arg8 = 0.0, float arg9 = 0.0, </command>
+            <command>           float arg10 = 0.0, float arg11 = 0.0){</command>
+            <command>       floats.add(arg0);</command>
+            <command>       floats.add(arg1);</command>
+            <command>       floats.add(arg2);</command>
+            <command>       floats.add(arg3);</command>
+            <command>       floats.add(arg4);</command>
+            <command>       floats.add(arg5);</command>
+            <command>       floats.add(arg6);</command>
+            <command>       floats.add(arg7);</command>
+            <command>       floats.add(arg8);</command>
+            <command>       floats.add(arg9);</command>
+            <command>       floats.add(arg10);</command>
+            <command>       floats.add(arg11);</command>
+            <command>    }</command>
+            <command>    void addString0(){}</command>
+            <command>    void addString1(string arg0 = ""){</command>
+            <command>       strings.add(arg0);</command>
+            <command>    }</command>
+            <command>    void addString2(string arg0 = "", string arg1 = ""){</command>
+            <command>       strings.add(arg0);</command>
+            <command>       strings.add(arg1);</command>
+            <command>    }</command>
+            <command>    void addString3(string arg0 = "", string arg1 = "", string arg2 = ""){</command>
+            <command>       strings.add(arg0);</command>
+            <command>       strings.add(arg1);</command>
+            <command>       strings.add(arg2);</command>
+            <command>    }</command>
+            <command>    void addString4(string arg0 = "", string arg1 = "", string arg2 = "", string arg3 = ""){</command>
+            <command>       strings.add(arg0);</command>
+            <command>       strings.add(arg1);</command>
+            <command>       strings.add(arg2);</command>
+            <command>       strings.add(arg3);</command>
+            <command>    }</command>
+            <command>    void addString5(string arg0 = "", string arg1 = "", string arg2 = "", string arg3 = "", string arg4 = ""){</command>
+            <command>       strings.add(arg0);</command>
+            <command>       strings.add(arg1);</command>
+            <command>       strings.add(arg2);</command>
+            <command>       strings.add(arg3);</command>
+            <command>       strings.add(arg4);</command>
+            <command>    }</command>
+            <command>    void addString6(string arg0 = "", string arg1 = "", string arg2 = "", string arg3 = "", string arg4 = "", string arg5 = ""){</command>
+            <command>       strings.add(arg0);</command>
+            <command>       strings.add(arg1);</command>
+            <command>       strings.add(arg2);</command>
+            <command>       strings.add(arg3);</command>
+            <command>       strings.add(arg4);</command>
+            <command>       strings.add(arg5);</command>
+            <command>    }</command>
+            <command>    void addString7(string arg0 = "", string arg1 = "", string arg2 = "", string arg3 = "", string arg4 = "", string arg5 = "", string arg6 = ""){</command>
+            <command>       strings.add(arg0);</command>
+            <command>       strings.add(arg1);</command>
+            <command>       strings.add(arg2);</command>
+            <command>       strings.add(arg3);</command>
+            <command>       strings.add(arg4);</command>
+            <command>       strings.add(arg5);</command>
+            <command>       strings.add(arg6);</command>
+            <command>    }</command>
+            <command>    void addString8(string arg0 = "", string arg1 = "", string arg2 = "", string arg3 = "", string arg4 = "", string arg5 = "", string arg6 = "", string arg7 = ""){</command>
+            <command>       strings.add(arg0);</command>
+            <command>       strings.add(arg1);</command>
+            <command>       strings.add(arg2);</command>
+            <command>       strings.add(arg3);</command>
+            <command>       strings.add(arg4);</command>
+            <command>       strings.add(arg5);</command>
+            <command>       strings.add(arg6);</command>
+            <command>       strings.add(arg7);</command>
+            <command>    }</command>
+            <command>    void addString9(string arg0 = "", string arg1 = "", string arg2 = "", string arg3 = "", string arg4 = "", string arg5 = "", string arg6 = "", string arg7 = "", string arg8 = ""){</command>
+            <command>       strings.add(arg0);</command>
+            <command>       strings.add(arg1);</command>
+            <command>       strings.add(arg2);</command>
+            <command>       strings.add(arg3);</command>
+            <command>       strings.add(arg4);</command>
+            <command>       strings.add(arg5);</command>
+            <command>       strings.add(arg6);</command>
+            <command>       strings.add(arg7);</command>
+            <command>       strings.add(arg8);</command>
+            <command>    }</command>
+            <command>    void addString10(string arg0 = "", string arg1 = "", string arg2 = "", string arg3 = "", string arg4 = "", string arg5 = "", string arg6 = "", string arg7 = "", string arg8 = "", string arg9 = ""){</command>
+            <command>       strings.add(arg0);</command>
+            <command>       strings.add(arg1);</command>
+            <command>       strings.add(arg2);</command>
+            <command>       strings.add(arg3);</command>
+            <command>       strings.add(arg4);</command>
+            <command>       strings.add(arg5);</command>
+            <command>       strings.add(arg6);</command>
+            <command>       strings.add(arg7);</command>
+            <command>       strings.add(arg8);</command>
+            <command>       strings.add(arg9);</command>
+            <command>    }</command>
+            <command>    void addString11(string arg0 = "", string arg1 = "", string arg2 = "", string arg3 = "", string arg4 = "", string arg5 = "", string arg6 = "", string arg7 = "", string arg8 = "", string arg9 = "", </command>
+            <command>           string arg10 = ""){</command>
+            <command>       strings.add(arg0);</command>
+            <command>       strings.add(arg1);</command>
+            <command>       strings.add(arg2);</command>
+            <command>       strings.add(arg3);</command>
+            <command>       strings.add(arg4);</command>
+            <command>       strings.add(arg5);</command>
+            <command>       strings.add(arg6);</command>
+            <command>       strings.add(arg7);</command>
+            <command>       strings.add(arg8);</command>
+            <command>       strings.add(arg9);</command>
+            <command>       strings.add(arg10);</command>
+            <command>    }</command>
+            <command>    void addString12(string arg0 = "", string arg1 = "", string arg2 = "", string arg3 = "", string arg4 = "", string arg5 = "", string arg6 = "", string arg7 = "", string arg8 = "", string arg9 = "", </command>
+            <command>           string arg10 = "", string arg11 = ""){</command>
+            <command>       strings.add(arg0);</command>
+            <command>       strings.add(arg1);</command>
+            <command>       strings.add(arg2);</command>
+            <command>       strings.add(arg3);</command>
+            <command>       strings.add(arg4);</command>
+            <command>       strings.add(arg5);</command>
+            <command>       strings.add(arg6);</command>
+            <command>       strings.add(arg7);</command>
+            <command>       strings.add(arg8);</command>
+            <command>       strings.add(arg9);</command>
+            <command>       strings.add(arg10);</command>
+            <command>       strings.add(arg11);</command>
+            <command>    }</command>
+            <command>    void addVector0(){}</command>
+            <command>    void addVector1(vector arg0 = cOriginVector){</command>
+            <command>       vectors.add(arg0);</command>
+            <command>    }</command>
+            <command>    void addVector2(vector arg0 = cOriginVector, vector arg1 = cOriginVector){</command>
+            <command>       vectors.add(arg0);</command>
+            <command>       vectors.add(arg1);</command>
+            <command>    }</command>
+            <command>    void addVector3(vector arg0 = cOriginVector, vector arg1 = cOriginVector, vector arg2 = cOriginVector){</command>
+            <command>       vectors.add(arg0);</command>
+            <command>       vectors.add(arg1);</command>
+            <command>       vectors.add(arg2);</command>
+            <command>    }</command>
+            <command>    void addVector4(vector arg0 = cOriginVector, vector arg1 = cOriginVector, vector arg2 = cOriginVector, vector arg3 = cOriginVector){</command>
+            <command>       vectors.add(arg0);</command>
+            <command>       vectors.add(arg1);</command>
+            <command>       vectors.add(arg2);</command>
+            <command>       vectors.add(arg3);</command>
+            <command>    }</command>
+            <command>    void addVector5(vector arg0 = cOriginVector, vector arg1 = cOriginVector, vector arg2 = cOriginVector, vector arg3 = cOriginVector, vector arg4 = cOriginVector){</command>
+            <command>       vectors.add(arg0);</command>
+            <command>       vectors.add(arg1);</command>
+            <command>       vectors.add(arg2);</command>
+            <command>       vectors.add(arg3);</command>
+            <command>       vectors.add(arg4);</command>
+            <command>    }</command>
+            <command>    void addVector6(vector arg0 = cOriginVector, vector arg1 = cOriginVector, vector arg2 = cOriginVector, vector arg3 = cOriginVector, vector arg4 = cOriginVector, vector arg5 = cOriginVector){</command>
+            <command>       vectors.add(arg0);</command>
+            <command>       vectors.add(arg1);</command>
+            <command>       vectors.add(arg2);</command>
+            <command>       vectors.add(arg3);</command>
+            <command>       vectors.add(arg4);</command>
+            <command>       vectors.add(arg5);</command>
+            <command>    }</command>
+            <command>    void addVector7(vector arg0 = cOriginVector, vector arg1 = cOriginVector, vector arg2 = cOriginVector, vector arg3 = cOriginVector, vector arg4 = cOriginVector, vector arg5 = cOriginVector, vector arg6 = cOriginVector){</command>
+            <command>       vectors.add(arg0);</command>
+            <command>       vectors.add(arg1);</command>
+            <command>       vectors.add(arg2);</command>
+            <command>       vectors.add(arg3);</command>
+            <command>       vectors.add(arg4);</command>
+            <command>       vectors.add(arg5);</command>
+            <command>       vectors.add(arg6);</command>
+            <command>    }</command>
+            <command>    void addVector8(vector arg0 = cOriginVector, vector arg1 = cOriginVector, vector arg2 = cOriginVector, vector arg3 = cOriginVector, vector arg4 = cOriginVector, vector arg5 = cOriginVector, vector arg6 = cOriginVector, </command>
+            <command>           vector arg7 = cOriginVector){</command>
+            <command>       vectors.add(arg0);</command>
+            <command>       vectors.add(arg1);</command>
+            <command>       vectors.add(arg2);</command>
+            <command>       vectors.add(arg3);</command>
+            <command>       vectors.add(arg4);</command>
+            <command>       vectors.add(arg5);</command>
+            <command>       vectors.add(arg6);</command>
+            <command>       vectors.add(arg7);</command>
+            <command>    }</command>
+            <command>    void addVector9(vector arg0 = cOriginVector, vector arg1 = cOriginVector, vector arg2 = cOriginVector, vector arg3 = cOriginVector, vector arg4 = cOriginVector, vector arg5 = cOriginVector, vector arg6 = cOriginVector, </command>
+            <command>           vector arg7 = cOriginVector, vector arg8 = cOriginVector){</command>
+            <command>       vectors.add(arg0);</command>
+            <command>       vectors.add(arg1);</command>
+            <command>       vectors.add(arg2);</command>
+            <command>       vectors.add(arg3);</command>
+            <command>       vectors.add(arg4);</command>
+            <command>       vectors.add(arg5);</command>
+            <command>       vectors.add(arg6);</command>
+            <command>       vectors.add(arg7);</command>
+            <command>       vectors.add(arg8);</command>
+            <command>    }</command>
+            <command>    void addVector10(vector arg0 = cOriginVector, vector arg1 = cOriginVector, vector arg2 = cOriginVector, vector arg3 = cOriginVector, vector arg4 = cOriginVector, vector arg5 = cOriginVector, vector arg6 = cOriginVector, </command>
+            <command>           vector arg7 = cOriginVector, vector arg8 = cOriginVector, vector arg9 = cOriginVector){</command>
+            <command>       vectors.add(arg0);</command>
+            <command>       vectors.add(arg1);</command>
+            <command>       vectors.add(arg2);</command>
+            <command>       vectors.add(arg3);</command>
+            <command>       vectors.add(arg4);</command>
+            <command>       vectors.add(arg5);</command>
+            <command>       vectors.add(arg6);</command>
+            <command>       vectors.add(arg7);</command>
+            <command>       vectors.add(arg8);</command>
+            <command>       vectors.add(arg9);</command>
+            <command>    }</command>
+            <command>    void addVector11(vector arg0 = cOriginVector, vector arg1 = cOriginVector, vector arg2 = cOriginVector, vector arg3 = cOriginVector, vector arg4 = cOriginVector, vector arg5 = cOriginVector, vector arg6 = cOriginVector, </command>
+            <command>           vector arg7 = cOriginVector, vector arg8 = cOriginVector, vector arg9 = cOriginVector, vector arg10 = cOriginVector){</command>
+            <command>       vectors.add(arg0);</command>
+            <command>       vectors.add(arg1);</command>
+            <command>       vectors.add(arg2);</command>
+            <command>       vectors.add(arg3);</command>
+            <command>       vectors.add(arg4);</command>
+            <command>       vectors.add(arg5);</command>
+            <command>       vectors.add(arg6);</command>
+            <command>       vectors.add(arg7);</command>
+            <command>       vectors.add(arg8);</command>
+            <command>       vectors.add(arg9);</command>
+            <command>       vectors.add(arg10);</command>
+            <command>    }</command>
+            <command>    void addVector12(vector arg0 = cOriginVector, vector arg1 = cOriginVector, vector arg2 = cOriginVector, vector arg3 = cOriginVector, vector arg4 = cOriginVector, vector arg5 = cOriginVector, vector arg6 = cOriginVector, </command>
+            <command>           vector arg7 = cOriginVector, vector arg8 = cOriginVector, vector arg9 = cOriginVector, vector arg10 = cOriginVector, vector arg11 = cOriginVector){</command>
+            <command>       vectors.add(arg0);</command>
+            <command>       vectors.add(arg1);</command>
+            <command>       vectors.add(arg2);</command>
+            <command>       vectors.add(arg3);</command>
+            <command>       vectors.add(arg4);</command>
+            <command>       vectors.add(arg5);</command>
+            <command>       vectors.add(arg6);</command>
+            <command>       vectors.add(arg7);</command>
+            <command>       vectors.add(arg8);</command>
+            <command>       vectors.add(arg9);</command>
+            <command>       vectors.add(arg10);</command>
+            <command>       vectors.add(arg11);</command>
+            <command>    }</command>
+            <command>};</command>
             <command></command>
             <command>const int __HASH_MAP_INITIAL_BUCKET_COUNT = 16;</command>
             <command>const int __HASH_MAP_INITIAL_BUCKET_DEPTH = 10;</command>
@@ -913,6 +1452,122 @@
             <command>        return defaultValue;</command>
             <command>    }</command>
             <command>};</command>
+            <command>class __HashStorageWithParameters {</command>
+            <command>    bool initialised = false;</command>
+            <command>    int bucketCount = __HASH_MAP_INITIAL_BUCKET_COUNT;</command>
+            <command>    int bucketDepth = __HASH_MAP_INITIAL_BUCKET_DEPTH;</command>
+            <command>    int[] countArray = default;</command>
+            <command>    string[] keyArray = default;</command>
+            <command>    __Parameters[] valueArray = default;</command>
+            <command></command>
+            <command>    void initialise(){</command>
+            <command>        countArray = new int(bucketCount, 0);</command>
+            <command>        keyArray = new string(bucketCount * bucketDepth, "");</command>
+            <command>        valueArray = new __Parameters(bucketCount * bucketDepth);</command>
+            <command>        initialised = true;</command>
+            <command>    }</command>
+            <command></command>
+            <command>    int findBucketInternal(string key = ""){</command>
+            <command>        int bucket = kbGetAnimationID(key) %Mod% bucketCount;</command>
+            <command>        if (bucket &lt; 0){</command>
+            <command>            return bucket + bucketCount;</command>
+            <command>        }</command>
+            <command>        return bucket;</command>
+            <command>    }</command>
+            <command></command>
+            <command>    int indexOfKeyInternal(int bucketIndex = 0, string key = ""){</command>
+            <command>        int from = bucketIndex * bucketDepth;</command>
+            <command>        int to = from + countArray[bucketIndex];</command>
+            <command>        for (int i = from; i &lt; to; i++){</command>
+            <command>            if (key == keyArray[i]){</command>
+            <command>                return i;</command>
+            <command>            }</command>
+            <command>        }</command>
+            <command>        return -1;</command>
+            <command>    }</command>
+            <command></command>
+            <command>    void resizeInternal(){</command>
+            <command>        int oldBucketCount = bucketCount;</command>
+            <command>        int oldBucketDepth = bucketDepth;</command>
+            <command>        int[] oldCountArray = countArray;</command>
+            <command>        string[] oldKeyArray = keyArray;</command>
+            <command>        __Parameters[] oldValueArray = valueArray;</command>
+            <command>        bucketCount = bucketCount * 2;</command>
+            <command>        bucketDepth = bucketDepth * 2;</command>
+            <command>        countArray = new int(bucketCount, 0);</command>
+            <command>        keyArray = new string(bucketCount * bucketDepth, "");</command>
+            <command>        valueArray = new __Parameters(bucketCount * bucketDepth);</command>
+            <command>        for (int bucketIndex = 0; bucketIndex &lt; oldBucketCount; bucketIndex++){</command>
+            <command>            int offset = bucketIndex * oldBucketDepth;</command>
+            <command>            for (int i = 0; i &lt; oldCountArray[bucketIndex]; i++){</command>
+            <command>                string key = oldKeyArray[offset + i];</command>
+            <command>                __Parameters value = oldValueArray[offset + i];</command>
+            <command>                int newBucketIndex = findBucketInternal(key);</command>
+            <command>                int index = newBucketIndex * bucketDepth + countArray[newBucketIndex];</command>
+            <command>                keyArray[index] = key;</command>
+            <command>                valueArray[index] = value;</command>
+            <command>                countArray[newBucketIndex] = countArray[newBucketIndex] + 1;</command>
+            <command>            }</command>
+            <command>        }</command>
+            <command>    }</command>
+            <command></command>
+            <command>    void put(string key = "", ref __Parameters value){</command>
+            <command>        if (initialised == false){</command>
+            <command>            initialise();</command>
+            <command>        }</command>
+            <command>        int bucketIndex = findBucketInternal(key);</command>
+            <command>        int existingIndex = indexOfKeyInternal(bucketIndex, key);</command>
+            <command>        if (existingIndex &gt;= 0){</command>
+            <command>            __Parameters oldValue = valueArray[existingIndex];</command>
+            <command>            valueArray[existingIndex] = value;</command>
+            <command>            return;</command>
+            <command>        }</command>
+            <command>        if (countArray[bucketIndex] &gt;= bucketDepth){</command>
+            <command>            resizeInternal();</command>
+            <command>            int resizedBucketIndex = findBucketInternal(key);</command>
+            <command>            int index = resizedBucketIndex * bucketDepth + countArray[resizedBucketIndex];</command>
+            <command>            keyArray[index] = key;</command>
+            <command>            valueArray[index] = value;</command>
+            <command>            countArray[resizedBucketIndex] = countArray[resizedBucketIndex] + 1;</command>
+            <command>            return;</command>
+            <command>        }</command>
+            <command>        int index = bucketIndex * bucketDepth + countArray[bucketIndex];</command>
+            <command>        keyArray[index] = key;</command>
+            <command>        valueArray[index] = value;</command>
+            <command>        countArray[bucketIndex] = countArray[bucketIndex] + 1;</command>
+            <command>    }</command>
+            <command></command>
+            <command>    __Parameters get(string key = ""){</command>
+            <command>        if (initialised == false){</command>
+            <command>            initialise();</command>
+            <command>        }</command>
+            <command>        int bucketIndex = findBucketInternal(key);</command>
+            <command>        int existingIndex = indexOfKeyInternal(bucketIndex, key);</command>
+            <command>        if (existingIndex &gt;= 0){</command>
+            <command>            return valueArray[existingIndex];</command>
+            <command>        }</command>
+            <command>        __Parameters defaultParameters;</command>
+            <command>        return defaultParameters;</command>
+            <command>    }</command>
+            <command></command>
+            <command>    __Parameters remove(string key = ""){</command>
+            <command>        if (initialised == false){</command>
+            <command>            initialise();</command>
+            <command>        }</command>
+            <command>        int bucketIndex = findBucketInternal(key);</command>
+            <command>        int existingIndex = indexOfKeyInternal(bucketIndex, key);</command>
+            <command>        if (existingIndex &gt;= 0){</command>
+            <command>            __Parameters removedValue = valueArray[existingIndex];</command>
+            <command>            countArray[bucketIndex] = countArray[bucketIndex] - 1;</command>
+            <command>            int countIndex = bucketIndex * bucketDepth + countArray[bucketIndex];</command>
+            <command>            keyArray[existingIndex] = keyArray[countIndex];</command>
+            <command>            valueArray[existingIndex] = valueArray[countIndex];</command>
+            <command>            return removedValue;</command>
+            <command>        }</command>
+            <command>        __Parameters defaultParameters;</command>
+            <command>        return defaultParameters;</command>
+            <command>    }</command>
+            <command>};</command>
             <command></command>
             <command>float __getTerrainHeightAccurate(vector posV = cOriginVector){</command>
             <command>    float tilesFloatX = posV.x / 2.0;</command>
@@ -940,540 +1595,6 @@
             <command>   }</command>
             <command>   return selectionArray;</command>
             <command>}</command>
-            <command></command>
-            <command>class __Parameters {</command>
-            <command>    bool[] bools = default;</command>
-            <command>    int[] ints = default;</command>
-            <command>    float[] floats = default;</command>
-            <command>    string[] strings = default;</command>
-            <command>    vector[] vectors = default;</command>
-            <command>    void addBool0(){}</command>
-            <command>    void addBool1(bool arg0 = false){</command>
-            <command>       bools.add(arg0);</command>
-            <command>    }</command>
-            <command>    void addBool2(bool arg0 = false, bool arg1 = false){</command>
-            <command>       bools.add(arg0);</command>
-            <command>       bools.add(arg1);</command>
-            <command>    }</command>
-            <command>    void addBool3(bool arg0 = false, bool arg1 = false, bool arg2 = false){</command>
-            <command>       bools.add(arg0);</command>
-            <command>       bools.add(arg1);</command>
-            <command>       bools.add(arg2);</command>
-            <command>    }</command>
-            <command>    void addBool4(bool arg0 = false, bool arg1 = false, bool arg2 = false, bool arg3 = false){</command>
-            <command>       bools.add(arg0);</command>
-            <command>       bools.add(arg1);</command>
-            <command>       bools.add(arg2);</command>
-            <command>       bools.add(arg3);</command>
-            <command>    }</command>
-            <command>    void addBool5(bool arg0 = false, bool arg1 = false, bool arg2 = false, bool arg3 = false, bool arg4 = false){</command>
-            <command>       bools.add(arg0);</command>
-            <command>       bools.add(arg1);</command>
-            <command>       bools.add(arg2);</command>
-            <command>       bools.add(arg3);</command>
-            <command>       bools.add(arg4);</command>
-            <command>    }</command>
-            <command>    void addBool6(bool arg0 = false, bool arg1 = false, bool arg2 = false, bool arg3 = false, bool arg4 = false, bool arg5 = false){</command>
-            <command>       bools.add(arg0);</command>
-            <command>       bools.add(arg1);</command>
-            <command>       bools.add(arg2);</command>
-            <command>       bools.add(arg3);</command>
-            <command>       bools.add(arg4);</command>
-            <command>       bools.add(arg5);</command>
-            <command>    }</command>
-            <command>    void addBool7(bool arg0 = false, bool arg1 = false, bool arg2 = false, bool arg3 = false, bool arg4 = false, bool arg5 = false, bool arg6 = false){</command>
-            <command>       bools.add(arg0);</command>
-            <command>       bools.add(arg1);</command>
-            <command>       bools.add(arg2);</command>
-            <command>       bools.add(arg3);</command>
-            <command>       bools.add(arg4);</command>
-            <command>       bools.add(arg5);</command>
-            <command>       bools.add(arg6);</command>
-            <command>    }</command>
-            <command>    void addBool8(bool arg0 = false, bool arg1 = false, bool arg2 = false, bool arg3 = false, bool arg4 = false, bool arg5 = false, bool arg6 = false, bool arg7 = false){</command>
-            <command>       bools.add(arg0);</command>
-            <command>       bools.add(arg1);</command>
-            <command>       bools.add(arg2);</command>
-            <command>       bools.add(arg3);</command>
-            <command>       bools.add(arg4);</command>
-            <command>       bools.add(arg5);</command>
-            <command>       bools.add(arg6);</command>
-            <command>       bools.add(arg7);</command>
-            <command>    }</command>
-            <command>    void addBool9(bool arg0 = false, bool arg1 = false, bool arg2 = false, bool arg3 = false, bool arg4 = false, bool arg5 = false, bool arg6 = false, bool arg7 = false, bool arg8 = false){</command>
-            <command>       bools.add(arg0);</command>
-            <command>       bools.add(arg1);</command>
-            <command>       bools.add(arg2);</command>
-            <command>       bools.add(arg3);</command>
-            <command>       bools.add(arg4);</command>
-            <command>       bools.add(arg5);</command>
-            <command>       bools.add(arg6);</command>
-            <command>       bools.add(arg7);</command>
-            <command>       bools.add(arg8);</command>
-            <command>    }</command>
-            <command>    void addBool10(bool arg0 = false, bool arg1 = false, bool arg2 = false, bool arg3 = false, bool arg4 = false, bool arg5 = false, bool arg6 = false, bool arg7 = false, bool arg8 = false, bool arg9 = false){</command>
-            <command>       bools.add(arg0);</command>
-            <command>       bools.add(arg1);</command>
-            <command>       bools.add(arg2);</command>
-            <command>       bools.add(arg3);</command>
-            <command>       bools.add(arg4);</command>
-            <command>       bools.add(arg5);</command>
-            <command>       bools.add(arg6);</command>
-            <command>       bools.add(arg7);</command>
-            <command>       bools.add(arg8);</command>
-            <command>       bools.add(arg9);</command>
-            <command>    }</command>
-            <command>    void addBool11(bool arg0 = false, bool arg1 = false, bool arg2 = false, bool arg3 = false, bool arg4 = false, bool arg5 = false, bool arg6 = false, bool arg7 = false, bool arg8 = false, bool arg9 = false, </command>
-            <command>           bool arg10 = false){</command>
-            <command>       bools.add(arg0);</command>
-            <command>       bools.add(arg1);</command>
-            <command>       bools.add(arg2);</command>
-            <command>       bools.add(arg3);</command>
-            <command>       bools.add(arg4);</command>
-            <command>       bools.add(arg5);</command>
-            <command>       bools.add(arg6);</command>
-            <command>       bools.add(arg7);</command>
-            <command>       bools.add(arg8);</command>
-            <command>       bools.add(arg9);</command>
-            <command>       bools.add(arg10);</command>
-            <command>    }</command>
-            <command>    void addBool12(bool arg0 = false, bool arg1 = false, bool arg2 = false, bool arg3 = false, bool arg4 = false, bool arg5 = false, bool arg6 = false, bool arg7 = false, bool arg8 = false, bool arg9 = false, </command>
-            <command>           bool arg10 = false, bool arg11 = false){</command>
-            <command>       bools.add(arg0);</command>
-            <command>       bools.add(arg1);</command>
-            <command>       bools.add(arg2);</command>
-            <command>       bools.add(arg3);</command>
-            <command>       bools.add(arg4);</command>
-            <command>       bools.add(arg5);</command>
-            <command>       bools.add(arg6);</command>
-            <command>       bools.add(arg7);</command>
-            <command>       bools.add(arg8);</command>
-            <command>       bools.add(arg9);</command>
-            <command>       bools.add(arg10);</command>
-            <command>       bools.add(arg11);</command>
-            <command>    }</command>
-            <command>    void addInt0(){}</command>
-            <command>    void addInt1(int arg0 = 0){</command>
-            <command>       ints.add(arg0);</command>
-            <command>    }</command>
-            <command>    void addInt2(int arg0 = 0, int arg1 = 0){</command>
-            <command>       ints.add(arg0);</command>
-            <command>       ints.add(arg1);</command>
-            <command>    }</command>
-            <command>    void addInt3(int arg0 = 0, int arg1 = 0, int arg2 = 0){</command>
-            <command>       ints.add(arg0);</command>
-            <command>       ints.add(arg1);</command>
-            <command>       ints.add(arg2);</command>
-            <command>    }</command>
-            <command>    void addInt4(int arg0 = 0, int arg1 = 0, int arg2 = 0, int arg3 = 0){</command>
-            <command>       ints.add(arg0);</command>
-            <command>       ints.add(arg1);</command>
-            <command>       ints.add(arg2);</command>
-            <command>       ints.add(arg3);</command>
-            <command>    }</command>
-            <command>    void addInt5(int arg0 = 0, int arg1 = 0, int arg2 = 0, int arg3 = 0, int arg4 = 0){</command>
-            <command>       ints.add(arg0);</command>
-            <command>       ints.add(arg1);</command>
-            <command>       ints.add(arg2);</command>
-            <command>       ints.add(arg3);</command>
-            <command>       ints.add(arg4);</command>
-            <command>    }</command>
-            <command>    void addInt6(int arg0 = 0, int arg1 = 0, int arg2 = 0, int arg3 = 0, int arg4 = 0, int arg5 = 0){</command>
-            <command>       ints.add(arg0);</command>
-            <command>       ints.add(arg1);</command>
-            <command>       ints.add(arg2);</command>
-            <command>       ints.add(arg3);</command>
-            <command>       ints.add(arg4);</command>
-            <command>       ints.add(arg5);</command>
-            <command>    }</command>
-            <command>    void addInt7(int arg0 = 0, int arg1 = 0, int arg2 = 0, int arg3 = 0, int arg4 = 0, int arg5 = 0, int arg6 = 0){</command>
-            <command>       ints.add(arg0);</command>
-            <command>       ints.add(arg1);</command>
-            <command>       ints.add(arg2);</command>
-            <command>       ints.add(arg3);</command>
-            <command>       ints.add(arg4);</command>
-            <command>       ints.add(arg5);</command>
-            <command>       ints.add(arg6);</command>
-            <command>    }</command>
-            <command>    void addInt8(int arg0 = 0, int arg1 = 0, int arg2 = 0, int arg3 = 0, int arg4 = 0, int arg5 = 0, int arg6 = 0, int arg7 = 0){</command>
-            <command>       ints.add(arg0);</command>
-            <command>       ints.add(arg1);</command>
-            <command>       ints.add(arg2);</command>
-            <command>       ints.add(arg3);</command>
-            <command>       ints.add(arg4);</command>
-            <command>       ints.add(arg5);</command>
-            <command>       ints.add(arg6);</command>
-            <command>       ints.add(arg7);</command>
-            <command>    }</command>
-            <command>    void addInt9(int arg0 = 0, int arg1 = 0, int arg2 = 0, int arg3 = 0, int arg4 = 0, int arg5 = 0, int arg6 = 0, int arg7 = 0, int arg8 = 0){</command>
-            <command>       ints.add(arg0);</command>
-            <command>       ints.add(arg1);</command>
-            <command>       ints.add(arg2);</command>
-            <command>       ints.add(arg3);</command>
-            <command>       ints.add(arg4);</command>
-            <command>       ints.add(arg5);</command>
-            <command>       ints.add(arg6);</command>
-            <command>       ints.add(arg7);</command>
-            <command>       ints.add(arg8);</command>
-            <command>    }</command>
-            <command>    void addInt10(int arg0 = 0, int arg1 = 0, int arg2 = 0, int arg3 = 0, int arg4 = 0, int arg5 = 0, int arg6 = 0, int arg7 = 0, int arg8 = 0, int arg9 = 0){</command>
-            <command>       ints.add(arg0);</command>
-            <command>       ints.add(arg1);</command>
-            <command>       ints.add(arg2);</command>
-            <command>       ints.add(arg3);</command>
-            <command>       ints.add(arg4);</command>
-            <command>       ints.add(arg5);</command>
-            <command>       ints.add(arg6);</command>
-            <command>       ints.add(arg7);</command>
-            <command>       ints.add(arg8);</command>
-            <command>       ints.add(arg9);</command>
-            <command>    }</command>
-            <command>    void addInt11(int arg0 = 0, int arg1 = 0, int arg2 = 0, int arg3 = 0, int arg4 = 0, int arg5 = 0, int arg6 = 0, int arg7 = 0, int arg8 = 0, int arg9 = 0, int arg10 = 0){</command>
-            <command>       ints.add(arg0);</command>
-            <command>       ints.add(arg1);</command>
-            <command>       ints.add(arg2);</command>
-            <command>       ints.add(arg3);</command>
-            <command>       ints.add(arg4);</command>
-            <command>       ints.add(arg5);</command>
-            <command>       ints.add(arg6);</command>
-            <command>       ints.add(arg7);</command>
-            <command>       ints.add(arg8);</command>
-            <command>       ints.add(arg9);</command>
-            <command>       ints.add(arg10);</command>
-            <command>    }</command>
-            <command>    void addInt12(int arg0 = 0, int arg1 = 0, int arg2 = 0, int arg3 = 0, int arg4 = 0, int arg5 = 0, int arg6 = 0, int arg7 = 0, int arg8 = 0, int arg9 = 0, int arg10 = 0, int arg11 = 0){</command>
-            <command>       ints.add(arg0);</command>
-            <command>       ints.add(arg1);</command>
-            <command>       ints.add(arg2);</command>
-            <command>       ints.add(arg3);</command>
-            <command>       ints.add(arg4);</command>
-            <command>       ints.add(arg5);</command>
-            <command>       ints.add(arg6);</command>
-            <command>       ints.add(arg7);</command>
-            <command>       ints.add(arg8);</command>
-            <command>       ints.add(arg9);</command>
-            <command>       ints.add(arg10);</command>
-            <command>       ints.add(arg11);</command>
-            <command>    }</command>
-            <command>    void addFloat0(){}</command>
-            <command>    void addFloat1(float arg0 = 0.0){</command>
-            <command>       floats.add(arg0);</command>
-            <command>    }</command>
-            <command>    void addFloat2(float arg0 = 0.0, float arg1 = 0.0){</command>
-            <command>       floats.add(arg0);</command>
-            <command>       floats.add(arg1);</command>
-            <command>    }</command>
-            <command>    void addFloat3(float arg0 = 0.0, float arg1 = 0.0, float arg2 = 0.0){</command>
-            <command>       floats.add(arg0);</command>
-            <command>       floats.add(arg1);</command>
-            <command>       floats.add(arg2);</command>
-            <command>    }</command>
-            <command>    void addFloat4(float arg0 = 0.0, float arg1 = 0.0, float arg2 = 0.0, float arg3 = 0.0){</command>
-            <command>       floats.add(arg0);</command>
-            <command>       floats.add(arg1);</command>
-            <command>       floats.add(arg2);</command>
-            <command>       floats.add(arg3);</command>
-            <command>    }</command>
-            <command>    void addFloat5(float arg0 = 0.0, float arg1 = 0.0, float arg2 = 0.0, float arg3 = 0.0, float arg4 = 0.0){</command>
-            <command>       floats.add(arg0);</command>
-            <command>       floats.add(arg1);</command>
-            <command>       floats.add(arg2);</command>
-            <command>       floats.add(arg3);</command>
-            <command>       floats.add(arg4);</command>
-            <command>    }</command>
-            <command>    void addFloat6(float arg0 = 0.0, float arg1 = 0.0, float arg2 = 0.0, float arg3 = 0.0, float arg4 = 0.0, float arg5 = 0.0){</command>
-            <command>       floats.add(arg0);</command>
-            <command>       floats.add(arg1);</command>
-            <command>       floats.add(arg2);</command>
-            <command>       floats.add(arg3);</command>
-            <command>       floats.add(arg4);</command>
-            <command>       floats.add(arg5);</command>
-            <command>    }</command>
-            <command>    void addFloat7(float arg0 = 0.0, float arg1 = 0.0, float arg2 = 0.0, float arg3 = 0.0, float arg4 = 0.0, float arg5 = 0.0, float arg6 = 0.0){</command>
-            <command>       floats.add(arg0);</command>
-            <command>       floats.add(arg1);</command>
-            <command>       floats.add(arg2);</command>
-            <command>       floats.add(arg3);</command>
-            <command>       floats.add(arg4);</command>
-            <command>       floats.add(arg5);</command>
-            <command>       floats.add(arg6);</command>
-            <command>    }</command>
-            <command>    void addFloat8(float arg0 = 0.0, float arg1 = 0.0, float arg2 = 0.0, float arg3 = 0.0, float arg4 = 0.0, float arg5 = 0.0, float arg6 = 0.0, float arg7 = 0.0){</command>
-            <command>       floats.add(arg0);</command>
-            <command>       floats.add(arg1);</command>
-            <command>       floats.add(arg2);</command>
-            <command>       floats.add(arg3);</command>
-            <command>       floats.add(arg4);</command>
-            <command>       floats.add(arg5);</command>
-            <command>       floats.add(arg6);</command>
-            <command>       floats.add(arg7);</command>
-            <command>    }</command>
-            <command>    void addFloat9(float arg0 = 0.0, float arg1 = 0.0, float arg2 = 0.0, float arg3 = 0.0, float arg4 = 0.0, float arg5 = 0.0, float arg6 = 0.0, float arg7 = 0.0, float arg8 = 0.0){</command>
-            <command>       floats.add(arg0);</command>
-            <command>       floats.add(arg1);</command>
-            <command>       floats.add(arg2);</command>
-            <command>       floats.add(arg3);</command>
-            <command>       floats.add(arg4);</command>
-            <command>       floats.add(arg5);</command>
-            <command>       floats.add(arg6);</command>
-            <command>       floats.add(arg7);</command>
-            <command>       floats.add(arg8);</command>
-            <command>    }</command>
-            <command>    void addFloat10(float arg0 = 0.0, float arg1 = 0.0, float arg2 = 0.0, float arg3 = 0.0, float arg4 = 0.0, float arg5 = 0.0, float arg6 = 0.0, float arg7 = 0.0, float arg8 = 0.0, float arg9 = 0.0){</command>
-            <command>       floats.add(arg0);</command>
-            <command>       floats.add(arg1);</command>
-            <command>       floats.add(arg2);</command>
-            <command>       floats.add(arg3);</command>
-            <command>       floats.add(arg4);</command>
-            <command>       floats.add(arg5);</command>
-            <command>       floats.add(arg6);</command>
-            <command>       floats.add(arg7);</command>
-            <command>       floats.add(arg8);</command>
-            <command>       floats.add(arg9);</command>
-            <command>    }</command>
-            <command>    void addFloat11(float arg0 = 0.0, float arg1 = 0.0, float arg2 = 0.0, float arg3 = 0.0, float arg4 = 0.0, float arg5 = 0.0, float arg6 = 0.0, float arg7 = 0.0, float arg8 = 0.0, float arg9 = 0.0, </command>
-            <command>           float arg10 = 0.0){</command>
-            <command>       floats.add(arg0);</command>
-            <command>       floats.add(arg1);</command>
-            <command>       floats.add(arg2);</command>
-            <command>       floats.add(arg3);</command>
-            <command>       floats.add(arg4);</command>
-            <command>       floats.add(arg5);</command>
-            <command>       floats.add(arg6);</command>
-            <command>       floats.add(arg7);</command>
-            <command>       floats.add(arg8);</command>
-            <command>       floats.add(arg9);</command>
-            <command>       floats.add(arg10);</command>
-            <command>    }</command>
-            <command>    void addFloat12(float arg0 = 0.0, float arg1 = 0.0, float arg2 = 0.0, float arg3 = 0.0, float arg4 = 0.0, float arg5 = 0.0, float arg6 = 0.0, float arg7 = 0.0, float arg8 = 0.0, float arg9 = 0.0, </command>
-            <command>           float arg10 = 0.0, float arg11 = 0.0){</command>
-            <command>       floats.add(arg0);</command>
-            <command>       floats.add(arg1);</command>
-            <command>       floats.add(arg2);</command>
-            <command>       floats.add(arg3);</command>
-            <command>       floats.add(arg4);</command>
-            <command>       floats.add(arg5);</command>
-            <command>       floats.add(arg6);</command>
-            <command>       floats.add(arg7);</command>
-            <command>       floats.add(arg8);</command>
-            <command>       floats.add(arg9);</command>
-            <command>       floats.add(arg10);</command>
-            <command>       floats.add(arg11);</command>
-            <command>    }</command>
-            <command>    void addString0(){}</command>
-            <command>    void addString1(string arg0 = ""){</command>
-            <command>       strings.add(arg0);</command>
-            <command>    }</command>
-            <command>    void addString2(string arg0 = "", string arg1 = ""){</command>
-            <command>       strings.add(arg0);</command>
-            <command>       strings.add(arg1);</command>
-            <command>    }</command>
-            <command>    void addString3(string arg0 = "", string arg1 = "", string arg2 = ""){</command>
-            <command>       strings.add(arg0);</command>
-            <command>       strings.add(arg1);</command>
-            <command>       strings.add(arg2);</command>
-            <command>    }</command>
-            <command>    void addString4(string arg0 = "", string arg1 = "", string arg2 = "", string arg3 = ""){</command>
-            <command>       strings.add(arg0);</command>
-            <command>       strings.add(arg1);</command>
-            <command>       strings.add(arg2);</command>
-            <command>       strings.add(arg3);</command>
-            <command>    }</command>
-            <command>    void addString5(string arg0 = "", string arg1 = "", string arg2 = "", string arg3 = "", string arg4 = ""){</command>
-            <command>       strings.add(arg0);</command>
-            <command>       strings.add(arg1);</command>
-            <command>       strings.add(arg2);</command>
-            <command>       strings.add(arg3);</command>
-            <command>       strings.add(arg4);</command>
-            <command>    }</command>
-            <command>    void addString6(string arg0 = "", string arg1 = "", string arg2 = "", string arg3 = "", string arg4 = "", string arg5 = ""){</command>
-            <command>       strings.add(arg0);</command>
-            <command>       strings.add(arg1);</command>
-            <command>       strings.add(arg2);</command>
-            <command>       strings.add(arg3);</command>
-            <command>       strings.add(arg4);</command>
-            <command>       strings.add(arg5);</command>
-            <command>    }</command>
-            <command>    void addString7(string arg0 = "", string arg1 = "", string arg2 = "", string arg3 = "", string arg4 = "", string arg5 = "", string arg6 = ""){</command>
-            <command>       strings.add(arg0);</command>
-            <command>       strings.add(arg1);</command>
-            <command>       strings.add(arg2);</command>
-            <command>       strings.add(arg3);</command>
-            <command>       strings.add(arg4);</command>
-            <command>       strings.add(arg5);</command>
-            <command>       strings.add(arg6);</command>
-            <command>    }</command>
-            <command>    void addString8(string arg0 = "", string arg1 = "", string arg2 = "", string arg3 = "", string arg4 = "", string arg5 = "", string arg6 = "", string arg7 = ""){</command>
-            <command>       strings.add(arg0);</command>
-            <command>       strings.add(arg1);</command>
-            <command>       strings.add(arg2);</command>
-            <command>       strings.add(arg3);</command>
-            <command>       strings.add(arg4);</command>
-            <command>       strings.add(arg5);</command>
-            <command>       strings.add(arg6);</command>
-            <command>       strings.add(arg7);</command>
-            <command>    }</command>
-            <command>    void addString9(string arg0 = "", string arg1 = "", string arg2 = "", string arg3 = "", string arg4 = "", string arg5 = "", string arg6 = "", string arg7 = "", string arg8 = ""){</command>
-            <command>       strings.add(arg0);</command>
-            <command>       strings.add(arg1);</command>
-            <command>       strings.add(arg2);</command>
-            <command>       strings.add(arg3);</command>
-            <command>       strings.add(arg4);</command>
-            <command>       strings.add(arg5);</command>
-            <command>       strings.add(arg6);</command>
-            <command>       strings.add(arg7);</command>
-            <command>       strings.add(arg8);</command>
-            <command>    }</command>
-            <command>    void addString10(string arg0 = "", string arg1 = "", string arg2 = "", string arg3 = "", string arg4 = "", string arg5 = "", string arg6 = "", string arg7 = "", string arg8 = "", string arg9 = ""){</command>
-            <command>       strings.add(arg0);</command>
-            <command>       strings.add(arg1);</command>
-            <command>       strings.add(arg2);</command>
-            <command>       strings.add(arg3);</command>
-            <command>       strings.add(arg4);</command>
-            <command>       strings.add(arg5);</command>
-            <command>       strings.add(arg6);</command>
-            <command>       strings.add(arg7);</command>
-            <command>       strings.add(arg8);</command>
-            <command>       strings.add(arg9);</command>
-            <command>    }</command>
-            <command>    void addString11(string arg0 = "", string arg1 = "", string arg2 = "", string arg3 = "", string arg4 = "", string arg5 = "", string arg6 = "", string arg7 = "", string arg8 = "", string arg9 = "", </command>
-            <command>           string arg10 = ""){</command>
-            <command>       strings.add(arg0);</command>
-            <command>       strings.add(arg1);</command>
-            <command>       strings.add(arg2);</command>
-            <command>       strings.add(arg3);</command>
-            <command>       strings.add(arg4);</command>
-            <command>       strings.add(arg5);</command>
-            <command>       strings.add(arg6);</command>
-            <command>       strings.add(arg7);</command>
-            <command>       strings.add(arg8);</command>
-            <command>       strings.add(arg9);</command>
-            <command>       strings.add(arg10);</command>
-            <command>    }</command>
-            <command>    void addString12(string arg0 = "", string arg1 = "", string arg2 = "", string arg3 = "", string arg4 = "", string arg5 = "", string arg6 = "", string arg7 = "", string arg8 = "", string arg9 = "", </command>
-            <command>           string arg10 = "", string arg11 = ""){</command>
-            <command>       strings.add(arg0);</command>
-            <command>       strings.add(arg1);</command>
-            <command>       strings.add(arg2);</command>
-            <command>       strings.add(arg3);</command>
-            <command>       strings.add(arg4);</command>
-            <command>       strings.add(arg5);</command>
-            <command>       strings.add(arg6);</command>
-            <command>       strings.add(arg7);</command>
-            <command>       strings.add(arg8);</command>
-            <command>       strings.add(arg9);</command>
-            <command>       strings.add(arg10);</command>
-            <command>       strings.add(arg11);</command>
-            <command>    }</command>
-            <command>    void addVector0(){}</command>
-            <command>    void addVector1(vector arg0 = cOriginVector){</command>
-            <command>       vectors.add(arg0);</command>
-            <command>    }</command>
-            <command>    void addVector2(vector arg0 = cOriginVector, vector arg1 = cOriginVector){</command>
-            <command>       vectors.add(arg0);</command>
-            <command>       vectors.add(arg1);</command>
-            <command>    }</command>
-            <command>    void addVector3(vector arg0 = cOriginVector, vector arg1 = cOriginVector, vector arg2 = cOriginVector){</command>
-            <command>       vectors.add(arg0);</command>
-            <command>       vectors.add(arg1);</command>
-            <command>       vectors.add(arg2);</command>
-            <command>    }</command>
-            <command>    void addVector4(vector arg0 = cOriginVector, vector arg1 = cOriginVector, vector arg2 = cOriginVector, vector arg3 = cOriginVector){</command>
-            <command>       vectors.add(arg0);</command>
-            <command>       vectors.add(arg1);</command>
-            <command>       vectors.add(arg2);</command>
-            <command>       vectors.add(arg3);</command>
-            <command>    }</command>
-            <command>    void addVector5(vector arg0 = cOriginVector, vector arg1 = cOriginVector, vector arg2 = cOriginVector, vector arg3 = cOriginVector, vector arg4 = cOriginVector){</command>
-            <command>       vectors.add(arg0);</command>
-            <command>       vectors.add(arg1);</command>
-            <command>       vectors.add(arg2);</command>
-            <command>       vectors.add(arg3);</command>
-            <command>       vectors.add(arg4);</command>
-            <command>    }</command>
-            <command>    void addVector6(vector arg0 = cOriginVector, vector arg1 = cOriginVector, vector arg2 = cOriginVector, vector arg3 = cOriginVector, vector arg4 = cOriginVector, vector arg5 = cOriginVector){</command>
-            <command>       vectors.add(arg0);</command>
-            <command>       vectors.add(arg1);</command>
-            <command>       vectors.add(arg2);</command>
-            <command>       vectors.add(arg3);</command>
-            <command>       vectors.add(arg4);</command>
-            <command>       vectors.add(arg5);</command>
-            <command>    }</command>
-            <command>    void addVector7(vector arg0 = cOriginVector, vector arg1 = cOriginVector, vector arg2 = cOriginVector, vector arg3 = cOriginVector, vector arg4 = cOriginVector, vector arg5 = cOriginVector, vector arg6 = cOriginVector){</command>
-            <command>       vectors.add(arg0);</command>
-            <command>       vectors.add(arg1);</command>
-            <command>       vectors.add(arg2);</command>
-            <command>       vectors.add(arg3);</command>
-            <command>       vectors.add(arg4);</command>
-            <command>       vectors.add(arg5);</command>
-            <command>       vectors.add(arg6);</command>
-            <command>    }</command>
-            <command>    void addVector8(vector arg0 = cOriginVector, vector arg1 = cOriginVector, vector arg2 = cOriginVector, vector arg3 = cOriginVector, vector arg4 = cOriginVector, vector arg5 = cOriginVector, vector arg6 = cOriginVector, </command>
-            <command>           vector arg7 = cOriginVector){</command>
-            <command>       vectors.add(arg0);</command>
-            <command>       vectors.add(arg1);</command>
-            <command>       vectors.add(arg2);</command>
-            <command>       vectors.add(arg3);</command>
-            <command>       vectors.add(arg4);</command>
-            <command>       vectors.add(arg5);</command>
-            <command>       vectors.add(arg6);</command>
-            <command>       vectors.add(arg7);</command>
-            <command>    }</command>
-            <command>    void addVector9(vector arg0 = cOriginVector, vector arg1 = cOriginVector, vector arg2 = cOriginVector, vector arg3 = cOriginVector, vector arg4 = cOriginVector, vector arg5 = cOriginVector, vector arg6 = cOriginVector, </command>
-            <command>           vector arg7 = cOriginVector, vector arg8 = cOriginVector){</command>
-            <command>       vectors.add(arg0);</command>
-            <command>       vectors.add(arg1);</command>
-            <command>       vectors.add(arg2);</command>
-            <command>       vectors.add(arg3);</command>
-            <command>       vectors.add(arg4);</command>
-            <command>       vectors.add(arg5);</command>
-            <command>       vectors.add(arg6);</command>
-            <command>       vectors.add(arg7);</command>
-            <command>       vectors.add(arg8);</command>
-            <command>    }</command>
-            <command>    void addVector10(vector arg0 = cOriginVector, vector arg1 = cOriginVector, vector arg2 = cOriginVector, vector arg3 = cOriginVector, vector arg4 = cOriginVector, vector arg5 = cOriginVector, vector arg6 = cOriginVector, </command>
-            <command>           vector arg7 = cOriginVector, vector arg8 = cOriginVector, vector arg9 = cOriginVector){</command>
-            <command>       vectors.add(arg0);</command>
-            <command>       vectors.add(arg1);</command>
-            <command>       vectors.add(arg2);</command>
-            <command>       vectors.add(arg3);</command>
-            <command>       vectors.add(arg4);</command>
-            <command>       vectors.add(arg5);</command>
-            <command>       vectors.add(arg6);</command>
-            <command>       vectors.add(arg7);</command>
-            <command>       vectors.add(arg8);</command>
-            <command>       vectors.add(arg9);</command>
-            <command>    }</command>
-            <command>    void addVector11(vector arg0 = cOriginVector, vector arg1 = cOriginVector, vector arg2 = cOriginVector, vector arg3 = cOriginVector, vector arg4 = cOriginVector, vector arg5 = cOriginVector, vector arg6 = cOriginVector, </command>
-            <command>           vector arg7 = cOriginVector, vector arg8 = cOriginVector, vector arg9 = cOriginVector, vector arg10 = cOriginVector){</command>
-            <command>       vectors.add(arg0);</command>
-            <command>       vectors.add(arg1);</command>
-            <command>       vectors.add(arg2);</command>
-            <command>       vectors.add(arg3);</command>
-            <command>       vectors.add(arg4);</command>
-            <command>       vectors.add(arg5);</command>
-            <command>       vectors.add(arg6);</command>
-            <command>       vectors.add(arg7);</command>
-            <command>       vectors.add(arg8);</command>
-            <command>       vectors.add(arg9);</command>
-            <command>       vectors.add(arg10);</command>
-            <command>    }</command>
-            <command>    void addVector12(vector arg0 = cOriginVector, vector arg1 = cOriginVector, vector arg2 = cOriginVector, vector arg3 = cOriginVector, vector arg4 = cOriginVector, vector arg5 = cOriginVector, vector arg6 = cOriginVector, </command>
-            <command>           vector arg7 = cOriginVector, vector arg8 = cOriginVector, vector arg9 = cOriginVector, vector arg10 = cOriginVector, vector arg11 = cOriginVector){</command>
-            <command>       vectors.add(arg0);</command>
-            <command>       vectors.add(arg1);</command>
-            <command>       vectors.add(arg2);</command>
-            <command>       vectors.add(arg3);</command>
-            <command>       vectors.add(arg4);</command>
-            <command>       vectors.add(arg5);</command>
-            <command>       vectors.add(arg6);</command>
-            <command>       vectors.add(arg7);</command>
-            <command>       vectors.add(arg8);</command>
-            <command>       vectors.add(arg9);</command>
-            <command>       vectors.add(arg10);</command>
-            <command>       vectors.add(arg11);</command>
-            <command>    }</command>
-            <command>};</command>
             <command></command>
             <command>class __Scheduler {</command>
             <command>    int count = 0;</command>
@@ -1885,6 +2006,198 @@
             <command>        count++;</command>
             <command>    }</command>
             <command>};</command>
+            <command></command>
+            <command>class __UnitSet {</command>
+            <command>   int count = 0;</command>
+            <command>   int trimThreshold = 10;</command>
+            <command>   int[] unitArray = default;</command>
+            <command>   void add(int unitId = -1){</command>
+            <command>       trimThreshold--;</command>
+            <command>       if(trimThreshold &lt;= 0){</command>
+            <command>           for(int i = count - 1; i &gt;= 0; i--){</command>
+            <command>               if(kbUnitGetProtoUnitID(unitId) &lt; 0){</command>
+            <command>                   count--;</command>
+            <command>                   unitArray[i] = unitArray[count];</command>
+            <command>               }</command>
+            <command>           }</command>
+            <command>           trimThreshold = 10;</command>
+            <command>           if(count &gt; trimThreshold){</command>
+            <command>               trimThreshold = count;</command>
+            <command>           }</command>
+            <command>       }</command>
+            <command>       if(count &lt; unitArray.size()){</command>
+            <command>           unitArray[count] = unitId;</command>
+            <command>       } else {</command>
+            <command>           unitArray.add(unitId);</command>
+            <command>       }</command>
+            <command>       count++;</command>
+            <command>   }</command>
+            <command>   void process(bool(int) handler = [](int unitId = -1) -&gt; bool {return false;}){</command>
+            <command>       for(int i = count - 1; i &gt;= 0; i--){</command>
+            <command>           bool shouldRemove = false;</command>
+            <command>           int unitId = unitArray[i];</command>
+            <command>           if(kbUnitGetProtoUnitID(unitId) &lt; 0){</command>
+            <command>               shouldRemove = true;</command>
+            <command>           } else {</command>
+            <command>               shouldRemove = handler(unitId);</command>
+            <command>           }</command>
+            <command>           if(shouldRemove){</command>
+            <command>               count--;</command>
+            <command>               unitArray[i] = unitArray[count];</command>
+            <command>           }</command>
+            <command>       }</command>
+            <command>   }</command>
+            <command>   void processParameters(ref __Parameters outerParameters, bool(int, ref __Parameters) handler = [](int unitId = -1, ref __Parameters outerParameters) -&gt; bool {return false;}){</command>
+            <command>       for(int i = count - 1; i &gt;= 0; i--){</command>
+            <command>           bool shouldRemove = false;</command>
+            <command>           int unitId = unitArray[i];</command>
+            <command>           if(kbUnitGetProtoUnitID(unitId) &lt; 0){</command>
+            <command>               shouldRemove = true;</command>
+            <command>           } else {</command>
+            <command>               shouldRemove = handler(unitId, outerParameters);</command>
+            <command>           }</command>
+            <command>           if(shouldRemove){</command>
+            <command>               count--;</command>
+            <command>               unitArray[i] = unitArray[count];</command>
+            <command>           }</command>
+            <command>       }</command>
+            <command>   }</command>
+            <command>};</command>
+            <command>class __UnitSetGroup {</command>
+            <command>   __UnitSet[] unitSetArray = default;</command>
+            <command>   string[] unitSetNameArray = default;</command>
+            <command>   void add(string name = "", int unitId = -1){</command>
+            <command>       int index = unitSetNameArray.find(name);</command>
+            <command>       if(index &lt; 0){</command>
+            <command>           index = unitSetNameArray.size();</command>
+            <command>           __UnitSet unitSet;</command>
+            <command>           unitSetArray.add(unitSet);</command>
+            <command>           unitSetNameArray.add(name);</command>
+            <command>       }</command>
+            <command>       __UnitSet unitSet = unitSetArray[index];</command>
+            <command>       unitSet.add(unitId);</command>
+            <command>       unitSetArray[index] = unitSet;</command>
+            <command>   }</command>
+            <command>   void process(string name = "", bool(int) handler = [](int unitId = -1) -&gt; bool {return false;}){</command>
+            <command>       int index = unitSetNameArray.find(name);</command>
+            <command>       if(index &lt; 0){</command>
+            <command>           return;</command>
+            <command>       }</command>
+            <command>       __UnitSet unitSet = unitSetArray[index];</command>
+            <command>       unitSet.process(handler);</command>
+            <command>       unitSetArray[index] = unitSet;</command>
+            <command>   }</command>
+            <command>   void processParameters(string name = "", ref __Parameters outerParameters, bool(int, ref __Parameters) handler = [](int unitId = -1, ref __Parameters outerParameters) -&gt; bool {return false;}){</command>
+            <command>       int index = unitSetNameArray.find(name);</command>
+            <command>       if(index &lt; 0){</command>
+            <command>           return;</command>
+            <command>       }</command>
+            <command>       __UnitSet unitSet = unitSetArray[index];</command>
+            <command>       unitSet.processParameters(outerParameters, handler);</command>
+            <command>       unitSetArray[index] = unitSet;</command>
+            <command>   }</command>
+            <command>};</command>
+            <command>__UnitSetGroup __unitSetGroup;</command>
+            <command></command>
+            <command>class __UnitSetParameters {</command>
+            <command>   int count = 0;</command>
+            <command>   int trimThreshold = 10;</command>
+            <command>   int[] unitArray = default;</command>
+            <command>   __Parameters[] dataArray = default;</command>
+            <command>   void add(int unitId = -1, ref __Parameters parameters){</command>
+            <command>       trimThreshold--;</command>
+            <command>       if(trimThreshold &lt;= 0){</command>
+            <command>           for(int i = count - 1; i &gt;= 0; i--){</command>
+            <command>               if(kbUnitGetProtoUnitID(unitId) &lt; 0){</command>
+            <command>                   count--;</command>
+            <command>                   unitArray[i] = unitArray[count];</command>
+            <command>                   dataArray[i] = dataArray[count];</command>
+            <command>               }</command>
+            <command>           }</command>
+            <command>           trimThreshold = 10;</command>
+            <command>           if(count &gt; trimThreshold){</command>
+            <command>               trimThreshold = count;</command>
+            <command>           }</command>
+            <command>       }</command>
+            <command>       if(count &lt; unitArray.size()){</command>
+            <command>           unitArray[count] = unitId;</command>
+            <command>           dataArray[count] = parameters;</command>
+            <command>       } else {</command>
+            <command>           unitArray.add(unitId);</command>
+            <command>           dataArray.add(parameters);</command>
+            <command>       }</command>
+            <command>       count++;</command>
+            <command>   }</command>
+            <command>   void process(bool(int, ref __Parameters) handler = [](int unitId = -1, ref __Parameters parameters) -&gt; bool {return false;}){</command>
+            <command>       for(int i = count - 1; i &gt;= 0; i--){</command>
+            <command>           bool shouldRemove = false;</command>
+            <command>           int unitId = unitArray[i];</command>
+            <command>           if(kbUnitGetProtoUnitID(unitId) &lt; 0){</command>
+            <command>               shouldRemove = true;</command>
+            <command>           } else {</command>
+            <command>               __Parameters parameters = dataArray[i];</command>
+            <command>               shouldRemove = handler(unitId, parameters);</command>
+            <command>           }</command>
+            <command>           if(shouldRemove){</command>
+            <command>               count--;</command>
+            <command>               unitArray[i] = unitArray[count];</command>
+            <command>               dataArray[i] = dataArray[count];</command>
+            <command>           }</command>
+            <command>       }</command>
+            <command>   }</command>
+            <command>   void processParameters(ref __Parameters outerParameters,bool(int, ref __Parameters, ref __Parameters) handler = [](int unitId = -1, ref __Parameters parameters, ref __Parameters outerParameters) -&gt; bool {return false;}){</command>
+            <command>       for(int i = count - 1; i &gt;= 0; i--){</command>
+            <command>           bool shouldRemove = false;</command>
+            <command>           int unitId = unitArray[i];</command>
+            <command>           if(kbUnitGetProtoUnitID(unitId) &lt; 0){</command>
+            <command>               shouldRemove = true;</command>
+            <command>           } else {</command>
+            <command>               __Parameters parameters = dataArray[i];</command>
+            <command>               shouldRemove = handler(unitId, parameters, outerParameters);</command>
+            <command>           }</command>
+            <command>           if(shouldRemove){</command>
+            <command>               count--;</command>
+            <command>               unitArray[i] = unitArray[count];</command>
+            <command>               dataArray[i] = dataArray[count];</command>
+            <command>           }</command>
+            <command>       }</command>
+            <command>   }</command>
+            <command>};</command>
+            <command>class __UnitSetGroupParameters {</command>
+            <command>   __UnitSetParameters[] unitSetArray = default;</command>
+            <command>   string[] unitSetNameArray = default;</command>
+            <command>   void add(string name = "", int unitId = -1, ref __Parameters parameters){</command>
+            <command>       int index = unitSetNameArray.find(name);</command>
+            <command>       if(index &lt; 0){</command>
+            <command>           index = unitSetNameArray.size();</command>
+            <command>           __UnitSetParameters unitSet;</command>
+            <command>           unitSetArray.add(unitSet);</command>
+            <command>           unitSetNameArray.add(name);</command>
+            <command>       }</command>
+            <command>       __UnitSetParameters unitSet = unitSetArray[index];</command>
+            <command>       unitSet.add(unitId, parameters);</command>
+            <command>       unitSetArray[index] = unitSet;</command>
+            <command>   }</command>
+            <command>   void process(string name = "", bool(int, ref __Parameters) handler = [](int unitId = -1, ref __Parameters parameters) -&gt; bool {return false;}){</command>
+            <command>       int index = unitSetNameArray.find(name);</command>
+            <command>       if(index &lt; 0){</command>
+            <command>           return;</command>
+            <command>       }</command>
+            <command>       __UnitSetParameters unitSet = unitSetArray[index];</command>
+            <command>       unitSet.process(handler);</command>
+            <command>       unitSetArray[index] = unitSet;</command>
+            <command>   }</command>
+            <command>   void processParameters(string name = "", ref __Parameters outerParameters, bool(int, ref __Parameters, ref __Parameters) handler = [](int unitId = -1, ref __Parameters parameters, ref __Parameters outerParameters) -&gt; bool {return false;}){</command>
+            <command>       int index = unitSetNameArray.find(name);</command>
+            <command>       if(index &lt; 0){</command>
+            <command>           return;</command>
+            <command>       }</command>
+            <command>       __UnitSetParameters unitSet = unitSetArray[index];</command>
+            <command>       unitSet.processParameters(outerParameters, handler);</command>
+            <command>       unitSetArray[index] = unitSet;</command>
+            <command>   }</command>
+            <command>};</command>
+            <command>__UnitSetGroupParameters __unitSetGroupParameters;</command>
             <command></command>
             <command>class __Attach {</command>
             <command>    int count = 0;</command>
@@ -2317,6 +2630,7 @@
             <command>__HashStorageWithFloat __storageWithFloat;</command>
             <command>__HashStorageWithString __storageWithString;</command>
             <command>__HashStorageWithVector __storageWithVector;</command>
+            <command>__HashStorageWithParameters __storageWithParameters;</command>
             <command></command>
             <command>int __queryIncrement = 0;</command>
             <command>int[] __queryTempResults = default;</command>
@@ -2616,6 +2930,24 @@
             <command>}</command>
             <command>vector ntlStoragePlayerRemoveVector(string name = "", int p = 0, vector defaultValue = cOriginVector){</command>
             <command>   return __storageWithVector.remove("__"+p+"__"+name, defaultValue);</command>
+            <command>}</command>
+            <command>void ntlStorageSetParameters(string name = "", ref __Parameters value){</command>
+            <command>   __storageWithParameters.put(name, value);</command>
+            <command>}</command>
+            <command>__Parameters ntlStorageGetParameters(string name = ""){</command>
+            <command>   return __storageWithParameters.get(name);</command>
+            <command>}</command>
+            <command>__Parameters ntlStorageRemoveParameters(string name = ""){</command>
+            <command>   return __storageWithParameters.remove(name);</command>
+            <command>}</command>
+            <command>void ntlStoragePlayerSetParameters(string name = "", int p = 0, ref __Parameters value){</command>
+            <command>   __storageWithParameters.put("__"+p+"__"+name, value);</command>
+            <command>}</command>
+            <command>__Parameters ntlStoragePlayerGetParameters(string name = "", int p = 0){</command>
+            <command>   return __storageWithParameters.get("__"+p+"__"+name);</command>
+            <command>}</command>
+            <command>__Parameters ntlStoragePlayerRemoveParameters(string name = "", int p = 0){</command>
+            <command>   return __storageWithParameters.remove("__"+p+"__"+name);</command>
             <command>}</command>
             <command></command>
             <command>rule __Trigger__Loader__Nottud__Process</command>
@@ -3029,25 +3361,70 @@
             <param name="Value" dispname="Value" vartype="stringid">false</param>
             <command>/**/%Name%.bools.add(%Value%);</command>
         </effect>
+        <effect name="Parameters NTL: Set Bool">
+            <param name="Name" dispname="Name" vartype="stringid">parameters</param>
+            <param name="Index" dispname="Index" vartype="stringid">0</param>
+            <param name="Value" dispname="Value" vartype="stringid">false</param>
+            <command>if(%Name%.bools.size() &lt;= %Index%){</command>
+            <command>   /**/%Name%.bools.resize(%Index% + 1, false);</command>
+            <command>}</command>
+            <command>/**/%Name%.bools[%Index%] = %Value%;</command>
+        </effect>
         <effect name="Parameters NTL: Add Int">
             <param name="Name" dispname="Name" vartype="stringid">parameters</param>
             <param name="Value" dispname="Value" vartype="stringid">0</param>
             <command>/**/%Name%.ints.add(%Value%);</command>
+        </effect>
+        <effect name="Parameters NTL: Set Int">
+            <param name="Name" dispname="Name" vartype="stringid">parameters</param>
+            <param name="Index" dispname="Index" vartype="stringid">0</param>
+            <param name="Value" dispname="Value" vartype="stringid">0</param>
+            <command>if(%Name%.ints.size() &lt;= %Index%){</command>
+            <command>   /**/%Name%.ints.resize(%Index% + 1, 0);</command>
+            <command>}</command>
+            <command>/**/%Name%.ints[%Index%] = %Value%;</command>
         </effect>
         <effect name="Parameters NTL: Add Float">
             <param name="Name" dispname="Name" vartype="stringid">parameters</param>
             <param name="Value" dispname="Value" vartype="stringid">0.0</param>
             <command>/**/%Name%.floats.add(%Value%);</command>
         </effect>
+        <effect name="Parameters NTL: Set Float">
+            <param name="Name" dispname="Name" vartype="stringid">parameters</param>
+            <param name="Index" dispname="Index" vartype="stringid">0</param>
+            <param name="Value" dispname="Value" vartype="stringid">0.0</param>
+            <command>if(%Name%.floats.size() &lt;= %Index%){</command>
+            <command>   /**/%Name%.floats.resize(%Index% + 1, 0.0);</command>
+            <command>}</command>
+            <command>/**/%Name%.floats[%Index%] = %Value%;</command>
+        </effect>
         <effect name="Parameters NTL: Add String">
             <param name="Name" dispname="Name" vartype="stringid">parameters</param>
             <param name="Value" dispname="Value" vartype="stringid">""</param>
             <command>/**/%Name%.strings.add(%Value%);</command>
         </effect>
+        <effect name="Parameters NTL: Set String">
+            <param name="Name" dispname="Name" vartype="stringid">parameters</param>
+            <param name="Index" dispname="Index" vartype="stringid">0</param>
+            <param name="Value" dispname="Value" vartype="stringid">""</param>
+            <command>if(%Name%.strings.size() &lt;= %Index%){</command>
+            <command>   /**/%Name%.strings.resize(%Index% + 1, "");</command>
+            <command>}</command>
+            <command>/**/%Name%.strings[%Index%] = %Value%;</command>
+        </effect>
         <effect name="Parameters NTL: Add Vector">
             <param name="Name" dispname="Name" vartype="stringid">parameters</param>
             <param name="Value" dispname="Value" vartype="stringid">vector(0.0, 0.0, 0.0)</param>
             <command>/**/%Name%.vectors.add(%Value%);</command>
+        </effect>
+        <effect name="Parameters NTL: Set Vector">
+            <param name="Name" dispname="Name" vartype="stringid">parameters</param>
+            <param name="Index" dispname="Index" vartype="stringid">0</param>
+            <param name="Value" dispname="Value" vartype="stringid">vector(0.0, 0.0, 0.0)</param>
+            <command>if(%Name%.vectors.size() &lt;= %Index%){</command>
+            <command>   /**/%Name%.vectors.resize(%Index% + 1, vector(0.0, 0.0, 0.0));</command>
+            <command>}</command>
+            <command>/**/%Name%.vectors[%Index%] = %Value%;</command>
         </effect>
         <effect name="Parameters NTL: Add Nonempty Ints">
             <param name="Name" dispname="Name" vartype="stringid">parameters</param>
@@ -3284,11 +3661,16 @@
         </effect>
         <effect name="Parameters NTL: Clear">
             <param name="Name" dispname="Name" vartype="stringid">parameters</param>
-            <command>/**/%Name%.bools.clear();</command>
-            <command>/**/%Name%.ints.clear();</command>
-            <command>/**/%Name%.floats.clear();</command>
-            <command>/**/%Name%.strings.clear();</command>
-            <command>/**/%Name%.vectors.clear();</command>
+            <param name="Bools" dispname="Include Bools" vartype="bool" donotrelax="">true</param>
+            <param name="Ints" dispname="Include Ints" vartype="bool" donotrelax="">true</param>
+            <param name="Floats" dispname="Include Floats" vartype="bool" donotrelax="">true</param>
+            <param name="Strings" dispname="Include Strings" vartype="bool" donotrelax="">true</param>
+            <param name="Vectors" dispname="Include Vectors" vartype="bool" donotrelax="">true</param>
+            <command>if(%Bools%)%Name%.bools.clear();</command>
+            <command>if(%Ints%)%Name%.ints.clear();</command>
+            <command>if(%Floats%)%Name%.floats.clear();</command>
+            <command>if(%Strings%)%Name%.strings.clear();</command>
+            <command>if(%Vectors%)%Name%.vectors.clear();</command>
         </effect>
         <effect name="Parameters NTL: Remove Bool By Index">
             <param name="Name" dispname="Name" vartype="stringid">parameters</param>
@@ -3616,6 +3998,179 @@
             <command>   int[] __unitGroupSelectionArray = __getSelectionArray();</command>
             <command>   for(int __unitGroupSelectionIndex = 0; __unitGroupSelectionIndex &lt; __unitGroupSelectionArray.size(); __unitGroupSelectionIndex++){</command>
             <command>       /**/%Name%.add(__unitGroupSelectionArray[__unitGroupSelectionIndex]);</command>
+            <command>   }</command>
+            <command>}</command>
+        </effect>
+        <effect name="Unit Set NTL: Process Start -> {">
+            <param name="Name" dispname="Name" vartype="stringid">unitSet</param>
+            <param name="UnitVariable" dispname="Unit Variable" vartype="stringid">unitId</param>
+            <param name="ShouldRemove" dispname="Should Remove" vartype="bool">false</param>
+            <command>__unitSetGroup.process("%Name%", [](int %UnitVariable% = 0) -&gt; bool {</command>
+            <command>    bool __unitSetShouldRemove = %ShouldRemove%;</command>
+        </effect>
+        <effect name="Unit Set NTL: Process Start Parameters -> {">
+            <param name="Name" dispname="Name" vartype="stringid">unitSet</param>
+            <param name="UnitVariable" dispname="Unit Variable" vartype="stringid">unitId</param>
+            <param name="ShouldRemove" dispname="Should Remove" vartype="bool">false</param>
+            <param name="Parameters" dispname="Parameters" vartype="stringid">parameters</param>
+            <command>__unitSetGroup.processParameters("%Name%", %Parameters%, [](int %UnitVariable% = 0, ref __Parameters %Parameters%) -&gt; bool {</command>
+            <command>    bool __unitSetShouldRemove = %ShouldRemove%;</command>
+        </effect>
+        <effect name="Unit Set NTL: Set Should Remove">
+            <param name="ShouldRemove" dispname="Should Remove" vartype="bool">true</param>
+            <command>__unitSetShouldRemove = %ShouldRemove%;</command>
+        </effect>
+        <effect name="Unit Set NTL: Process End }">
+            <command>    return __unitSetShouldRemove;</command>
+            <command>});</command>
+        </effect>
+        <effect name="Unit Set NTL: Add">
+            <param name="Name" dispname="Name" vartype="stringid">unitSet</param>
+            <param name="SrcObject" dispname="Source Units" vartype="unit">-1</param>
+            <command>{</command>
+            <command>   trUnitSelectClear();</command>
+            <command loop="" loopparm="SrcObject">trUnitSelectByID(%SrcObject%);</command>
+            <command>   int[] __unitSetSelectionArray = __getSelectionArray();</command>
+            <command>   for(int __unitSetSelectionIndex = 0; __unitSetSelectionIndex &lt; __unitSetSelectionArray.size(); __unitSetSelectionIndex++){</command>
+            <command>      __unitSetGroup.add("%Name%", __unitSetSelectionArray[__unitSetSelectionIndex]);</command>
+            <command>   }</command>
+            <command>}</command>
+        </effect>
+        <effect name="Unit Set Data Parameters NTL: Process Start -> {">
+            <param name="Name" dispname="Name" vartype="stringid">unitSet</param>
+            <param name="UnitVariable" dispname="Unit Variable" vartype="stringid">unitId</param>
+            <param name="DataParameters" dispname="DataParameters" vartype="stringid">dataParameters</param>
+            <param name="ShouldRemove" dispname="Should Remove" vartype="bool">false</param>
+            <command>__unitSetGroupParameters.process("%Name%", [](int %UnitVariable% = 0, ref __Parameters %DataParameters%) -&gt; bool {</command>
+            <command>    bool __unitSetShouldRemove = %ShouldRemove%;</command>
+        </effect>
+        <effect name="Unit Set Data Parameters NTL: Process Start Parameters -> {">
+            <param name="Name" dispname="Name" vartype="stringid">unitSet</param>
+            <param name="UnitVariable" dispname="Unit Variable" vartype="stringid">unitId</param>
+            <param name="DataParameters" dispname="DataParameters" vartype="stringid">dataParameters</param>
+            <param name="ShouldRemove" dispname="Should Remove" vartype="bool">false</param>
+            <param name="Parameters" dispname="Parameters" vartype="stringid">parameters</param>
+            <command>__unitSetGroupParameters.processParameters("%Name%", %Parameters%, [](int %UnitVariable% = 0, ref __Parameters %DataParameters%, ref __Parameters %Parameters%) -&gt; bool {</command>
+            <command>    bool __unitSetShouldRemove = %ShouldRemove%;</command>
+        </effect>
+        <effect name="Unit Set Data Parameters NTL: Set Should Remove">
+            <param name="ShouldRemove" dispname="Should Remove" vartype="bool">true</param>
+            <command>__unitSetGroupParameters = %ShouldRemove%;</command>
+        </effect>
+        <effect name="Unit Set Data Parameters NTL: Process End }">
+            <command>    return __unitSetShouldRemove;</command>
+            <command>});</command>
+        </effect>
+        <effect name="Unit Set Data Parameters NTL: Add Parameters">
+            <param name="Name" dispname="Name" vartype="stringid">unitSet</param>
+            <param name="SrcObject" dispname="Source Units" vartype="unit">-1</param>
+            <param name="DataParameters" dispname="DataParameters" vartype="stringid">dataParameters</param>
+            <command>{</command>
+            <command>   trUnitSelectClear();</command>
+            <command loop="" loopparm="SrcObject">trUnitSelectByID(%SrcObject%);</command>
+            <command>   int[] __unitSetSelectionArray = __getSelectionArray();</command>
+            <command>   for(int __unitSetSelectionIndex = 0; __unitSetSelectionIndex &lt; __unitSetSelectionArray.size(); __unitSetSelectionIndex++){</command>
+            <command>      __unitSetGroupParameters.add("%Name%", __unitSetSelectionArray[__unitSetSelectionIndex], %DataParameters%);</command>
+            <command>   }</command>
+            <command>}</command>
+        </effect>
+        <effect name="Unit Set Data Parameters NTL: Add With Bool">
+            <param name="Name" dispname="Name" vartype="stringid">unitSet</param>
+            <param name="SrcObject" dispname="Source Units" vartype="unit">-1</param>
+            <param name="Value" dispname="Value" vartype="stringid">false</param>
+            <command>{</command>
+            <command>   trUnitSelectClear();</command>
+            <command loop="" loopparm="SrcObject">trUnitSelectByID(%SrcObject%);</command>
+            <command>   int[] __unitSetSelectionArray = __getSelectionArray();</command>
+            <command>   for(int __unitSetSelectionIndex = 0; __unitSetSelectionIndex &lt; __unitSetSelectionArray.size(); __unitSetSelectionIndex++){</command>
+            <command>      __Parameters __unitSetDataParameters;</command>
+            <command>      __unitSetDataParameters.bools.add(%Value%);</command>
+            <command>      __unitSetGroupParameters.add("%Name%", __unitSetSelectionArray[__unitSetSelectionIndex], __unitSetDataParameters);</command>
+            <command>   }</command>
+            <command>}</command>
+        </effect>
+        <effect name="Unit Set Data Parameters NTL: Add With Int">
+            <param name="Name" dispname="Name" vartype="stringid">unitSet</param>
+            <param name="SrcObject" dispname="Source Units" vartype="unit">-1</param>
+            <param name="Value" dispname="Value" vartype="stringid">0</param>
+            <command>{</command>
+            <command>   trUnitSelectClear();</command>
+            <command loop="" loopparm="SrcObject">trUnitSelectByID(%SrcObject%);</command>
+            <command>   int[] __unitSetSelectionArray = __getSelectionArray();</command>
+            <command>   for(int __unitSetSelectionIndex = 0; __unitSetSelectionIndex &lt; __unitSetSelectionArray.size(); __unitSetSelectionIndex++){</command>
+            <command>      __Parameters __unitSetDataParameters;</command>
+            <command>      __unitSetDataParameters.ints.add(%Value%);</command>
+            <command>      __unitSetGroupParameters.add("%Name%", __unitSetSelectionArray[__unitSetSelectionIndex], __unitSetDataParameters);</command>
+            <command>   }</command>
+            <command>}</command>
+        </effect>
+        <effect name="Unit Set Data Parameters NTL: Add With Float">
+            <param name="Name" dispname="Name" vartype="stringid">unitSet</param>
+            <param name="SrcObject" dispname="Source Units" vartype="unit">-1</param>
+            <param name="Value" dispname="Value" vartype="stringid">0.0</param>
+            <command>{</command>
+            <command>   trUnitSelectClear();</command>
+            <command loop="" loopparm="SrcObject">trUnitSelectByID(%SrcObject%);</command>
+            <command>   int[] __unitSetSelectionArray = __getSelectionArray();</command>
+            <command>   for(int __unitSetSelectionIndex = 0; __unitSetSelectionIndex &lt; __unitSetSelectionArray.size(); __unitSetSelectionIndex++){</command>
+            <command>      __Parameters __unitSetDataParameters;</command>
+            <command>      __unitSetDataParameters.floats.add(%Value%);</command>
+            <command>      __unitSetGroupParameters.add("%Name%", __unitSetSelectionArray[__unitSetSelectionIndex], __unitSetDataParameters);</command>
+            <command>   }</command>
+            <command>}</command>
+        </effect>
+        <effect name="Unit Set Data Parameters NTL: Add With String">
+            <param name="Name" dispname="Name" vartype="stringid">unitSet</param>
+            <param name="SrcObject" dispname="Source Units" vartype="unit">-1</param>
+            <param name="Value" dispname="Value" vartype="stringid">""</param>
+            <command>{</command>
+            <command>   trUnitSelectClear();</command>
+            <command loop="" loopparm="SrcObject">trUnitSelectByID(%SrcObject%);</command>
+            <command>   int[] __unitSetSelectionArray = __getSelectionArray();</command>
+            <command>   for(int __unitSetSelectionIndex = 0; __unitSetSelectionIndex &lt; __unitSetSelectionArray.size(); __unitSetSelectionIndex++){</command>
+            <command>      __Parameters __unitSetDataParameters;</command>
+            <command>      __unitSetDataParameters.strings.add(%Value%);</command>
+            <command>      __unitSetGroupParameters.add("%Name%", __unitSetSelectionArray[__unitSetSelectionIndex], __unitSetDataParameters);</command>
+            <command>   }</command>
+            <command>}</command>
+        </effect>
+        <effect name="Unit Set Data Parameters NTL: Add With Vector">
+            <param name="Name" dispname="Name" vartype="stringid">unitSet</param>
+            <param name="SrcObject" dispname="Source Units" vartype="unit">-1</param>
+            <param name="Value" dispname="Value" vartype="stringid">vector(0.0, 0.0, 0.0)</param>
+            <command>{</command>
+            <command>   trUnitSelectClear();</command>
+            <command loop="" loopparm="SrcObject">trUnitSelectByID(%SrcObject%);</command>
+            <command>   int[] __unitSetSelectionArray = __getSelectionArray();</command>
+            <command>   for(int __unitSetSelectionIndex = 0; __unitSetSelectionIndex &lt; __unitSetSelectionArray.size(); __unitSetSelectionIndex++){</command>
+            <command>      __Parameters __unitSetDataParameters;</command>
+            <command>      __unitSetDataParameters.vectors.add(%Value%);</command>
+            <command>      __unitSetGroupParameters.add("%Name%", __unitSetSelectionArray[__unitSetSelectionIndex], __unitSetDataParameters);</command>
+            <command>   }</command>
+            <command>}</command>
+        </effect>
+        <effect name="Unit Set Data Parameters NTL: Add Advanced">
+            <param name="Name" dispname="Name" vartype="stringid">unitSet</param>
+            <param name="SrcObject" dispname="Source Units" vartype="unit">-1</param>
+            <param name="IntCount" dispname="Int Count" vartype="player" donotrelax="">0</param>
+            <param name="Ints" dispname="Ints" vartype="stringid"></param>
+            <param name="FloatCount" dispname="Float Count" vartype="player" donotrelax="">0</param>
+            <param name="Floats" dispname="Floats" vartype="stringid"></param>
+            <param name="StringCount" dispname="String Count" vartype="player" donotrelax="">0</param>
+            <param name="Strings" dispname="Strings" vartype="stringid"></param>
+            <param name="VectorCount" dispname="Vector Count" vartype="player" donotrelax="">0</param>
+            <param name="Vectors" dispname="Vectors" vartype="stringid"></param>
+            <command>{</command>
+            <command>   trUnitSelectClear();</command>
+            <command loop="" loopparm="SrcObject">trUnitSelectByID(%SrcObject%);</command>
+            <command>   int[] __unitSetSelectionArray = __getSelectionArray();</command>
+            <command>   for(int __unitSetSelectionIndex = 0; __unitSetSelectionIndex &lt; __unitSetSelectionArray.size(); __unitSetSelectionIndex++){</command>
+            <command>      __Parameters __unitSetDataParameters;</command>
+            <command>      __unitSetDataParameters.addInt%IntCount%(%Ints%);</command>
+            <command>      __unitSetDataParameters.addFloat%FloatCount%(%Floats%);</command>
+            <command>      __unitSetDataParameters.addString%StringCount%(%Strings%);</command>
+            <command>      __unitSetDataParameters.addVector%VectorCount%(%Vectors%);</command>
+            <command>      __unitSetGroupParameters.add("%Name%", __unitSetSelectionArray[__unitSetSelectionIndex], __unitSetDataParameters);</command>
             <command>   }</command>
             <command>}</command>
         </effect>
@@ -3987,7 +4542,7 @@
             <command>__Parameters %ReturnParameters%;</command>
             <command>{</command>
             <command>   __Parameters __eventsFireParameters;</command>
-            <command>   %ReturnParameters% = __eventHandlerStoreWithReturn.fire("%Name%", __eventsFireParameters);</command>
+            <command>   /**/%ReturnParameters% = __eventHandlerStoreWithReturn.fire("%Name%", __eventsFireParameters);</command>
             <command>}</command>
         </effect>
         <effect name="Events NTL: Fire Empty Return Set">
@@ -4495,6 +5050,70 @@
             <param name="Name" dispname="Name" vartype="stringid"></param>
             <param name="Player" dispname="Player" vartype="stringid">1</param>
             <command>__storageWithVector.remove("__"+%Player%+"__%Name%");</command>
+        </effect>
+        <effect name="Storage NTL: Set Parameters">
+            <param name="Name" dispname="Name" vartype="stringid"></param>
+            <param name="Value" dispname="Value" vartype="stringid">parameters</param>
+            <command>__storageWithParameters.put("%Name%", %Value%);</command>
+        </effect>
+        <effect name="Storage NTL: Player Set Parameters">
+            <param name="Name" dispname="Name" vartype="stringid"></param>
+            <param name="Player" dispname="Player" vartype="stringid">1</param>
+            <param name="Value" dispname="Value" vartype="stringid">parameters</param>
+            <command>__storageWithParameters.put("__"+%Player%+"__%Name%", %Value%);</command>
+        </effect>
+        <effect name="Storage NTL: Get Parameters Declared">
+            <param name="Name" dispname="Name" vartype="stringid"></param>
+            <param name="Variable" dispname="Variable" vartype="stringid">parameters</param>
+            <param name="Remove" dispname="Remove" vartype="bool" donotrelax="">false</param>
+            <command>__Parameters %Variable%;</command>
+            <command>if(%Remove%){</command>
+            <command>   /**/%Variable% = __storageWithParameters.remove("%Name%");</command>
+            <command>} else {</command>
+            <command>   /**/%Variable% = __storageWithParameters.get("%Name%");</command>
+            <command>}</command>
+        </effect>
+        <effect name="Storage NTL: Player Get Parameters Declared">
+            <param name="Name" dispname="Name" vartype="stringid"></param>
+            <param name="Player" dispname="Player" vartype="stringid">1</param>
+            <param name="Variable" dispname="Variable" vartype="stringid">parameters</param>
+            <param name="Remove" dispname="Remove" vartype="bool" donotrelax="">false</param>
+            <command>__Parameters %Variable%;</command>
+            <command>if(%Remove%){</command>
+            <command>   /**/%Variable% = __storageWithParameters.remove("__"+%Player%+"__%Name%");</command>
+            <command>} else {</command>
+            <command>   /**/%Variable% = __storageWithParameters.get("__"+%Player%+"__%Name%");</command>
+            <command>}</command>
+        </effect>
+        <effect name="Storage NTL: Get Parameters Set">
+            <param name="Name" dispname="Name" vartype="stringid"></param>
+            <param name="Variable" dispname="Variable" vartype="stringid">parameters</param>
+            <param name="Remove" dispname="Remove" vartype="bool" donotrelax="">false</param>
+            <command>if(%Remove%){</command>
+            <command>   /**/%Variable% = __storageWithParameters.remove("%Name%");</command>
+            <command>} else {</command>
+            <command>   /**/%Variable% = __storageWithParameters.get("%Name%");</command>
+            <command>}</command>
+        </effect>
+        <effect name="Storage NTL: Player Get Parameters Set">
+            <param name="Name" dispname="Name" vartype="stringid"></param>
+            <param name="Player" dispname="Player" vartype="stringid">1</param>
+            <param name="Variable" dispname="Variable" vartype="stringid">parameters</param>
+            <param name="Remove" dispname="Remove" vartype="bool" donotrelax="">false</param>
+            <command>if(%Remove%){</command>
+            <command>   /**/%Variable% = __storageWithParameters.remove("__"+%Player%+"__%Name%");</command>
+            <command>} else {</command>
+            <command>   /**/%Variable% = __storageWithParameters.get("__"+%Player%+"__%Name%");</command>
+            <command>}</command>
+        </effect>
+        <effect name="Storage NTL: Remove Parameters">
+            <param name="Name" dispname="Name" vartype="stringid"></param>
+            <command>__storageWithParameters.remove("%Name%");</command>
+        </effect>
+        <effect name="Storage NTL: Player Remove Parameters">
+            <param name="Name" dispname="Name" vartype="stringid"></param>
+            <param name="Player" dispname="Player" vartype="stringid">1</param>
+            <command>__storageWithParameters.remove("__"+%Player%+"__%Name%");</command>
         </effect>
         <effect name="Scope: Start {">
             <command>{</command>

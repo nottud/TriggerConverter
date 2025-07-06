@@ -3027,8 +3027,8 @@
             <command>            deletableFlagsToRevert.clear();</command>
             <command>            if (normaliseCamera){</command>
             <command>               if (trCurrentPlayer() == p){</command>
-            <command>                   __cameraTrack.create(lookAtForCamera, __UI_SYSTEM_LOOK_DISTANCE, 45.0, 90.0, 45.0);</command>
-            <command>                   __cameraTrack.addWaypoint(1, lookAtForCamera, __UI_SYSTEM_LOOK_DISTANCE, 45.0, 90.0, 45.0);</command>
+            <command>                   __cameraTrack.create(lookAtForCamera, __UI_SYSTEM_LOOK_DISTANCE, 45.0, 90.0, 40.0);</command>
+            <command>                   __cameraTrack.addWaypoint(1, lookAtForCamera, __UI_SYSTEM_LOOK_DISTANCE, 45.0, 90.0, 40.0);</command>
             <command>                   __cameraTrack.play(-1, true, 0);</command>
             <command>               }</command>
             <command>            }</command>
@@ -3196,6 +3196,548 @@
             <command>    });</command>
             <command>}</command>
             <command></command>
+            <command>const string __ONSCREEN_UI_UNIT = "Crate";</command>
+            <command>const string __ONSCREEN_UI_UNIT2 = "CrateSmall";</command>
+            <command>const float __ONSCREEN_UI_SMALL_SCALE_MULTIPLIER = 1.355;</command>
+            <command>const float __ONSCREEN_UI_LOOK_DISTANCE = 57.3;</command>
+            <command>const float __ONSCREEN_UI_OFFSCREEN_Z = 1000.0;</command>
+            <command></command>
+            <command>int[] __onscreenUiRelicTechArray = default;</command>
+            <command>int __onscreenUiSystemContextPlayer = -1;</command>
+            <command></command>
+            <command>class __OnscreenUiEntry {</command>
+            <command>    string unitType = "";</command>
+            <command>    bool clickable = false;</command>
+            <command>    bool hoverable = false;</command>
+            <command>    float x = 0.0;</command>
+            <command>    float y = 0.0;</command>
+            <command>    float width = 0.0;</command>
+            <command>    float height = 0.0;</command>
+            <command>    string content = "";</command>
+            <command>    string rolloverName = "";</command>
+            <command>    string rolloverDescription = "";</command>
+            <command>    __Parameters parameters;</command>
+            <command>    void (int, ref __Parameters) handler = [](int pToUse = 1, ref __Parameters parametersToUse) -&gt; void {};</command>
+            <command>    int[] clickableUnitArray = default;</command>
+            <command>    int id = -1;</command>
+            <command>    int rolloverId = -1;</command>
+            <command>    void destroyUnits(int p = 1){</command>
+            <command>        for (int i = 0; i &lt; clickableUnitArray.size(); i++){</command>
+            <command>            trUnitSelectClear();</command>
+            <command>            trUnitSelectByID(clickableUnitArray[i]);</command>
+            <command>            trUnitDestroy();</command>
+            <command>        }</command>
+            <command>        clickableUnitArray.resize(0, -1);</command>
+            <command>    }</command>
+            <command>    void destroyPrompt(int p = 1, int page = 0){</command>
+            <command>        if (trCurrentPlayer() == p){</command>
+            <command>            trWorldSpacePromptHide("__OnscreenUiSystem" + id + "Page" + page);</command>
+            <command>        }</command>
+            <command>    }</command>
+            <command>    void show(int p = 1, vector lookAt = cOriginVector, vector xAxisDirection = cOriginVector, vector yAxisDirection = cOriginVector, float lookAtHeading = 0.0, float lookAtTilt = 0.0, </command>
+            <command>           int page = 0, bool fakeShow = false, bool debug = false, bool disableClick = false, vector cameraPosition = cOriginVector){</command>
+            <command>        if (fakeShow){</command>
+            <command>            if (trCurrentPlayer() == p &amp;&amp; content != ""){</command>
+            <command>                trWorldSpacePromptArea("__OnscreenUiSystem" + id + "Page" + page, lookAt + xAxisDirection * x + yAxisDirection * (y + __ONSCREEN_UI_OFFSCREEN_Z), content, cOriginVector);</command>
+            <command>            }</command>
+            <command>            return;</command>
+            <command>        }</command>
+            <command>        if (trCurrentPlayer() == p &amp;&amp; content != ""){</command>
+            <command>            vector promptLocation = lookAt + xAxisDirection * x + yAxisDirection * y;</command>;
+            <command>            vector directionVector = xsVectorNormalize(promptLocation - cameraPosition);</command>
+            <command>            trWorldSpacePromptArea("__OnscreenUiSystem" + id + "Page" + page, cameraPosition + directionVector * 100000000.0, content, cOriginVector);</command>
+            <command>        }</command>
+            <command>        if (hoverable){</command>
+            <command>            trTechHideEffects(__onscreenUiRelicTechArray[rolloverId], p, true);</command>
+            <command>            trTechSetStringID(__onscreenUiRelicTechArray[rolloverId], p, rolloverName + "&lt;color=0,0,0&gt;", cXSTechEffectDisplayName);</command>
+            <command>            trTechSetStringID(__onscreenUiRelicTechArray[rolloverId], p, "&lt;/color&gt;\n" + rolloverDescription, cXSTechEffectRollover);</command>
+            <command>        }</command>
+            <command>        if (clickable || hoverable){</command>
+            <command>            vector pos = lookAt + xAxisDirection * x + yAxisDirection * (y + height / 2.0);</command>
+            <command>            int unit = trUnitCreateForced(unitType, pos.x, pos.y, pos.z, 0, p);</command>
+            <command>            trUnitSelectClear();</command>
+            <command>            trUnitSelectByID(unit);</command>
+            <command>            if (!debug){</command>
+            <command>                trUnitChangeProtoUnit(unitType, false, true);</command>
+            <command>                trUnitSetShading(3, 1000.0);</command>
+            <command>            }</command>
+            <command>            if (hoverable){</command>
+            <command>                trUnitSetScale(__ONSCREEN_UI_SMALL_SCALE_MULTIPLIER * height, 0.001, __ONSCREEN_UI_SMALL_SCALE_MULTIPLIER * width);</command>
+            <command>            } else {</command>
+            <command>                trUnitSetScale(height, 0.001, width);</command>
+            <command>            }</command>
+            <command>            trUnitRotateZ(lookAtTilt - 90, true);</command>
+            <command>            trUnitRotateY(-lookAtHeading - 180, true);</command>
+            <command>            if (!clickable || disableClick){</command>
+            <command>                trUnitSetFlag(cUnitFlagIsUnbuilding, true);</command>
+            <command>            }</command>
+            <command>            trRelicForce(unit, hoverable ? kbTechGetName(__onscreenUiRelicTechArray[rolloverId]) : "");</command>
+            <command>            clickableUnitArray.add(unit);</command>
+            <command>        }</command>
+            <command>    }</command>
+            <command>    void refresh(int p = 1, vector lookAt = cOriginVector, vector xAxisDirection = cOriginVector, vector yAxisDirection = cOriginVector, float lookAtHeading = 0.0, float lookAtTilt = 0.0, </command>
+            <command>            bool debug = false, bool disableClick = false){</command>
+            <command>        for (int i = 0; i &lt; clickableUnitArray.size(); i++){</command>
+            <command>            trUnitSelectClear();</command>
+            <command>            trUnitSelectByID(clickableUnitArray[i]);</command>
+            <command>            trUnitDestroy();</command>
+            <command>        }</command>
+            <command>        clickableUnitArray.resize(0, -1);</command>
+            <command>        if (clickable || hoverable){</command>
+            <command>            vector pos = lookAt + xAxisDirection * x + yAxisDirection * (y + height / 2.0);</command>
+            <command>            int unit = trUnitCreateForced(unitType, pos.x, pos.y, pos.z, 0, p);</command>
+            <command>            trUnitSelectClear();</command>
+            <command>            trUnitSelectByID(unit);</command>
+            <command>            if (!debug){</command>
+            <command>                trUnitChangeProtoUnit(unitType, false, true);</command>
+            <command>                trUnitSetShading(3, 1000.0);</command>
+            <command>            }</command>
+            <command>            if (hoverable){</command>
+            <command>                trUnitSetScale(__ONSCREEN_UI_SMALL_SCALE_MULTIPLIER * height, 0.001, __ONSCREEN_UI_SMALL_SCALE_MULTIPLIER * width);</command>
+            <command>            } else {</command>
+            <command>                trUnitSetScale(height, 0.001, width);</command>
+            <command>            }</command>
+            <command>            trUnitRotateZ(lookAtTilt - 90, true);</command>
+            <command>            trUnitRotateY(-lookAtHeading - 180, true);</command>
+            <command>            if (!clickable || disableClick){</command>
+            <command>                trUnitSetFlag(cUnitFlagIsUnbuilding, true);</command>
+            <command>            }</command>
+            <command>            trRelicForce(unit, hoverable ? kbTechGetName(__onscreenUiRelicTechArray[rolloverId]) : "");</command>
+            <command>            clickableUnitArray.add(unit);</command>
+            <command>        }</command>
+            <command>    }</command>
+            <command>};</command>
+            <command></command>
+            <command>__OnscreenUiEntry __DUMMY_ONSCREEN_UI_ENTRY;</command>
+            <command></command>
+            <command>class __OnscreenUiSystemPage {</command>
+            <command>    int page = 0;</command>
+            <command>    int realShow = -1;</command>
+            <command>    int delayDestroy = -1;</command>
+            <command>    __OnscreenUiEntry[] onscreenUiEntryArray = default;</command>
+            <command>    bool process(int p = 1, vector lookAt = cOriginVector, vector xAxisDirection = cOriginVector, vector yAxisDirection = cOriginVector, float lookAtHeading = 0.0, float lookAtTilt = 0.0, </command>
+            <command>            bool debug = false, bool disableClick = false, vector cameraPosition = cOriginVector){</command>
+            <command>        bool isShowingToReturn = false;</command>
+            <command>        if(realShow &gt;= 0 &amp;&amp; xsGetTimeMS() &gt; realShow){</command>
+            <command>            isShowingToReturn = true;</command>
+            <command>            realShow = -1;</command>
+            <command>            for(int i = 0; i &lt; onscreenUiEntryArray.size(); i++){</command>
+            <command>                __OnscreenUiEntry entry = onscreenUiEntryArray[i];</command>
+            <command>                entry.show(p, lookAt, xAxisDirection, yAxisDirection, lookAtHeading, lookAtTilt, page, false, debug, disableClick, cameraPosition);</command>
+            <command>            }</command>
+            <command>        }</command>
+            <command>        if(delayDestroy &gt;= 0 &amp;&amp; xsGetTimeMS() &gt; delayDestroy){</command>
+            <command>            delayDestroy = -1;</command>
+            <command>            for(int i = 0; i &lt; onscreenUiEntryArray.size(); i++){</command>
+            <command>                __OnscreenUiEntry entry = onscreenUiEntryArray[i];</command>
+            <command>                entry.destroyPrompt(p, page);</command>
+            <command>            }</command>
+            <command>            onscreenUiEntryArray.resize(0);</command>
+            <command>        }</command>
+            <command>        return isShowingToReturn;</command>
+            <command>    }</command>
+            <command>    void requestDestroy(int p = 1, bool fromExit = false){</command>
+            <command>        for(int i = 0; i &lt; onscreenUiEntryArray.size(); i++){</command>
+            <command>            __OnscreenUiEntry entry = onscreenUiEntryArray[i];</command>
+            <command>            entry.destroyUnits(p);</command>
+            <command>            if(fromExit){</command>
+            <command>                entry.destroyPrompt(p, page);</command>
+            <command>            }</command>
+            <command>        }</command>
+            <command>        if(fromExit){</command>
+            <command>            realShow = -1;</command>
+            <command>        } else {</command>
+            <command>            delayDestroy = xsGetTimeMS();</command>
+            <command>        }</command>
+            <command>    }</command>
+            <command>};</command>
+            <command></command>
+            <command>class __OnscreenUiSystem {</command>
+            <command>    int p = 1;</command>
+            <command>    bool debug = false;</command>
+            <command>    vector lookAt = cOriginVector;</command>
+            <command>    vector lookAtForCamera = cOriginVector;</command>
+            <command>    vector cameraPosition = cOriginVector;</command>
+            <command>    float lookAtDistance = __ONSCREEN_UI_LOOK_DISTANCE;</command>
+            <command>    float lookAtHeading = 90.0;</command>
+            <command>    float lookAtTilt = 90.0;</command>
+            <command>    float lookAtFov = 1.0;</command>
+            <command>    vector xAxisDirection = vector(1.0, 0.0, 0.0);</command>
+            <command>    vector yAxisDirection = vector(0.0, 0.0, 1.0);</command>
+            <command>    bool uiActive = false;</command>
+            <command>    bool disableClick = false;</command>
+            <command>    int[] deletableFlagsToRevert = default;</command>
+            <command>    bool[] selectableFlagsToRevert = default;</command>
+            <command>    int rolloverCount = 0;</command>
+            <command>    __OnscreenUiSystemPage page0;</command>
+            <command>    __OnscreenUiSystemPage page1;</command>
+            <command>    __OnscreenUiSystemPage page2;</command>
+            <command>    int addPage = 0;</command>
+            <command>    int showingPage = 0;</command>
+            <command>    void initialise(int pToUse = 1, bool debugToUse = false){</command>
+            <command>        p = pToUse;</command>
+            <command>        debug = debugToUse;</command>
+            <command>        page0.page = 0;</command>
+            <command>        page1.page = 1;</command>
+            <command>        page2.page = 2;</command>
+            <command>    }</command>
+            <command>    void setCameraPosition(vector dest = cOriginVector, float distance = 0.0, float heading = 0.0, float tilt = 0.0, float fov = 40.0){</command>
+            <command>        lookAtForCamera = dest;</command>
+            <command>        lookAtDistance = distance;</command>
+            <command>        lookAtHeading = heading;</command>
+            <command>        lookAtTilt = tilt;</command>
+            <command>        lookAtFov = fov;</command>
+            <command>        float cameraH = degToRad(heading);</command>
+            <command>        float cameraT = degToRad(tilt);</command>
+            <command>        float cameraSinH = sin(cameraH);</command>
+            <command>        float cameraCosH = cos(cameraH);</command>
+            <command>        float cameraSinT = sin(cameraT);</command>
+            <command>        float cameraCosT = cos(cameraT);</command>
+            <command>        float cameraPosX = 0.0 + dest.x - cameraCosH * cameraCosT * distance;</command>
+            <command>        float cameraPosY = cameraSinT * distance + dest.y;</command>
+            <command>        float cameraPosZ = 0.0 + dest.z - cameraSinH * cameraCosT * distance;</command>
+            <command>        cameraPosition = vector(cameraPosX, cameraPosY, cameraPosZ);</command>
+            <command>        float canvasDistance = (tan(degToRad(0.5)) * __ONSCREEN_UI_LOOK_DISTANCE) / tan(degToRad(0.5 * fov));</command>
+            <command>        float canvasDistanceFromLookPoint = -canvasDistance + distance;</command>
+            <command>        float canvasPosX = 0.0 + dest.x - cameraCosH * cameraCosT * canvasDistanceFromLookPoint;</command>
+            <command>        float canvasPosY = cameraSinT * canvasDistanceFromLookPoint + dest.y;</command>
+            <command>        float canvasPosZ = 0.0 + dest.z - cameraSinH * cameraCosT * canvasDistanceFromLookPoint;</command>
+            <command>        lookAt = vector(canvasPosX, canvasPosY, canvasPosZ);</command>
+            <command>        xAxisDirection = vector(cameraSinH, 0.0, -cameraCosH);</command>
+            <command>        yAxisDirection = vector(cameraSinT * cameraCosH, cameraCosT, cameraSinT * cameraSinH);</command>
+            <command>        if (uiActive &amp;&amp; trCurrentPlayer() == p){</command>
+            <command>            __cameraTrack.create(lookAtForCamera, lookAtDistance, lookAtHeading, lookAtTilt, lookAtFov);</command>
+            <command>            __cameraTrack.addWaypoint(1000000000, lookAtForCamera, lookAtDistance, lookAtHeading, lookAtTilt, lookAtFov);</command>
+            <command>            __cameraTrack.play(-1);</command>
+            <command>        }</command>
+            <command>    }</command>
+            <command>    void enter(bool disableClickToUse = false){</command>
+            <command>        if (uiActive == false){</command>
+            <command>            uiActive = true;</command>
+            <command>            for(int i = 0; i &lt; cNumberProtoUnits; i++){</command>
+            <command>               bool deletable = kbPlayerGetProtoStatFlag(p, i, cProtoUnitFlagDeleteable);</command>
+            <command>               if(deletable){</command>
+            <command>                   deletableFlagsToRevert.add(i);</command>
+            <command>                   trProtoUnitSetFlag(p, kbProtoUnitGetName(i), "Deleteable", false);</command>
+            <command>               }</command>
+            <command>            }</command>
+            <command>            if(trCurrentPlayer() == p){</command>
+            <command>               selectableFlagsToRevert.resize(cNumberProtoUnits * (cNumberPlayers + 1), false);</command>
+            <command>               int offset = 0;</command>
+            <command>               for(int q = 0; q &lt;= cNumberPlayers; q++){</command>
+            <command>                   for(int i = 0; i &lt; cNumberProtoUnits; i++){</command>
+            <command>                       bool selectable = kbPlayerGetProtoStatFlag(q, i, cProtoUnitFlagSelectable);</command>
+            <command>                       selectableFlagsToRevert[i + offset] = selectable;</command>
+            <command>                       if(selectable){</command>
+            <command>                           trProtoUnitSetFlag(q, kbProtoUnitGetName(i), "Selectable", false);</command>
+            <command>                       }</command>
+            <command>                   }</command>
+            <command>                   offset = offset + cNumberProtoUnits;</command>
+            <command>               }</command>
+            <command>            }</command>
+            <command>            trProtoUnitSetFlag(p, __ONSCREEN_UI_UNIT, "Deleteable", true);</command>
+            <command>            trProtoUnitSetFlag(p, __ONSCREEN_UI_UNIT2, "Deleteable", true);</command>
+            <command>            trProtoUnitSetFlag(p, __ONSCREEN_UI_UNIT, "Selectable", true);</command>
+            <command>            trProtoUnitSetFlag(p, __ONSCREEN_UI_UNIT2, "Selectable", true);</command>
+            <command>            int tempToSelect = trUnitCreateForced(__UI_SYSTEM_UNIT, lookAt.x, lookAt.y, lookAt.z, 0, p);</command>
+            <command>            trUnitSelectClear();</command>
+            <command>            trUnitSelectByID(tempToSelect);</command>
+            <command>            if (trCurrentPlayer() == p){</command>
+            <command>                trUnitGameSelect(true);</command>
+            <command>            }</command>
+            <command>            trUnitDestroy();</command>
+            <command>            if (trCurrentPlayer() == p){</command>
+            <command>                __cameraTrack.create(lookAtForCamera, lookAtDistance, lookAtHeading, lookAtTilt, lookAtFov);</command>
+            <command>                __cameraTrack.addWaypoint(1000000000, lookAtForCamera, lookAtDistance, lookAtHeading, lookAtTilt, lookAtFov);</command>
+            <command>                __cameraTrack.play(-1);</command>
+            <command>            }</command>
+            <command>        }</command>
+            <command>        disableClick = disableClickToUse;</command>
+            <command>        if(addPage == 0){</command>
+            <command>            addPage = 1;</command>
+            <command>            page1.realShow = xsGetTimeMS();</command>
+            <command>        } else if(addPage == 1) {</command>
+            <command>            addPage = 2;</command>
+            <command>            page2.realShow = xsGetTimeMS();</command>
+            <command>        } else {</command>
+            <command>            addPage = 0;</command>
+            <command>            page0.realShow = xsGetTimeMS();</command>
+            <command>        }</command>
+            <command>    }</command>
+            <command>    void exit(bool normaliseCamera = false, float fov = 40.0){</command>
+            <command>        if (uiActive == true){</command>
+            <command>            uiActive = false;</command>
+            <command>            int tempToSelect = trUnitCreateForced(__ONSCREEN_UI_UNIT, lookAt.x, lookAt.y, lookAt.z, 0, p);</command>
+            <command>            trUnitSelectClear();</command>
+            <command>            trUnitSelectByID(tempToSelect);</command>
+            <command>            if (trCurrentPlayer() == p){</command>
+            <command>                trUnitGameSelect(true);</command>
+            <command>            }</command>
+            <command>            trUnitDestroy();</command>
+            <command>            for(int i = 0; i &lt; deletableFlagsToRevert.size(); i++){</command>
+            <command>                trProtoUnitSetFlag(p, kbProtoUnitGetName(deletableFlagsToRevert[i]), "Deleteable", true);</command>
+            <command>            }</command>
+            <command>            deletableFlagsToRevert.clear();</command>
+            <command>            if(trCurrentPlayer() == p){</command>
+            <command>               int offset = 0;</command>
+            <command>               for(int q = 0; q &lt;= cNumberPlayers; q++){</command>
+            <command>                   for(int i = 0; i &lt; cNumberProtoUnits; i++){</command>
+            <command>                       bool selectable = selectableFlagsToRevert[i + offset];</command>
+            <command>                       if(selectable){</command>
+            <command>                           trProtoUnitSetFlag(q, kbProtoUnitGetName(i), "Selectable", true);</command>
+            <command>                       }</command>
+            <command>                   }</command>
+            <command>                   offset = offset + cNumberProtoUnits;</command>
+            <command>               }</command>
+            <command>               selectableFlagsToRevert.clear();</command>
+            <command>            }</command>
+            <command>            if (trCurrentPlayer() == p){</command>
+            <command>                if (normaliseCamera){</command>
+            <command>                    __cameraTrack.create(lookAtForCamera, lookAtDistance, lookAtHeading, lookAtTilt, fov);</command>
+            <command>                    __cameraTrack.addWaypoint(1, lookAtForCamera, lookAtDistance, lookAtHeading, lookAtTilt, fov);</command>
+            <command>                    __cameraTrack.play(-1, true, 0);</command>
+            <command>                }</command>
+            <command>            }</command>
+            <command>            page0.requestDestroy(p, true);</command>
+            <command>            page1.requestDestroy(p, true);</command>
+            <command>            page2.requestDestroy(p, true);</command>
+            <command>        }</command>
+            <command>    }</command>
+            <command>    void clear(){</command>
+            <command>        if(showingPage == 0) {</command>
+            <command>            page0.requestDestroy(p, false);</command>
+            <command>        } else if(addPage == 1) {</command>
+            <command>            page1.requestDestroy(p, false);</command>
+            <command>        } else {</command>
+            <command>            page2.requestDestroy(p, false);</command>
+            <command>        }</command>
+            <command>        rolloverCount = 0;</command>
+            <command>    }</command>
+            <command>    void addDisplay(float x = 0.0, float y = 0.0, string content = ""){</command>
+            <command>        __OnscreenUiEntry entry;</command>
+            <command>        entry.unitType = __ONSCREEN_UI_UNIT;</command>
+            <command>        entry.clickable = false;</command>
+            <command>        entry.hoverable = false;</command>
+            <command>        entry.x = x;</command>
+            <command>        entry.y = y;</command>
+            <command>        entry.content = content;</command>
+            <command>        if(addPage == 0){</command>
+            <command>            entry.id = page0.onscreenUiEntryArray.size();</command>
+            <command>        } else if(addPage == 1) {</command>
+            <command>            entry.id = page1.onscreenUiEntryArray.size();</command>
+            <command>        } else {</command>
+            <command>            entry.id = page2.onscreenUiEntryArray.size();</command>
+            <command>        }</command>
+            <command>        entry.show(p, lookAt, xAxisDirection, yAxisDirection, lookAtHeading, lookAtTilt, addPage, true, debug, disableClick, cameraPosition);</command>
+            <command>        if(addPage == 0){</command>
+            <command>            entry.id = page0.onscreenUiEntryArray.add(entry);</command>
+            <command>        } else if(addPage == 1) {</command>
+            <command>            entry.id = page1.onscreenUiEntryArray.add(entry);</command>
+            <command>        } else {</command>
+            <command>            entry.id = page2.onscreenUiEntryArray.add(entry);</command>
+            <command>        }</command>
+            <command>    }</command>
+            <command>    void addDisplayWithHover(float x = 0.0, float y = 0.0, float width = 0.0, float height = 0.0, string content = "", string rolloverName = "", string rolloverDescription = ""){</command>
+            <command>        __OnscreenUiEntry entry;</command>
+            <command>        entry.unitType = __ONSCREEN_UI_UNIT2;</command>
+            <command>        entry.clickable = false;</command>
+            <command>        entry.hoverable = true;</command>
+            <command>        entry.x = x;</command>
+            <command>        entry.y = y;</command>
+            <command>        entry.width = width;</command>
+            <command>        entry.height = height;</command>
+            <command>        entry.content = content;</command>
+            <command>        entry.rolloverName = rolloverName;</command>
+            <command>        entry.rolloverDescription = rolloverDescription;</command>
+            <command>        if(addPage == 0){</command>
+            <command>            entry.id = page0.onscreenUiEntryArray.size();</command>
+            <command>        } else if(addPage == 1) {</command>
+            <command>            entry.id = page1.onscreenUiEntryArray.size();</command>
+            <command>        } else {</command>
+            <command>            entry.id = page2.onscreenUiEntryArray.size();</command>
+            <command>        }</command>
+            <command>        entry.rolloverId = rolloverCount;</command>
+            <command>        rolloverCount++;</command>
+            <command>        entry.show(p, lookAt, xAxisDirection, yAxisDirection, lookAtHeading, lookAtTilt, addPage, true, debug, disableClick, cameraPosition);</command>
+            <command>        if(addPage == 0){</command>
+            <command>            entry.id = page0.onscreenUiEntryArray.add(entry);</command>
+            <command>        } else if(addPage == 1) {</command>
+            <command>            entry.id = page1.onscreenUiEntryArray.add(entry);</command>
+            <command>        } else {</command>
+            <command>            entry.id = page2.onscreenUiEntryArray.add(entry);</command>
+            <command>        }</command>
+            <command>    }</command>
+            <command>    void addClickable(float x = 0.0, float y = 0.0, float width = 0.0, float height = 0.0, string content = "", ref __Parameters parameters,</command>
+            <command>            void(int, ref __Parameters) handler = [](int pToUse = 1, ref __Parameters parametersToUse) -&gt; void {}){</command>
+            <command>        __OnscreenUiEntry entry;</command>
+            <command>        entry.unitType = __ONSCREEN_UI_UNIT;</command>
+            <command>        entry.clickable = true;</command>
+            <command>        entry.hoverable = false;</command>
+            <command>        entry.x = x;</command>
+            <command>        entry.y = y;</command>
+            <command>        entry.width = width;</command>
+            <command>        entry.height = height;</command>
+            <command>        entry.content = content;</command>
+            <command>        if(addPage == 0){</command>
+            <command>            entry.id = page0.onscreenUiEntryArray.size();</command>
+            <command>        } else if(addPage == 1) {</command>
+            <command>            entry.id = page1.onscreenUiEntryArray.size();</command>
+            <command>        } else {</command>
+            <command>            entry.id = page2.onscreenUiEntryArray.size();</command>
+            <command>        }</command>
+            <command>        entry.parameters = parameters;</command>
+            <command>        entry.handler = handler;</command>
+            <command>        entry.show(p, lookAt, xAxisDirection, yAxisDirection, lookAtHeading, lookAtTilt, addPage, true, debug, disableClick, cameraPosition);</command>
+            <command>        if(addPage == 0){</command>
+            <command>            entry.id = page0.onscreenUiEntryArray.add(entry);</command>
+            <command>        } else if(addPage == 1) {</command>
+            <command>            entry.id = page1.onscreenUiEntryArray.add(entry);</command>
+            <command>        } else {</command>
+            <command>            entry.id = page2.onscreenUiEntryArray.add(entry);</command>
+            <command>        }</command>
+            <command>    }</command>
+            <command>    void addClickableWithHover(float x = 0.0, float y = 0.0, float width = 0.0, float height = 0.0, string content = "", string rolloverName = "", string rolloverDescription = "", ref __Parameters parameters,</command>
+            <command>            void(int, ref __Parameters) handler = [](int pToUse = 1, ref __Parameters parametersToUse) -&gt; void {}){</command>
+            <command>        __OnscreenUiEntry entry;</command>
+            <command>        entry.unitType = __ONSCREEN_UI_UNIT2;</command>
+            <command>        entry.clickable = true;</command>
+            <command>        entry.hoverable = true;</command>
+            <command>        entry.x = x;</command>
+            <command>        entry.y = y;</command>
+            <command>        entry.width = width;</command>
+            <command>        entry.height = height;</command>
+            <command>        entry.content = content;</command>
+            <command>        entry.rolloverName = rolloverName;</command>
+            <command>        entry.rolloverDescription = rolloverDescription;</command>
+            <command>        entry.parameters = parameters;</command>
+            <command>        entry.handler = handler;</command>
+            <command>        if(addPage == 0){</command>
+            <command>            entry.id = page0.onscreenUiEntryArray.size();</command>
+            <command>        } else if(addPage == 1) {</command>
+            <command>            entry.id = page1.onscreenUiEntryArray.size();</command>
+            <command>        } else {</command>
+            <command>            entry.id = page2.onscreenUiEntryArray.size();</command>
+            <command>        }</command>
+            <command>        entry.rolloverId = rolloverCount;</command>
+            <command>        rolloverCount++;</command>
+            <command>        entry.show(p, lookAt, xAxisDirection, yAxisDirection, lookAtHeading, lookAtTilt, addPage, true, debug, disableClick, cameraPosition);</command>
+            <command>        if(addPage == 0){</command>
+            <command>            entry.id = page0.onscreenUiEntryArray.add(entry);</command>
+            <command>        } else if(addPage == 1) {</command>
+            <command>            entry.id = page1.onscreenUiEntryArray.add(entry);</command>
+            <command>        } else {</command>
+            <command>            entry.id = page2.onscreenUiEntryArray.add(entry);</command>
+            <command>        }</command>
+            <command>    }</command>
+            <command>    __OnscreenUiEntry process(){</command>
+            <command>        if(page0.process(p, lookAt, xAxisDirection, yAxisDirection, lookAtHeading, lookAtTilt, debug, disableClick, cameraPosition)){</command>
+            <command>            showingPage = 0;</command>
+            <command>        }</command>
+            <command>        if(page1.process(p, lookAt, xAxisDirection, yAxisDirection, lookAtHeading, lookAtTilt, debug, disableClick, cameraPosition)){</command>
+            <command>            showingPage = 1;</command>
+            <command>        }</command>
+            <command>        if(page2.process(p, lookAt, xAxisDirection, yAxisDirection, lookAtHeading, lookAtTilt, debug, disableClick, cameraPosition)){</command>
+            <command>            showingPage = 2;</command>
+            <command>        }</command>
+            <command>        if (uiActive){</command>
+            <command>            int clickedEntryIndex = -1;</command>
+            <command>            bool validClick = true;</command>
+            <command>            __OnscreenUiEntry[] onscreenUiEntryArray = showingPage == 0 ? page0.onscreenUiEntryArray : (showingPage == 1 ? page1.onscreenUiEntryArray : page2.onscreenUiEntryArray);</command>
+            <command>            for (int i = 0; i &lt; onscreenUiEntryArray.size(); i++){</command>
+            <command>                __OnscreenUiEntry entry = onscreenUiEntryArray[i];</command>
+            <command>                int[] clickableUnitArray = entry.clickableUnitArray;</command>
+            <command>                for (int j = 0; j &lt; clickableUnitArray.size(); j++){</command>
+            <command>                    trUnitSelectClear();</command>
+            <command>                    trUnitSelectByID(clickableUnitArray[j]);</command>
+            <command>                    if (trUnitAlive() == false){</command>
+            <command>                        if (clickedEntryIndex == -1){</command>
+            <command>                            clickedEntryIndex = i;</command>
+            <command>                        } else if (clickedEntryIndex != i){</command>
+            <command>                            validClick = false;</command>
+            <command>                        }</command>
+            <command>                    }</command>
+            <command>                }</command>
+            <command>            }</command>
+            <command>            if (validClick == false){</command>
+            <command>                for (int i = 0; i &lt; onscreenUiEntryArray.size(); i++){</command>
+            <command>                    __OnscreenUiEntry entry = onscreenUiEntryArray[i];</command>
+            <command>                    entry.refresh(p, lookAt, xAxisDirection, yAxisDirection, lookAtHeading, lookAtTilt, debug, disableClick);</command>
+            <command>                    onscreenUiEntryArray[i] = entry;</command>
+            <command>                }</command>
+            <command>            } else if (clickedEntryIndex &gt;= 0){</command>
+            <command>                if(showingPage == 0) {</command>
+            <command>                    page0.requestDestroy(p, false);</command>
+            <command>                } else if(addPage == 1) {</command>
+            <command>                    page1.requestDestroy(p, false);</command>
+            <command>                } else {</command>
+            <command>                    page2.requestDestroy(p, false);</command>
+            <command>                }</command>
+            <command>                rolloverCount = 0;</command>
+            <command>                __OnscreenUiEntry entry = onscreenUiEntryArray[clickedEntryIndex];</command>
+            <command>                return entry;</command>
+            <command>            }</command>
+            <command>            if (trCurrentPlayer() == p){</command>
+            <command>                trExecuteConsoleCommand("uiDeleteSelectedUnit(true)");</command>
+            <command>            }</command>
+            <command>        }</command>
+            <command>        return __DUMMY_ONSCREEN_UI_ENTRY;</command>
+            <command>    }</command>
+            <command>};</command>
+            <command></command>
+            <command>__OnscreenUiSystem[] __onscreenUiSystemArray = default;</command>
+            <command></command>
+            <command>void __initialiseOnscreenUiSystem(bool allRelicTechs = false, bool debug = false){</command>
+            <command>    if(allRelicTechs){</command>
+            <command>        for (int i = 0; i &lt; cNumberTechs; i++){</command>
+            <command>            if (xsStringStartsWith(kbTechGetName(i), "Relic", true)){</command>
+            <command>                __onscreenUiRelicTechArray.add(i);</command>
+            <command>            }</command>
+            <command>        }</command>
+            <command>    }</command>
+            <command>    __onscreenUiSystemArray.resize(cNumberPlayers + 1);</command>
+            <command>    string[] systemUnits = new string(2, "");</command>
+            <command>    systemUnits[0] = __ONSCREEN_UI_UNIT;</command>
+            <command>    systemUnits[1] = __ONSCREEN_UI_UNIT2;</command>
+            <command>    for (int p = 1; p &lt;= cNumberPlayers; p++){</command>
+            <command>        __OnscreenUiSystem uiSystem = __onscreenUiSystemArray[p];</command>
+            <command>        uiSystem.initialise(p, debug);</command>
+            <command>        uiSystem.setCameraPosition(vector(0.5 * kbGetMapXSize(), -10100.0, 0.5 * kbGetMapZSize()), 100.0, 45.0, 89.0, 40.0);</command>
+            <command>        __onscreenUiSystemArray[p] = uiSystem;</command>
+            <command>        for (int i = 0; i &lt; systemUnits.size(); i++){</command>
+            <command>            string systemUnit = systemUnits[i];</command>
+            <command>            trProtoUnitSetFlag(p, systemUnit, "Collideable", false);</command>
+            <command>            trProtoUnitSetFlag(p, systemUnit, "ForceDeleteable", true);</command>
+            <command>            trProtoUnitSetFlag(p, systemUnit, "Invulnerable", true);</command>
+            <command>            trProtoUnitSetFlag(p, systemUnit, "InvulnerableToAreaDamage", true);</command>
+            <command>            trProtoUnitSetFlag(p, systemUnit, "DontMarkExtraFog", true);</command>
+            <command>            trProtoUnitSetFlag(p, systemUnit, "VisibleUnderFog", true);</command>
+            <command>            trProtoUnitSetFlag(p, systemUnit, "ForceToNature", false);</command>
+            <command>            trProtoUnitSetFlag(p, systemUnit, "TieToGround", false);</command>
+            <command>            trProtoUnitSetFlag(p, systemUnit, "Selectable", true);</command>
+            <command>            trProtoUnitSetFlag(p, systemUnit, "Deleteable", true);</command>
+            <command>            trProtoUnitSetFlag(p, systemUnit, "FadeInOnBuild", !debug);</command>
+            <command>            trProtoUnitSetFlag(p, systemUnit, "HasLOS", true);</command>
+            <command>            trProtoUnitSetFlag(p, systemUnit, "ObscuredByUnits", true);</command>
+            <command>            trProtoUnitSetUnitType(p, systemUnit, "Building", true);</command>
+            <command>            if (p != trCurrentPlayer()){</command>
+            <command>                trProtoUnitSetFlag(p, systemUnit, "OnlyInEditor", true);</command>
+            <command>            }</command>
+            <command>            trModifyProtounitData(systemUnit, p, cXSProtoEffectBuildPoints, 100000, cXSRelativityAssign);</command>
+            <command>            trModifyProtounitData(systemUnit, p, cXSProtoEffectLOS, debug ? 5.0 : 0.0, cXSRelativityAssign);</command>
+            <command>        }</command>
+            <command>        trProtoUnitSetFlag(p, __ONSCREEN_UI_UNIT2, "Relic", true);</command>
+            <command>    }</command>
+            <command>    __scheduler.add(0, false, [](int iterations = 1) -&gt; bool {</command>
+            <command>        for(int p = 1; p &lt;= cNumberPlayers; p++){</command>
+            <command>            __OnscreenUiSystem system = __onscreenUiSystemArray[p];</command>
+            <command>            __OnscreenUiEntry entry = system.process();</command>
+            <command>            __onscreenUiSystemArray[p] = system;</command>
+            <command>            entry.handler(p, entry.parameters);</command>
+            <command>        }</command>
+            <command>        return true;</command>
+            <command>    });</command>
+            <command>}</command>
+            <command></command>
             <command>void ntlStorageSetBool(string name = "", bool value = false){</command>
             <command>   __storageWithBool.put(name, value);</command>
             <command>}</command>
@@ -3303,6 +3845,101 @@
             <command>}</command>
             <command>__Parameters ntlStoragePlayerRemoveParameters(string name = "", int p = 0){</command>
             <command>   return __storageWithParameters.remove("__"+p+"__"+name);</command>
+            <command>}</command>
+            <command></command>
+            <command>string ntlReplaceText(string text = "", string toReplace = "", string replacement = ""){</command>
+            <command>   int indexFound = xsStringFindFirst(text, toReplace, 0, true);</command>
+            <command>   if(indexFound &lt; 0){</command>
+            <command>       return text;</command>
+            <command>   }</command>
+            <command>   string toReturn = xsStringSubstring(text, 0, indexFound - 1) + replacement;</command>
+            <command>   while(indexFound &gt;= 0){</command>
+            <command>       int newIndexFound = xsStringFindFirst(text, toReplace, indexFound + xsStringLength(toReplace), true);</command>
+            <command>       if(newIndexFound &gt;= 0){</command>
+            <command>           toReturn = toReturn + xsStringSubstring(text, indexFound + xsStringLength(toReplace), newIndexFound - 1) + replacement;</command>
+            <command>           indexFound = newIndexFound;</command>
+            <command>       } else {</command>
+            <command>           toReturn = toReturn + xsStringSubstring(text, indexFound + xsStringLength(toReplace), xsStringLength(text) - 1);</command>
+            <command>           indexFound = -1;</command>
+            <command>       }</command>
+            <command>   }</command>
+            <command>   return toReturn;</command>
+            <command>}</command>
+            <command>string ntlToForwardSlash(string text = ""){</command>
+            <command>   return ntlReplaceText(text, xsStringSubstring("\ ", 0, 0), "/");</command>
+            <command>}</command>
+            <command>string ntlWrapText(string text = "", int lineLimit = 0){</command>
+            <command>   int textLength = xsStringLength(text);</command>
+            <command>   if(textLength &lt;= lineLimit){</command>
+            <command>       return text;</command>
+            <command>   }</command>
+            <command>   string slash = xsStringCharAt("\ ", 0);</command>
+            <command>   string toBuild = "";</command>
+            <command>   int startIndex = 0;</command>
+            <command>   int lastSpace = -1;</command>
+            <command>   int currentIndex = 0;</command>
+            <command>   while(currentIndex &lt; textLength){</command>
+            <command>       string character = xsStringCharAt(text, currentIndex);</command>
+            <command>       if(character == slash &amp;&amp; currentIndex &lt; (textLength - 1) &amp;&amp; xsStringCharAt(text, currentIndex + 1) == "n"){</command>
+            <command>           toBuild = toBuild + xsStringSubstring(text, startIndex, currentIndex);</command>
+            <command>           currentIndex++;</command>
+            <command>           startIndex = currentIndex;</command>
+            <command>           lastSpace = -1;</command>
+            <command>       } else if(character == " "){</command>
+            <command>           if(currentIndex - startIndex &lt;= lineLimit){</command>
+            <command>               lastSpace = currentIndex;</command>
+            <command>               currentIndex++;</command>
+            <command>           } else {</command>
+            <command>               if(lastSpace &lt; 0){</command>
+            <command>                   toBuild = toBuild + xsStringSubstring(text, startIndex, currentIndex - 1);</command>
+            <command>                   startIndex = currentIndex + 1;</command>
+            <command>               } else {</command>
+            <command>                   toBuild = toBuild + xsStringSubstring(text, startIndex, lastSpace - 1);</command>
+            <command>                   startIndex = lastSpace + 1;</command>
+            <command>               }</command>
+            <command>               toBuild = toBuild + "\n";</command>
+            <command>               lastSpace = -1;</command>
+            <command>               currentIndex = startIndex;</command>
+            <command>           }</command>
+            <command>       } else {</command>
+            <command>           currentIndex++;</command>
+            <command>       }</command>
+            <command>   }</command>
+            <command>   if(lastSpace &gt;= 0 &amp;&amp; (textLength - startIndex) &gt; lineLimit){</command>
+            <command>       toBuild = toBuild + xsStringSubstring(text, startIndex, lastSpace - 1);</command>
+            <command>       toBuild = toBuild + "\n";</command>
+            <command>       startIndex = lastSpace + 1;</command>
+            <command>   }</command>
+            <command>   toBuild = toBuild + xsStringSubstring(text, startIndex, textLength - 1);</command>
+            <command>   return toBuild;</command>
+            <command>}</command>
+            <command>int ntlCountTextLines(string text = ""){</command>
+            <command>   int total = 1;</command>
+            <command>   int index = xsStringFindFirst(text, "\n", 0, true);</command>
+            <command>   while(index &gt;= 0){</command>
+            <command>       total++;</command>
+            <command>       index = xsStringFindFirst(text, "\n", index + 2, true);</command>
+            <command>   }</command>
+            <command>   return total;</command>
+            <command>}</command>
+            <command>string ntlPadTextToTextCount(string text = "", string padText = "", int wantedCount = 0){</command>
+            <command>   int count = 0;</command>
+            <command>   int textLength = xsStringLength(text);</command>
+            <command>   int padLength = xsStringLength(padText);</command>
+            <command>   int startIndex = 0;</command>
+            <command>   int found = xsStringFindFirst(text, padText, 0, true);</command>
+            <command>   while(found &gt;= 0){</command>
+            <command>       count++;</command>
+            <command>       found = xsStringFindFirst(text, padText, found + padLength, true);</command>
+            <command>   }</command>
+            <command>   if(count &gt;= wantedCount){</command>
+            <command>       return text;</command>
+            <command>   }</command>
+            <command>   string padding = "";</command>
+            <command>   for(int i = count; i &lt; wantedCount; i++){</command>
+            <command>       padding = padding + padText;</command>
+            <command>   }</command>
+            <command>   return text + padding;</command>
             <command>}</command>
             <command></command>
             <command>rule __Trigger__Loader__Nottud__Process</command>
@@ -3710,6 +4347,65 @@
             <command>/**/%Name%.addFloat%FloatCount%(%Floats%);</command>
             <command>/**/%Name%.addString%StringCount%(%Strings%);</command>
             <command>/**/%Name%.addVector%VectorCount%(%Vectors%);</command>
+        </effect>
+        <effect name="Parameters NTL: Clone">
+            <param name="ToClone" dispname="ToClone" vartype="stringid">parameters</param>
+            <param name="Name" dispname="Name" vartype="stringid">parametersCloned</param>
+            <command>__Parameters %Name% =__createParameters();</command>
+            <command>%Name%.bools.resize(%ToClone%.bools.size(), false);</command>
+            <command>for(int i = 0; i &lt; %ToClone%.bools.size(); i++){</command>
+            <command>   /**/%Name%.bools[i] = %ToClone%.bools[i];</command>
+            <command>}</command>
+            <command>%Name%.ints.resize(%ToClone%.ints.size(), 0);</command>
+            <command>for(int i = 0; i &lt; %ToClone%.ints.size(); i++){</command>
+            <command>   /**/%Name%.ints[i] = %ToClone%.ints[i];</command>
+            <command>}</command>
+            <command>%Name%.floats.resize(%ToClone%.floats.size(), 0.0);</command>
+            <command>for(int i = 0; i &lt; %ToClone%.floats.size(); i++){</command>
+            <command>   /**/%Name%.floats[i] = %ToClone%.floats[i];</command>
+            <command>}</command>
+            <command>%Name%.strings.resize(%ToClone%.strings.size(), "");</command>
+            <command>for(int i = 0; i &lt; %ToClone%.strings.size(); i++){</command>
+            <command>   /**/%Name%.strings[i] = %ToClone%.strings[i];</command>
+            <command>}</command>
+            <command>%Name%.vectors.resize(%ToClone%.vectors.size(), cOriginVector);</command>
+            <command>for(int i = 0; i &lt; %ToClone%.vectors.size(); i++){</command>
+            <command>   /**/%Name%.vectors[i] = %ToClone%.vectors[i];</command>
+            <command>}</command>
+        </effect>
+        <effect name="Parameters NTL: Add Parameters">
+            <param name="From" dispname="From" vartype="stringid">parametersFrom</param>
+            <param name="Name" dispname="Name" vartype="stringid">parameters</param>
+            <param name="IncludeBools" dispname="Include Bools" vartype="bool" donotrelax="">true</param>
+            <param name="IncludeInts" dispname="Include Ints" vartype="bool" donotrelax="">true</param>
+            <param name="IncludeFloats" dispname="Include Floats" vartype="bool" donotrelax="">true</param>
+            <param name="IncludeStrings" dispname="Include Strings" vartype="bool" donotrelax="">true</param>
+            <param name="IncludeVectors" dispname="Include Vectors" vartype="bool" donotrelax="">true</param>
+            <command>if(%IncludeBools%){</command>
+            <command>   for(int i = 0; i &lt; %From%.bools.size(); i++){</command>
+            <command>       /**/%Name%.bools.add(%From%.bools[i]);</command>
+            <command>   }</command>
+            <command>}</command>
+            <command>if(%IncludeInts%){</command>
+            <command>   for(int i = 0; i &lt; %From%.ints.size(); i++){</command>
+            <command>       /**/%Name%.ints.add(%From%.ints[i]);</command>
+            <command>   }</command>
+            <command>}</command>
+            <command>if(%IncludeFloats%){</command>
+            <command>   for(int i = 0; i &lt; %From%.floats.size(); i++){</command>
+            <command>       /**/%Name%.floats.add(%From%.floats[i]);</command>
+            <command>   }</command>
+            <command>}</command>
+            <command>if(%IncludeStrings%){</command>
+            <command>   for(int i = 0; i &lt; %From%.strings.size(); i++){</command>
+            <command>       /**/%Name%.strings.add(%From%.strings[i]);</command>
+            <command>   }</command>
+            <command>}</command>
+            <command>if(%IncludeVectors%){</command>
+            <command>   for(int i = 0; i &lt; %From%.vectors.size(); i++){</command>
+            <command>       /**/%Name%.vectors.add(%From%.vectors[i]);</command>
+            <command>   }</command>
+            <command>}</command>
         </effect>
         <effect name="Parameters NTL: Add Bool">
             <param name="Name" dispname="Name" vartype="stringid">parameters</param>
@@ -4242,6 +4938,15 @@
             <param name="Variable" dispname="Variable" vartype="stringid">protounitId</param>
             <command>for(int %Variable% = 0; %Variable% &lt; cNumberProtoUnits; %Variable%++){</command>
         </effect>
+        <effect name="For Loop: Start All Protounit Actions {2">
+            <param name="PlayerID" dispname="Player" vartype="player">1</param>
+            <param name="ProtoName" dispname="ProtoName" vartype="protounit">Villager</param>
+            <param name="Variable" dispname="Variable" vartype="stringid">action</param>
+            <command>{</command>
+            <command>   string[] __forLoopActions%Variable% = kbProtoUnitGetActionNames(%PlayerID%, kbProtoUnitGetID("%ProtoName%"));</command>
+            <command>   for(int __forLoopActionsIndex%Variable% = 0; __forLoopActionsIndex%Variable% &lt; __forLoopActions%Variable%.size(); __forLoopActionsIndex%Variable%++){</command>
+            <command>       string %Variable% = __forLoopActions%Variable%[__forLoopActionsIndex%Variable%];</command>
+        </effect>
         <effect name="For Loop: Start All Techs {">
             <param name="Variable" dispname="Variable" vartype="stringid">tech</param>
             <command>for(int __forLoopStartAllUnitsIndex%Variable% = 0; __forLoopStartAllUnitsIndex%Variable% &lt; cNumberTechs; __forLoopStartAllUnitsIndex%Variable%++){</command>
@@ -4288,6 +4993,10 @@
             <command>for(int %Variable% = %Start%; true; %Variable% = %Variable% + %Increment%){</command>
         </effect>
         <effect name="For Loop: End }">
+            <command>}</command>
+        </effect>
+        <effect name="For Loop: End }2">
+            <command>   }</command>
             <command>}</command>
         </effect>
         <effect name="For Loop: Break">
@@ -4622,6 +5331,14 @@
             <param name="Heading" dispname="Heading (0-359)" vartype="long">0</param>
             <param name="UnitVariable" dispname="Unit Variable" vartype="stringid">unitId</param>
             <command>/**/%UnitVariable% = trUnitCreateForced("%ProtoName%", %Location%, %Heading%, %PlayerID%);</command>
+        </effect>
+        <effect name="Unit: Set Foundation Percent Complete">
+            <param name="SrcObject" dispname="Source Units" vartype="unit">-1</param>
+            <param name="Complete" dispname="PercentComplete" vartype="stringId">50.0</param>
+            <command>{</command>
+            <command>   float __foundationCompletePercent = %Complete%;</command>
+            <command loop="" loopparm="SrcObject">trSetFoundationComplete(%SrcObject%, __foundationCompletePercent);</command>
+            <command>}</command>
         </effect>
         <effect name="Unit Physics NTL: Start -> {">
             <param name="SrcObject" dispname="Source Units" vartype="unit">-1</param>
@@ -6156,7 +6873,7 @@
             <command>/**/%Name% = __worldGetSteepness(vector(%Area%));</command>
         </effect>
         <effect name="Camera: Set Fov">
-            <param name="Fov" dispname="Fov" vartype="stringId">45.0</param>
+            <param name="Fov" dispname="Fov" vartype="stringId">40.0</param>
             <command>trExecuteConsoleCommand("fov("+%Fov%+")");</command>
         </effect>
         <effect name="Camera NTL: Look At">
@@ -6164,7 +6881,7 @@
             <param name="Distance" dispname="Distance" vartype="stringId">100.0</param>
             <param name="Heading" dispname="Heading" vartype="stringId">45.0</param>
             <param name="Tilt" dispname="Tilt" vartype="stringId">45.0</param>
-            <param name="Fov" dispname="Fov" vartype="stringId">45.0</param>
+            <param name="Fov" dispname="Fov" vartype="stringId">40.0</param>
             <command>{</command>
             <command>   __CameraParameters __cameraParameters = __cameraParametersFromLookAt(vector(%LookAt%), %Distance%, %Heading%, %Tilt%);</command>
             <command>   trCameraCut(__cameraParameters.position, __cameraParameters.matrixX, __cameraParameters.matrixY, __cameraParameters.matrixZ);</command>
@@ -6176,7 +6893,7 @@
             <param name="Distance" dispname="Distance" vartype="stringId">100.0</param>
             <param name="Heading" dispname="Heading" vartype="stringId">45.0</param>
             <param name="Tilt" dispname="Tilt" vartype="stringId">45.0</param>
-            <param name="Fov" dispname="Fov" vartype="stringId">45.0</param>
+            <param name="Fov" dispname="Fov" vartype="stringId">40.0</param>
             <command>{</command>
             <command>   __CameraParameters __cameraParameters = __cameraParametersFromLookAt(%LookAt%, %Distance%, %Heading%, %Tilt%);</command>
             <command>   trCameraCut(__cameraParameters.position, __cameraParameters.matrixX, __cameraParameters.matrixY, __cameraParameters.matrixZ);</command>
@@ -6198,7 +6915,7 @@
             <param name="Distance" dispname="Distance" vartype="stringId">100.0</param>
             <param name="Heading" dispname="Heading" vartype="stringId">45.0</param>
             <param name="Tilt" dispname="Tilt" vartype="stringId">45.0</param>
-            <param name="Fov" dispname="Fov" vartype="stringId">45.0</param>
+            <param name="Fov" dispname="Fov" vartype="stringId">40.0</param>
             <param name="Tension" dispname="Tension" vartype="stringId">0.0</param>
             <param name="Continuity" dispname="Continuity" vartype="stringId">0.0</param>
             <param name="Bias" dispname="Bias" vartype="stringId">0.0</param>
@@ -6209,7 +6926,7 @@
             <param name="Distance" dispname="Distance" vartype="stringId">100.0</param>
             <param name="Heading" dispname="Heading" vartype="stringId">45.0</param>
             <param name="Tilt" dispname="Tilt" vartype="stringId">45.0</param>
-            <param name="Fov" dispname="Fov" vartype="stringId">45.0</param>
+            <param name="Fov" dispname="Fov" vartype="stringId">40.0</param>
             <param name="Tension" dispname="Tension" vartype="stringId">0.0</param>
             <param name="Continuity" dispname="Continuity" vartype="stringId">0.0</param>
             <param name="Bias" dispname="Bias" vartype="stringId">0.0</param>
@@ -6221,7 +6938,7 @@
             <param name="Distance" dispname="Distance" vartype="stringId">100.0</param>
             <param name="Heading" dispname="Heading" vartype="stringId">45.0</param>
             <param name="Tilt" dispname="Tilt" vartype="stringId">45.0</param>
-            <param name="Fov" dispname="Fov" vartype="stringId">45.0</param>
+            <param name="Fov" dispname="Fov" vartype="stringId">40.0</param>
             <param name="Tension" dispname="Tension" vartype="stringId">0.0</param>
             <param name="Continuity" dispname="Continuity" vartype="stringId">0.0</param>
             <param name="Bias" dispname="Bias" vartype="stringId">0.0</param>
@@ -6233,7 +6950,7 @@
             <param name="Distance" dispname="Distance" vartype="stringId">100.0</param>
             <param name="Heading" dispname="Heading" vartype="stringId">45.0</param>
             <param name="Tilt" dispname="Tilt" vartype="stringId">45.0</param>
-            <param name="Fov" dispname="Fov" vartype="stringId">45.0</param>
+            <param name="Fov" dispname="Fov" vartype="stringId">40.0</param>
             <param name="Tension" dispname="Tension" vartype="stringId">0.0</param>
             <param name="Continuity" dispname="Continuity" vartype="stringId">0.0</param>
             <param name="Bias" dispname="Bias" vartype="stringId">0.0</param>
@@ -6461,6 +7178,569 @@
             <command>{</command>
             <command>    __UiSystem __uiSystemToGetOrigin = __uiSystemArray[%PlayerID%];</command>
             <command>    /**/%Name% = %Name% + __uiSystemToGetOrigin.lookAt;</command>
+            <command>}</command>
+        </effect>
+        <effect name="String NTL: Replace Text Declared">
+            <param name="Text" dispname="Text" vartype="stringid">""</param>
+            <param name="ToReplace" dispname="ToReplace" vartype="stringid">""</param>
+            <param name="Replacement" dispname="Replacement" vartype="stringid">""</param>
+            <param name="Variable" dispname="Variable" vartype="stringid">stringVariable</param>
+            <command>string %Variable% = ntlReplaceText(%Text%, %ToReplace%, %Replacement%);</command>
+        </effect>
+        <effect name="String NTL: Replace Text Set">
+            <param name="Text" dispname="Text" vartype="stringid">""</param>
+            <param name="ToReplace" dispname="ToReplace" vartype="stringid">""</param>
+            <param name="Replacement" dispname="Replacement" vartype="stringid">""</param>
+            <param name="Variable" dispname="Variable" vartype="stringid">stringVariable</param>
+            <command>/**/%Variable% = ntlReplaceText(%Text%, %ToReplace%, %Replacement%);</command>
+        </effect>
+        <effect name="String NTL: To Forward Slash Declared">
+            <param name="Text" dispname="Text" vartype="stringid">""</param>
+            <param name="Variable" dispname="Variable" vartype="stringid">stringVariable</param>
+            <command>string %Variable% = ntlToForwardSlash(%Text%);</command>
+        </effect>
+        <effect name="String NTL: To Forward Slash Text Set">
+            <param name="Text" dispname="Text" vartype="stringid">""</param>
+            <param name="Variable" dispname="Variable" vartype="stringid">stringVariable</param>
+            <command>/**/%Variable% = ntlToForwardSlash(%Text%);</command>
+        </effect>
+        <effect name="String NTL: Wrap Text Declared">
+            <param name="Text" dispname="Text" vartype="stringid">""</param>
+            <param name="Length" dispname="Length" vartype="stringid">30</param>
+            <param name="Variable" dispname="Variable" vartype="stringid">stringVariable</param>
+            <command>string %Variable% = ntlWrapText(%Text%, %Length%);</command>
+        </effect>
+        <effect name="String NTL: Wrap Text Set">
+            <param name="Text" dispname="Text" vartype="stringid">""</param>
+            <param name="Length" dispname="Length" vartype="stringid">30</param>
+            <param name="Variable" dispname="Variable" vartype="stringid">stringVariable</param>
+            <command>/**/%Variable% = ntlWrapText(%Text%, %Length%);</command>
+        </effect>
+        <effect name="String NTL: Count Text Lines Declared">
+            <param name="Text" dispname="Text" vartype="stringid">""</param>
+            <param name="Variable" dispname="Variable" vartype="stringid">intVariable</param>
+            <command>int %Variable% = ntlCountTextLines(%Text%);</command>
+        </effect>
+        <effect name="String NTL: Count Text Lines Set">
+            <param name="Text" dispname="Text" vartype="stringid">""</param>
+            <param name="Variable" dispname="Variable" vartype="stringid">intVariable</param>
+            <command>/**/%Variable% = ntlCountTextLines(%Text%);</command>
+        </effect>
+        <effect name="String NTL: Pad Text To Text Count Declared">
+            <param name="Text" dispname="Text" vartype="stringid">""</param>
+            <param name="PadText" dispname="Pad Text" vartype="stringid">""</param>
+            <param name="Count" dispname="Count" vartype="stringid">10</param>
+            <param name="Variable" dispname="Variable" vartype="stringid">stringVariable</param>
+            <command>string %Variable% = ntlPadTextToTextCount(%Text%, %PadText%, %Count%);</command>
+        </effect>
+        <effect name="String NTL: Pad Text To Text Count Set">
+            <param name="Text" dispname="Text" vartype="stringid">""</param>
+            <param name="PadText" dispname="Pad Text" vartype="stringid">""</param>
+            <param name="Count" dispname="Count" vartype="stringid">10</param>
+            <param name="Variable" dispname="Variable" vartype="stringid">stringVariable</param>
+            <command>/**/%Variable% = ntlPadTextToTextCount(%Text%, %PadText%, %Count%);</command>
+        </effect>
+        <effect name="Screen UI V2 NTL: Global Initialise">
+            <param name="AllRelicTechs" dispname="All Relic Techs Unused" vartype="bool">true</param>
+            <param name="Debug" dispname="Debug Click Regions" vartype="bool">false</param>
+            <command>__initialiseOnscreenUiSystem(%AllRelicTechs%, %Debug%);</command>
+        </effect>
+        <effect name="Screen UI V2 NTL: Global Add/Remove Unused Relic Tech">
+            <param name="TechName" dispname="Relic Tech" vartype="relic">RelicAnkhOfRa</param>
+            <param name="Add" dispname="Add" vartype="bool">true</param>
+            <command>if(%Add%){</command>
+            <command>   __onscreenUiRelicTechArray.removeValue(kbTechGetID("%TechName%"));</command>
+            <command>} else {</command>
+            <command>   __onscreenUiRelicTechArray.add(kbTechGetID("%TechName%"));</command>
+            <command>}</command>
+        </effect>
+        <effect name="Screen UI V2 NTL: Create Canvas">
+            <param name="PlayerID" dispname="Player" vartype="player">1</param>
+            <param name="Hide" dispname="Hide Game UI" vartype="bool">true</param>
+            <param name="EnableClick" dispname="Enable Clicks" vartype="bool">true</param>
+            <command>__onscreenUiSystemContextPlayer = %PlayerID%;</command>
+            <command>{</command>
+            <command>   __OnscreenUiSystem __onscreenUiSystemToCreateCanvas = __onscreenUiSystemArray[%PlayerID%];</command>
+            <command>   __onscreenUiSystemToCreateCanvas.clear();</command>
+            <command>   if(%Hide%){</command>
+            <command>       if(__onscreenUiSystemContextPlayer == trCurrentPlayer()){</command>
+            <command>           trExecuteConsoleCommand("gadgetUnreal(\"AGameMinimap\")");</command>
+            <command>           for(int __onscreenUiSystemInterfaceIndex = 0; __onscreenUiSystemInterfaceIndex &lt;= 6; __onscreenUiSystemInterfaceIndex++){</command>
+            <command>               trUIPanelVisibility(__onscreenUiSystemInterfaceIndex, false);</command>
+            <command>           }</command>
+            <command>       }</command>
+            <command>   }</command>
+            <command>   __onscreenUiSystemToCreateCanvas.setCameraPosition(vector(0.5 * kbGetMapXSize(), -10100.0, 0.5 * kbGetMapZSize()), 100.0, 45.0, 89.0, 40.0);</command>
+            <command>   __onscreenUiSystemToCreateCanvas.enter(%EnableClick% == false);</command>
+            <command>   __onscreenUiSystemArray[%PlayerID%] = __onscreenUiSystemToCreateCanvas;</command>
+            <command>}</command>
+        </effect>
+        <effect name="Screen UI V2 NTL: Create Canvas Previous Location">
+            <param name="PlayerID" dispname="Player" vartype="player">1</param>
+            <param name="Hide" dispname="Hide Game UI" vartype="bool">true</param>
+            <param name="EnableClick" dispname="Enable Clicks" vartype="bool">true</param>
+            <command>__onscreenUiSystemContextPlayer = %PlayerID%;</command>
+            <command>{</command>
+            <command>   __OnscreenUiSystem __onscreenUiSystemToCreateCanvas = __onscreenUiSystemArray[%PlayerID%];</command>
+            <command>   __onscreenUiSystemToCreateCanvas.clear();</command>
+            <command>   if(%Hide%){</command>
+            <command>       if(__onscreenUiSystemContextPlayer == trCurrentPlayer()){</command>
+            <command>           trExecuteConsoleCommand("gadgetUnreal(\"AGameMinimap\")");</command>
+            <command>           for(int __onscreenUiSystemInterfaceIndex = 0; __onscreenUiSystemInterfaceIndex &lt;= 6; __onscreenUiSystemInterfaceIndex++){</command>
+            <command>               trUIPanelVisibility(__onscreenUiSystemInterfaceIndex, false);</command>
+            <command>           }</command>
+            <command>       }</command>
+            <command>   }</command>
+            <command>   __onscreenUiSystemToCreateCanvas.enter(%EnableClick% == false);</command>
+            <command>   __onscreenUiSystemArray[%PlayerID%] = __onscreenUiSystemToCreateCanvas;</command>
+            <command>}</command>
+        </effect>
+        <effect name="Screen UI V2 NTL: Create Canvas At Location">
+            <param name="PlayerID" dispname="Player" vartype="player">1</param>
+            <param name="Hide" dispname="Hide Game UI" vartype="bool">true</param>
+            <param name="EnableClick" dispname="Enable Clicks" vartype="bool">true</param>
+            <param name="LookAt" dispname="Look At" vartype="area">0.0, 0.0, 0.0</param>
+            <param name="Distance" dispname="Distance" vartype="stringId">100.0</param>
+            <param name="Heading" dispname="Heading" vartype="stringId">45.0</param>
+            <param name="Tilt" dispname="Tilt" vartype="stringId">45.0</param>
+            <param name="Fov" dispname="Fov" vartype="stringId">40.0</param>
+            <command>__onscreenUiSystemContextPlayer = %PlayerID%;</command>
+            <command>{</command>
+            <command>   __OnscreenUiSystem __onscreenUiSystemToCreateCanvas = __onscreenUiSystemArray[%PlayerID%];</command>
+            <command>   __onscreenUiSystemToCreateCanvas.clear();</command>
+            <command>   if(%Hide%){</command>
+            <command>       if(__onscreenUiSystemContextPlayer == trCurrentPlayer()){</command>
+            <command>           trExecuteConsoleCommand("gadgetUnreal(\"AGameMinimap\")");</command>
+            <command>           for(int __onscreenUiSystemInterfaceIndex = 0; __onscreenUiSystemInterfaceIndex &lt;= 6; __onscreenUiSystemInterfaceIndex++){</command>
+            <command>               trUIPanelVisibility(__onscreenUiSystemInterfaceIndex, false);</command>
+            <command>           }</command>
+            <command>       }</command>
+            <command>   }</command>
+            <command>   __onscreenUiSystemToCreateCanvas.setCameraPosition(vector(%LookAt%), %Distance%, %Heading%, %Tilt%, %Fov%);</command>
+            <command>   __onscreenUiSystemToCreateCanvas.enter(%EnableClick% == false);</command>
+            <command>   __onscreenUiSystemArray[%PlayerID%] = __onscreenUiSystemToCreateCanvas;</command>
+            <command>}</command>
+        </effect>
+        <effect name="Screen UI V2 NTL: Create Canvas At Location Vector">
+            <param name="PlayerID" dispname="Player" vartype="player">1</param>
+            <param name="Hide" dispname="Hide Game UI" vartype="bool">true</param>
+            <param name="EnableClick" dispname="Enable Clicks" vartype="bool">true</param>
+            <param name="LookAt" dispname="Look At" vartype="stringid">vector(0.0, 0.0, 0.0)</param>
+            <param name="Distance" dispname="Distance" vartype="stringId">100.0</param>
+            <param name="Heading" dispname="Heading" vartype="stringId">45.0</param>
+            <param name="Tilt" dispname="Tilt" vartype="stringId">45.0</param>
+            <param name="Fov" dispname="Fov" vartype="stringId">40.0</param>
+            <command>__onscreenUiSystemContextPlayer = %PlayerID%;</command>
+            <command>{</command>
+            <command>   __OnscreenUiSystem __onscreenUiSystemToCreateCanvas = __onscreenUiSystemArray[%PlayerID%];</command>
+            <command>   __onscreenUiSystemToCreateCanvas.clear();</command>
+            <command>   if(%Hide%){</command>
+            <command>       if(__onscreenUiSystemContextPlayer == trCurrentPlayer()){</command>
+            <command>           trExecuteConsoleCommand("gadgetUnreal(\"AGameMinimap\")");</command>
+            <command>           for(int __onscreenUiSystemInterfaceIndex = 0; __onscreenUiSystemInterfaceIndex &lt;= 6; __onscreenUiSystemInterfaceIndex++){</command>
+            <command>               trUIPanelVisibility(__onscreenUiSystemInterfaceIndex, false);</command>
+            <command>           }</command>
+            <command>       }</command>
+            <command>   }</command>
+            <command>   __onscreenUiSystemToCreateCanvas.setCameraPosition(%LookAt%, %Distance%, %Heading%, %Tilt%, %Fov%);</command>
+            <command>   __onscreenUiSystemToCreateCanvas.enter(%EnableClick% == false);</command>
+            <command>   __onscreenUiSystemArray[%PlayerID%] = __onscreenUiSystemToCreateCanvas;</command>
+            <command>}</command>
+        </effect>
+        <effect name="Screen UI V2 NTL: Add Visual">
+            <param name="X" dispname="X" vartype="stringid">0.0</param>
+            <param name="Y" dispname="Y" vartype="stringid">0.0</param>
+            <param name="Content" dispname="Content" vartype="stringid"></param>
+            <command>{</command>
+            <command>   __OnscreenUiSystem __onscreenUiSystem = __onscreenUiSystemArray[__onscreenUiSystemContextPlayer];</command>
+            <command>   __onscreenUiSystem.addDisplay(%X%, %Y%, "%Content%");</command>
+            <command>   __onscreenUiSystemArray[__onscreenUiSystemContextPlayer] = __onscreenUiSystem;</command>
+            <command>}</command>
+        </effect>
+        <effect name="Screen UI V2 NTL: Add Visual Rollover">
+            <param name="X" dispname="X" vartype="stringid">0.0</param>
+            <param name="Y" dispname="Y" vartype="stringid">0.0</param>
+            <param name="Width" dispname="Width" vartype="stringid">0.1</param>
+            <param name="Height" dispname="Height" vartype="stringid">0.1</param>
+            <param name="Content" dispname="Content" vartype="stringid"></param>
+            <param name="RolloverTitle" dispname="Rollover Title" vartype="stringid"></param>
+            <param name="RolloverContent" dispname="Rollover Content" vartype="stringid"></param>
+            <command>{</command>
+            <command>   __OnscreenUiSystem __onscreenUiSystem = __onscreenUiSystemArray[__onscreenUiSystemContextPlayer];</command>
+            <command>   __onscreenUiSystem.addDisplayWithHover(%X%, %Y%, %Width%, %Height%, "%Content%", "%RolloverTitle%", "%RolloverContent%");</command>
+            <command>   __onscreenUiSystemArray[__onscreenUiSystemContextPlayer] = __onscreenUiSystem;</command>
+            <command>}</command>
+        </effect>
+        <effect name="Screen UI V2 NTL: Add Clickable Start -> {">
+            <param name="X" dispname="X" vartype="stringid">0.0</param>
+            <param name="Y" dispname="Y" vartype="stringid">0.0</param>
+            <param name="Width" dispname="Width" vartype="stringid">0.1</param>
+            <param name="Height" dispname="Height" vartype="stringid">0.1</param>
+            <param name="Content" dispname="Content" vartype="stringid"></param>
+            <param name="Variable" dispname="Activating Player Variable" vartype="stringid">p</param>
+            <command>{</command>
+            <command>   __OnscreenUiSystem __onscreenUiSystemBeingAddedTo = __onscreenUiSystemArray[__onscreenUiSystemContextPlayer];</command>
+            <command>   __onscreenUiSystemBeingAddedTo.addClickable(%X%, %Y%, %Width%, %Height%, "%Content%", __EMPTY_PARAMETERS, </command>
+            <command>           [](int %Variable% = 1, ref __Parameters __onscreenUiSystemUnusedParameters) -&gt; void {</command>
+        </effect>
+        <effect name="Screen UI V2 NTL: Add Clickable Start Parameters -> {">
+            <param name="X" dispname="X" vartype="stringid">0.0</param>
+            <param name="Y" dispname="Y" vartype="stringid">0.0</param>
+            <param name="Width" dispname="Width" vartype="stringid">0.1</param>
+            <param name="Height" dispname="Height" vartype="stringid">0.1</param>
+            <param name="Content" dispname="Content" vartype="stringid"></param>
+            <param name="Variable" dispname="Activating Player Variable" vartype="stringid">p</param>
+            <param name="Parameters" dispname="Parameters" vartype="stringid">parameters</param>
+            <command>{</command>
+            <command>   __OnscreenUiSystem __onscreenUiSystemBeingAddedTo = __onscreenUiSystemArray[__onscreenUiSystemContextPlayer];</command>
+            <command>   __onscreenUiSystemBeingAddedTo.addClickable(%X%, %Y%, %Width%, %Height%, "%Content%", %Parameters%, </command>
+            <command>           [](int %Variable% = 1, ref __Parameters %Parameters%) -&gt; void {</command>
+        </effect>
+        <effect name="Screen UI V2 NTL: Add Clickable Event With Player">
+            <param name="X" dispname="X" vartype="stringid">0.0</param>
+            <param name="Y" dispname="Y" vartype="stringid">0.0</param>
+            <param name="Width" dispname="Width" vartype="stringid">0.1</param>
+            <param name="Height" dispname="Height" vartype="stringid">0.1</param>
+            <param name="Content" dispname="Content" vartype="stringid"></param>
+            <param name="Event" dispname="Event" vartype="stringid">event</param>
+            <command>{</command>
+            <command>   __OnscreenUiSystem __onscreenUiSystem = __onscreenUiSystemArray[__onscreenUiSystemContextPlayer];</command>
+            <command>   __Parameters __eventsFireParameters = __createParameters();</command>
+            <command>   __onscreenUiSystem.addClickable(%X%, %Y%, %Width%, %Height%, "%Content%", __eventsFireParameters, </command>
+            <command>           [](int __onscreenUiActivatingPlayer = 1, ref __Parameters __eventsFireParameters) -&gt; void {</command>
+            <command>       __eventsFireParameters.ints.add(__onscreenUiActivatingPlayer);</command>
+            <command>       __eventHandlerStore.fire("%Event%", __eventsFireParameters);</command>
+            <command>   });</command>
+            <command>   __onscreenUiSystemArray[__onscreenUiSystemContextPlayer] = __onscreenUiSystem;</command>
+            <command>}</command>
+        </effect>
+        <effect name="Screen UI V2 NTL: Add Clickable Event With Player And Bool">
+            <param name="X" dispname="X" vartype="stringid">0.0</param>
+            <param name="Y" dispname="Y" vartype="stringid">0.0</param>
+            <param name="Width" dispname="Width" vartype="stringid">0.1</param>
+            <param name="Height" dispname="Height" vartype="stringid">0.1</param>
+            <param name="Content" dispname="Content" vartype="stringid"></param>
+            <param name="Event" dispname="Event" vartype="stringid">event</param>
+            <param name="Value" dispname="Value" vartype="stringid">false</param>
+            <command>{</command>
+            <command>   __OnscreenUiSystem __onscreenUiSystem = __onscreenUiSystemArray[__onscreenUiSystemContextPlayer];</command>
+            <command>   __Parameters __eventsFireParameters = __createParameters();</command>
+            <command>   __eventsFireParameters.bools.add(%Value%);</command>
+            <command>   __onscreenUiSystem.addClickable(%X%, %Y%, %Width%, %Height%, "%Content%", __eventsFireParameters, </command>
+            <command>           [](int __onscreenUiActivatingPlayer = 1, ref __Parameters __eventsFireParameters) -&gt; void {</command>
+            <command>       __eventsFireParameters.ints.add(__onscreenUiActivatingPlayer);</command>
+            <command>       __eventHandlerStore.fire("%Event%", __eventsFireParameters);</command>
+            <command>   });</command>
+            <command>   __onscreenUiSystemArray[__onscreenUiSystemContextPlayer] = __onscreenUiSystem;</command>
+            <command>}</command>
+        </effect>
+        <effect name="Screen UI V2 NTL: Add Clickable Event With Player And Int">
+            <param name="X" dispname="X" vartype="stringid">0.0</param>
+            <param name="Y" dispname="Y" vartype="stringid">0.0</param>
+            <param name="Width" dispname="Width" vartype="stringid">0.1</param>
+            <param name="Height" dispname="Height" vartype="stringid">0.1</param>
+            <param name="Content" dispname="Content" vartype="stringid"></param>
+            <param name="Event" dispname="Event" vartype="stringid">event</param>
+            <param name="Value" dispname="Value" vartype="stringid">0</param>
+            <command>{</command>
+            <command>   __OnscreenUiSystem __onscreenUiSystem = __onscreenUiSystemArray[__onscreenUiSystemContextPlayer];</command>
+            <command>   __Parameters __eventsFireParameters = __createParameters();</command>
+            <command>   __eventsFireParameters.ints.add(0);</command>
+            <command>   __eventsFireParameters.ints.add(%Value%);</command>
+            <command>   __onscreenUiSystem.addClickable(%X%, %Y%, %Width%, %Height%, "%Content%", __eventsFireParameters, </command>
+            <command>           [](int __onscreenUiActivatingPlayer = 1, ref __Parameters __eventsFireParameters) -&gt; void {</command>
+            <command>       __eventsFireParameters.ints[0] = __onscreenUiActivatingPlayer;</command>
+            <command>       __eventHandlerStore.fire("%Event%", __eventsFireParameters);</command>
+            <command>   });</command>
+            <command>   __onscreenUiSystemArray[__onscreenUiSystemContextPlayer] = __onscreenUiSystem;</command>
+            <command>}</command>
+        </effect>
+        <effect name="Screen UI V2 NTL: Add Clickable Event With Player And Float">
+            <param name="X" dispname="X" vartype="stringid">0.0</param>
+            <param name="Y" dispname="Y" vartype="stringid">0.0</param>
+            <param name="Width" dispname="Width" vartype="stringid">0.1</param>
+            <param name="Height" dispname="Height" vartype="stringid">0.1</param>
+            <param name="Content" dispname="Content" vartype="stringid"></param>
+            <param name="Event" dispname="Event" vartype="stringid">event</param>
+            <param name="Value" dispname="Value" vartype="stringid">0.0</param>
+            <command>{</command>
+            <command>   __OnscreenUiSystem __onscreenUiSystem = __onscreenUiSystemArray[__onscreenUiSystemContextPlayer];</command>
+            <command>   __Parameters __eventsFireParameters = __createParameters();</command>
+            <command>   __eventsFireParameters.floats.add(%Value%);</command>
+            <command>   __onscreenUiSystem.addClickable(%X%, %Y%, %Width%, %Height%, "%Content%", __eventsFireParameters, </command>
+            <command>           [](int __onscreenUiActivatingPlayer = 1, ref __Parameters __eventsFireParameters) -&gt; void {</command>
+            <command>       __eventsFireParameters.ints.add(__onscreenUiActivatingPlayer);</command>
+            <command>       __eventHandlerStore.fire("%Event%", __eventsFireParameters);</command>
+            <command>   });</command>
+            <command>   __onscreenUiSystemArray[__onscreenUiSystemContextPlayer] = __onscreenUiSystem;</command>
+            <command>}</command>
+        </effect>
+        <effect name="Screen UI V2 NTL: Add Clickable Event With Player And String">
+            <param name="X" dispname="X" vartype="stringid">0.0</param>
+            <param name="Y" dispname="Y" vartype="stringid">0.0</param>
+            <param name="Width" dispname="Width" vartype="stringid">0.1</param>
+            <param name="Height" dispname="Height" vartype="stringid">0.1</param>
+            <param name="Content" dispname="Content" vartype="stringid"></param>
+            <param name="Event" dispname="Event" vartype="stringid">event</param>
+            <param name="Value" dispname="Value" vartype="stringid">""</param>
+            <command>{</command>
+            <command>   __OnscreenUiSystem __onscreenUiSystem = __onscreenUiSystemArray[__onscreenUiSystemContextPlayer];</command>
+            <command>   __Parameters __eventsFireParameters = __createParameters();</command>
+            <command>   __eventsFireParameters.strings.add(%Value%);</command>
+            <command>   __onscreenUiSystem.addClickable(%X%, %Y%, %Width%, %Height%, "%Content%", __eventsFireParameters, </command>
+            <command>           [](int __onscreenUiActivatingPlayer = 1, ref __Parameters __eventsFireParameters) -&gt; void {</command>
+            <command>       __eventsFireParameters.ints.add(__onscreenUiActivatingPlayer);</command>
+            <command>       __eventHandlerStore.fire("%Event%", __eventsFireParameters);</command>
+            <command>   });</command>
+            <command>   __onscreenUiSystemArray[__onscreenUiSystemContextPlayer] = __onscreenUiSystem;</command>
+            <command>}</command>
+        </effect>
+        <effect name="Screen UI V2 NTL: Add Clickable Event With Player And Vector">
+            <param name="X" dispname="X" vartype="stringid">0.0</param>
+            <param name="Y" dispname="Y" vartype="stringid">0.0</param>
+            <param name="Width" dispname="Width" vartype="stringid">0.1</param>
+            <param name="Height" dispname="Height" vartype="stringid">0.1</param>
+            <param name="Content" dispname="Content" vartype="stringid"></param>
+            <param name="Event" dispname="Event" vartype="stringid">event</param>
+            <param name="Value" dispname="Value" vartype="stringid">vector(0.0, 0.0, 0.0)</param>
+            <command>{</command>
+            <command>   __OnscreenUiSystem __onscreenUiSystem = __onscreenUiSystemArray[__onscreenUiSystemContextPlayer];</command>
+            <command>   __Parameters __eventsFireParameters = __createParameters();</command>
+            <command>   __eventsFireParameters.vectors.add(%Value%);</command>
+            <command>   __onscreenUiSystem.addClickable(%X%, %Y%, %Width%, %Height%, "%Content%", __eventsFireParameters, </command>
+            <command>           [](int __onscreenUiActivatingPlayer = 1, ref __Parameters __eventsFireParameters) -&gt; void {</command>
+            <command>       __eventsFireParameters.ints.add(__onscreenUiActivatingPlayer);</command>
+            <command>       __eventHandlerStore.fire("%Event%", __eventsFireParameters);</command>
+            <command>   });</command>
+            <command>   __onscreenUiSystemArray[__onscreenUiSystemContextPlayer] = __onscreenUiSystem;</command>
+            <command>}</command>
+        </effect>
+        <effect name="Screen UI V2 NTL: Add Clickable Event With Parameters">
+            <param name="X" dispname="X" vartype="stringid">0.0</param>
+            <param name="Y" dispname="Y" vartype="stringid">0.0</param>
+            <param name="Width" dispname="Width" vartype="stringid">0.1</param>
+            <param name="Height" dispname="Height" vartype="stringid">0.1</param>
+            <param name="Content" dispname="Content" vartype="stringid"></param>
+            <param name="Event" dispname="Event" vartype="stringid">event</param>
+            <param name="Value" dispname="Value" vartype="stringid">parameters</param>
+            <param name="AddPlayer" dispname="Add Activating Player" vartype="bool">true</param>
+            <command>{</command>
+            <command>   __OnscreenUiSystem __onscreenUiSystem = __onscreenUiSystemArray[__onscreenUiSystemContextPlayer];</command>
+            <command>   __onscreenUiSystem.addClickable(%X%, %Y%, %Width%, %Height%, "%Content%", %Value%, </command>
+            <command>           [](int __onscreenUiActivatingPlayer = 1, ref __Parameters __eventsFireParameters) -&gt; void {</command>
+            <command>       if(%AddPlayer%){</command>
+            <command>           __eventsFireParameters.ints.add(__onscreenUiActivatingPlayer);</command>
+            <command>       }</command>
+            <command>       __eventHandlerStore.fire("%Event%", __eventsFireParameters);</command>
+            <command>   });</command>
+            <command>   __onscreenUiSystemArray[__onscreenUiSystemContextPlayer] = __onscreenUiSystem;</command>
+            <command>}</command>
+        </effect>
+        <effect name="Screen UI V2 NTL: Add Clickable Rollover Start -> {">
+            <param name="X" dispname="X" vartype="stringid">0.0</param>
+            <param name="Y" dispname="Y" vartype="stringid">0.0</param>
+            <param name="Width" dispname="Width" vartype="stringid">0.1</param>
+            <param name="Height" dispname="Height" vartype="stringid">0.1</param>
+            <param name="Content" dispname="Content" vartype="stringid"></param>
+            <param name="RolloverTitle" dispname="Rollover Title" vartype="stringid"></param>
+            <param name="RolloverContent" dispname="Rollover Content" vartype="stringid"></param>
+            <param name="Variable" dispname="Activating Player Variable" vartype="stringid">p</param>
+            <command>{</command>
+            <command>   __OnscreenUiSystem __onscreenUiSystemBeingAddedTo = __onscreenUiSystemArray[__onscreenUiSystemContextPlayer];</command>
+            <command>   __onscreenUiSystemBeingAddedTo.addClickableWithHover(%X%, %Y%, %Width%, %Height%, "%Content%", "%RolloverTitle%", "%RolloverContent%", __EMPTY_PARAMETERS, </command>
+            <command>           [](int %Variable% = 1, ref __Parameters __onscreenUiSystemUnusedParameters) -&gt; void {</command>
+        </effect>
+        <effect name="Screen UI V2 NTL: Add Clickable Rollover Start Parameters -> {">
+            <param name="X" dispname="X" vartype="stringid">0.0</param>
+            <param name="Y" dispname="Y" vartype="stringid">0.0</param>
+            <param name="Width" dispname="Width" vartype="stringid">0.1</param>
+            <param name="Height" dispname="Height" vartype="stringid">0.1</param>
+            <param name="Content" dispname="Content" vartype="stringid"></param>
+            <param name="RolloverTitle" dispname="Rollover Title" vartype="stringid"></param>
+            <param name="RolloverContent" dispname="Rollover Content" vartype="stringid"></param>
+            <param name="Variable" dispname="Activating Player Variable" vartype="stringid">p</param>
+            <param name="Parameters" dispname="Parameters" vartype="stringid">parameters</param>
+            <command>{</command>
+            <command>   __OnscreenUiSystem __onscreenUiSystemBeingAddedTo = __onscreenUiSystemArray[__onscreenUiSystemContextPlayer];</command>
+            <command>   __onscreenUiSystemBeingAddedTo.addClickableWithHover(%X%, %Y%, %Width%, %Height%, "%Content%", "%RolloverTitle%", "%RolloverContent%", %Parameters%, </command>
+            <command>           [](int %Variable% = 1, ref __Parameters %Parameters%) -&gt; void {</command>
+        </effect>
+        <effect name="Screen UI V2 NTL: Add Clickable Rollover Event With Player">
+            <param name="X" dispname="X" vartype="stringid">0.0</param>
+            <param name="Y" dispname="Y" vartype="stringid">0.0</param>
+            <param name="Width" dispname="Width" vartype="stringid">0.1</param>
+            <param name="Height" dispname="Height" vartype="stringid">0.1</param>
+            <param name="Content" dispname="Content" vartype="stringid"></param>
+            <param name="RolloverTitle" dispname="Rollover Title" vartype="stringid"></param>
+            <param name="RolloverContent" dispname="Rollover Content" vartype="stringid"></param>
+            <param name="Event" dispname="Event" vartype="stringid">event</param>
+            <command>{</command>
+            <command>   __OnscreenUiSystem __onscreenUiSystem = __onscreenUiSystemArray[__onscreenUiSystemContextPlayer];</command>
+            <command>   __Parameters __eventsFireParameters = __createParameters();</command>
+            <command>   __onscreenUiSystem.addClickableWithHover(%X%, %Y%, %Width%, %Height%, "%Content%", "%RolloverTitle%", "%RolloverContent%", __eventsFireParameters, </command>
+            <command>           [](int __onscreenUiActivatingPlayer = 1, ref __Parameters __eventsFireParameters) -&gt; void {</command>
+            <command>       __eventsFireParameters.ints.add(__onscreenUiActivatingPlayer);</command>
+            <command>       __eventHandlerStore.fire("%Event%", __eventsFireParameters);</command>
+            <command>   });</command>
+            <command>   __onscreenUiSystemArray[__onscreenUiSystemContextPlayer] = __onscreenUiSystem;</command>
+            <command>}</command>
+        </effect>
+        <effect name="Screen UI V2 NTL: Add Clickable Rollover Event With Player And Bool">
+            <param name="X" dispname="X" vartype="stringid">0.0</param>
+            <param name="Y" dispname="Y" vartype="stringid">0.0</param>
+            <param name="Width" dispname="Width" vartype="stringid">0.1</param>
+            <param name="Height" dispname="Height" vartype="stringid">0.1</param>
+            <param name="Content" dispname="Content" vartype="stringid"></param>
+            <param name="RolloverTitle" dispname="Rollover Title" vartype="stringid"></param>
+            <param name="RolloverContent" dispname="Rollover Content" vartype="stringid"></param>
+            <param name="Event" dispname="Event" vartype="stringid">event</param>
+            <param name="Value" dispname="Value" vartype="stringid">false</param>
+            <command>{</command>
+            <command>   __OnscreenUiSystem __onscreenUiSystem = __onscreenUiSystemArray[__onscreenUiSystemContextPlayer];</command>
+            <command>   __Parameters __eventsFireParameters = __createParameters();</command>
+            <command>   __eventsFireParameters.bools.add(%Value%);</command>
+            <command>   __onscreenUiSystem.addClickableWithHover(%X%, %Y%, %Width%, %Height%, "%Content%", "%RolloverTitle%", "%RolloverContent%", __eventsFireParameters, </command>
+            <command>           [](int __onscreenUiActivatingPlayer = 1, ref __Parameters __eventsFireParameters) -&gt; void {</command>
+            <command>       __eventsFireParameters.ints.add(__onscreenUiActivatingPlayer);</command>
+            <command>       __eventHandlerStore.fire("%Event%", __eventsFireParameters);</command>
+            <command>   });</command>
+            <command>   __onscreenUiSystemArray[__onscreenUiSystemContextPlayer] = __onscreenUiSystem;</command>
+            <command>}</command>
+        </effect>
+        <effect name="Screen UI V2 NTL: Add Clickable Rollover Event With Player And Int">
+            <param name="X" dispname="X" vartype="stringid">0.0</param>
+            <param name="Y" dispname="Y" vartype="stringid">0.0</param>
+            <param name="Width" dispname="Width" vartype="stringid">0.1</param>
+            <param name="Height" dispname="Height" vartype="stringid">0.1</param>
+            <param name="Content" dispname="Content" vartype="stringid"></param>
+            <param name="RolloverTitle" dispname="Rollover Title" vartype="stringid"></param>
+            <param name="RolloverContent" dispname="Rollover Content" vartype="stringid"></param>
+            <param name="Event" dispname="Event" vartype="stringid">event</param>
+            <param name="Value" dispname="Value" vartype="stringid">0</param>
+            <command>{</command>
+            <command>   __OnscreenUiSystem __onscreenUiSystem = __onscreenUiSystemArray[__onscreenUiSystemContextPlayer];</command>
+            <command>   __Parameters __eventsFireParameters = __createParameters();</command>
+            <command>   __eventsFireParameters.ints.add(0);</command>
+            <command>   __eventsFireParameters.ints.add(%Value%);</command>
+            <command>   __onscreenUiSystem.addClickableWithHover(%X%, %Y%, %Width%, %Height%, "%Content%", "%RolloverTitle%", "%RolloverContent%", __eventsFireParameters, </command>
+            <command>           [](int __onscreenUiActivatingPlayer = 1, ref __Parameters __eventsFireParameters) -&gt; void {</command>
+            <command>       __eventsFireParameters.ints[0] = __onscreenUiActivatingPlayer;</command>
+            <command>       __eventHandlerStore.fire("%Event%", __eventsFireParameters);</command>
+            <command>   });</command>
+            <command>   __onscreenUiSystemArray[__onscreenUiSystemContextPlayer] = __onscreenUiSystem;</command>
+            <command>}</command>
+        </effect>
+        <effect name="Screen UI V2 NTL: Add Clickable Rollover Event With Player And Float">
+            <param name="X" dispname="X" vartype="stringid">0.0</param>
+            <param name="Y" dispname="Y" vartype="stringid">0.0</param>
+            <param name="Width" dispname="Width" vartype="stringid">0.1</param>
+            <param name="Height" dispname="Height" vartype="stringid">0.1</param>
+            <param name="Content" dispname="Content" vartype="stringid"></param>
+            <param name="RolloverTitle" dispname="Rollover Title" vartype="stringid"></param>
+            <param name="RolloverContent" dispname="Rollover Content" vartype="stringid"></param>
+            <param name="Event" dispname="Event" vartype="stringid">event</param>
+            <param name="Value" dispname="Value" vartype="stringid">0.0</param>
+            <command>{</command>
+            <command>   __OnscreenUiSystem __onscreenUiSystem = __onscreenUiSystemArray[__onscreenUiSystemContextPlayer];</command>
+            <command>   __Parameters __eventsFireParameters = __createParameters();</command>
+            <command>   __eventsFireParameters.floats.add(%Value%);</command>
+            <command>   __onscreenUiSystem.addClickableWithHover(%X%, %Y%, %Width%, %Height%, "%Content%", "%RolloverTitle%", "%RolloverContent%", __eventsFireParameters, </command>
+            <command>           [](int __onscreenUiActivatingPlayer = 1, ref __Parameters __eventsFireParameters) -&gt; void {</command>
+            <command>       __eventsFireParameters.ints.add(__onscreenUiActivatingPlayer);</command>
+            <command>       __eventHandlerStore.fire("%Event%", __eventsFireParameters);</command>
+            <command>   });</command>
+            <command>   __onscreenUiSystemArray[__onscreenUiSystemContextPlayer] = __onscreenUiSystem;</command>
+            <command>}</command>
+        </effect>
+        <effect name="Screen UI V2 NTL: Add Clickable Rollover Event With Player And String">
+            <param name="X" dispname="X" vartype="stringid">0.0</param>
+            <param name="Y" dispname="Y" vartype="stringid">0.0</param>
+            <param name="Width" dispname="Width" vartype="stringid">0.1</param>
+            <param name="Height" dispname="Height" vartype="stringid">0.1</param>
+            <param name="Content" dispname="Content" vartype="stringid"></param>
+            <param name="RolloverTitle" dispname="Rollover Title" vartype="stringid"></param>
+            <param name="RolloverContent" dispname="Rollover Content" vartype="stringid"></param>
+            <param name="Event" dispname="Event" vartype="stringid">event</param>
+            <param name="Value" dispname="Value" vartype="stringid">""</param>
+            <command>{</command>
+            <command>   __OnscreenUiSystem __onscreenUiSystem = __onscreenUiSystemArray[__onscreenUiSystemContextPlayer];</command>
+            <command>   __Parameters __eventsFireParameters = __createParameters();</command>
+            <command>   __eventsFireParameters.strings.add(%Value%);</command>
+            <command>   __onscreenUiSystem.addClickableWithHover(%X%, %Y%, %Width%, %Height%, "%Content%", "%RolloverTitle%", "%RolloverContent%", __eventsFireParameters, </command>
+            <command>           [](int __onscreenUiActivatingPlayer = 1, ref __Parameters __eventsFireParameters) -&gt; void {</command>
+            <command>       __eventsFireParameters.ints.add(__onscreenUiActivatingPlayer);</command>
+            <command>       __eventHandlerStore.fire("%Event%", __eventsFireParameters);</command>
+            <command>   });</command>
+            <command>   __onscreenUiSystemArray[__onscreenUiSystemContextPlayer] = __onscreenUiSystem;</command>
+            <command>}</command>
+        </effect>
+        <effect name="Screen UI V2 NTL: Add Clickable Rollover Event With Player And Vector">
+            <param name="X" dispname="X" vartype="stringid">0.0</param>
+            <param name="Y" dispname="Y" vartype="stringid">0.0</param>
+            <param name="Width" dispname="Width" vartype="stringid">0.1</param>
+            <param name="Height" dispname="Height" vartype="stringid">0.1</param>
+            <param name="Content" dispname="Content" vartype="stringid"></param>
+            <param name="RolloverTitle" dispname="Rollover Title" vartype="stringid"></param>
+            <param name="RolloverContent" dispname="Rollover Content" vartype="stringid"></param>
+            <param name="Event" dispname="Event" vartype="stringid">event</param>
+            <param name="Value" dispname="Value" vartype="stringid">vector(0.0, 0.0, 0.0)</param>
+            <command>{</command>
+            <command>   __OnscreenUiSystem __onscreenUiSystem = __onscreenUiSystemArray[__onscreenUiSystemContextPlayer];</command>
+            <command>   __Parameters __eventsFireParameters = __createParameters();</command>
+            <command>   __eventsFireParameters.vectors.add(%Value%);</command>
+            <command>   __onscreenUiSystem.addClickable(%X%, %Y%, %Width%, %Height%, "%Content%", "%RolloverTitle%", "%RolloverContent%", __eventsFireParameters, </command>
+            <command>           [](int __onscreenUiActivatingPlayer = 1, ref __Parameters __eventsFireParameters) -&gt; void {</command>
+            <command>       __eventsFireParameters.ints.add(__onscreenUiActivatingPlayer);</command>
+            <command>       __eventHandlerStore.fire("%Event%", __eventsFireParameters);</command>
+            <command>   });</command>
+            <command>   __onscreenUiSystemArray[__onscreenUiSystemContextPlayer] = __onscreenUiSystem;</command>
+            <command>}</command>
+        </effect>
+        <effect name="Screen UI V2 NTL: Add Clickable Rollover Event With Parameters">
+            <param name="X" dispname="X" vartype="stringid">0.0</param>
+            <param name="Y" dispname="Y" vartype="stringid">0.0</param>
+            <param name="Width" dispname="Width" vartype="stringid">0.1</param>
+            <param name="Height" dispname="Height" vartype="stringid">0.1</param>
+            <param name="Content" dispname="Content" vartype="stringid"></param>
+            <param name="RolloverTitle" dispname="Rollover Title" vartype="stringid"></param>
+            <param name="RolloverContent" dispname="Rollover Content" vartype="stringid"></param>
+            <param name="Event" dispname="Event" vartype="stringid">event</param>
+            <param name="Value" dispname="Value" vartype="stringid">parameters</param>
+            <param name="AddPlayer" dispname="Add Activating Player" vartype="bool">true</param>
+            <command>{</command>
+            <command>   __OnscreenUiSystem __onscreenUiSystem = __onscreenUiSystemArray[__onscreenUiSystemContextPlayer];</command>
+            <command>   __onscreenUiSystem.addClickable(%X%, %Y%, %Width%, %Height%, "%Content%", "%RolloverTitle%", "%RolloverContent%", </command>
+            <command>           [](int __onscreenUiActivatingPlayer = 1, ref __Parameters __eventsFireParameters) -&gt; void {</command>
+            <command>       if(%AddPlayer%){</command>
+            <command>           __eventsFireParameters.ints.add(__onscreenUiActivatingPlayer);</command>
+            <command>       }</command>
+            <command>       __eventHandlerStore.fire("%Event%", __eventsFireParameters);</command>
+            <command>   });</command>
+            <command>   __onscreenUiSystemArray[__onscreenUiSystemContextPlayer] = __onscreenUiSystem;</command>
+            <command>}</command>
+        </effect>
+        <effect name="Screen UI V2 NTL: Add Clickable End }">
+            <command>    });</command>
+            <command>    __onscreenUiSystemArray[__onscreenUiSystemContextPlayer] = __onscreenUiSystemBeingAddedTo;</command>
+            <command>}</command>
+        </effect>
+        <effect name="Screen UI V2 NTL: Exit">
+            <param name="PlayerID" dispname="Player" vartype="player">1</param>
+            <param name="RestoreCamera" dispname="Restore Camera" vartype="bool">true</param>
+            <param name="Fov" dispname="Restore Fov" vartype="stringId">40.0</param>
+            <param name="RestoreUI" dispname="Show Game UI" vartype="bool">true</param>
+            <command>{</command>
+            <command>   __OnscreenUiSystem __onscreenUiSystemToExit = __onscreenUiSystemArray[%PlayerID%];</command>
+            <command>   __onscreenUiSystemToExit.exit(%RestoreCamera%, %Fov%);</command>
+            <command>   __onscreenUiSystemArray[%PlayerID%] = __onscreenUiSystemToExit;</command>
+            <command>   if(%RestoreUI%){</command>
+            <command>       if(%PlayerID% == trCurrentPlayer()){</command>
+            <command>           trExecuteConsoleCommand("gadgetReal(\"AGameMinimap\")");</command>
+            <command>           for(int __onscreenUiSystemInterfaceIndex = 0; __onscreenUiSystemInterfaceIndex &lt;= 6; __onscreenUiSystemInterfaceIndex++){</command>
+            <command>               trUIPanelVisibility(__onscreenUiSystemInterfaceIndex, true);</command>
+            <command>           }</command>
+            <command>       }</command>
+            <command>   }</command>
             <command>}</command>
         </effect>
     </effects>

@@ -7743,5 +7743,9 @@
             <command>   }</command>
             <command>}</command>
         </effect>
+        <effect name="Player: Take Control of Player Fixed">
+            <param name="Player" dispname="Player" vartype="player">1</param>
+            <command>trExecuteConsoleCommand("configToggle(\"aiDebug\") player("+%Player%+") configToggle(\"aiDebug\") player("+%Player%+")");</command>
+        </effect>
     </effects>
 </trigger>

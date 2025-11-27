@@ -49,6 +49,7 @@
             checkBoxConditional = new CheckBox();
             checkBoxFreetext = new CheckBox();
             checkBoxById = new CheckBox();
+            checkBoxNotConditions = new CheckBox();
             checkBoxRelax = new CheckBox();
             tabPageResult = new TabPage();
             resultBox = new GroupBox();
@@ -264,6 +265,7 @@
             groupBox4.Controls.Add(checkBoxConditional);
             groupBox4.Controls.Add(checkBoxFreetext);
             groupBox4.Controls.Add(checkBoxById);
+            groupBox4.Controls.Add(checkBoxNotConditions);
             groupBox4.Controls.Add(checkBoxRelax);
             groupBox4.Dock = DockStyle.Left;
             groupBox4.Location = new Point(3, 27);
@@ -342,6 +344,18 @@
             checkBoxById.TabIndex = 1;
             checkBoxById.Text = "By ID";
             checkBoxById.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxNotConditions
+            // 
+            checkBoxNotConditions.AutoSize = true;
+            checkBoxNotConditions.Checked = true;
+            checkBoxNotConditions.CheckState = CheckState.Checked;
+            checkBoxNotConditions.Location = new Point(6, 275);
+            checkBoxNotConditions.Name = "checkBoxNotConditions";
+            checkBoxNotConditions.Size = new Size(159, 29);
+            checkBoxNotConditions.TabIndex = 2;
+            checkBoxNotConditions.Text = "Not Conditions";
+            checkBoxNotConditions.UseVisualStyleBackColor = true;
             // 
             // checkBoxRelax
             // 
@@ -565,5 +579,6 @@
         private CheckBox checkBoxFreeproto;
         private CheckBox checkBoxRemoveDuplicates;
         private CheckBox checkBoxStat;
+        private CheckBox checkBoxNotConditions;
     }
 }

@@ -17,7 +17,7 @@ namespace TriggerConverter.process
         private GenerateManualConditionsAndEffects generator = new GenerateManualConditionsAndEffects();
         private RemoveDuplicateTriggers removeDuplicateTriggers = new RemoveDuplicateTriggers();
 
-        public TriggerAll ProcessTriggers(TriggerAll triggerAll, bool conditional, bool stat, bool byId, bool freeProto, bool manual, string[] manualTypes, bool relax, string[] relaxTypes, bool removeDuplicates)
+        public TriggerAll ProcessTriggers(TriggerAll triggerAll, bool conditional, bool stat, bool byId, bool freeProto, bool manual, string[] manualTypes, bool relax, string[] relaxTypes, bool removeDuplicates, bool addNotToConditions)
         {
             TriggerAll workingTriggerAll = triggerAll;
             if (stat)
@@ -48,6 +48,11 @@ namespace TriggerConverter.process
             {
                 GenerateConditionalEffects generateConditionalEffects = new GenerateConditionalEffects();
                 workingTriggerAll = generateConditionalEffects.Generate(workingTriggerAll);
+            }
+            if (addNotToConditions)
+            {
+                GenerateAddNotToConditions generateAddNotToConditions = new GenerateAddNotToConditions();
+                workingTriggerAll = generateAddNotToConditions.Generate(workingTriggerAll);
             }
             if (removeDuplicates)
             {

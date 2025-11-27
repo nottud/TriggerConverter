@@ -41,7 +41,8 @@ namespace TriggerConverter
             foreach (string varType in VarType.ALL)
             {
                 checkedListBoxFreetext.Items.Add(varType);
-                if(varType != VarType.SNIPPET && varType != VarType.SNIPPETSMALL && varType != VarType.STRINGID && varType != VarType.SOUND) {
+                if (varType != VarType.SNIPPET && varType != VarType.SNIPPETSMALL && varType != VarType.STRINGID && varType != VarType.SOUND)
+                {
                     CheckVarType(checkedListBoxFreetext, varType);
                 }
                 checkedListBoxRelax.Items.Add(varType);
@@ -68,7 +69,8 @@ namespace TriggerConverter
                 GetCheckedVarTypes(checkedListBoxFreetext),
                 checkBoxRelax.Checked,
                 GetCheckedVarTypes(checkedListBoxRelax),
-                checkBoxRemoveDuplicates.Checked);
+                checkBoxRemoveDuplicates.Checked,
+                checkBoxNotConditions.Checked);
             Writer writer = new Writer();
             textBoxResult.Text = writer.ToXml(TriggerAll.StripOriginal(processed, originalTriggers));
             tabControl1.SelectTab(tabPageResult);
@@ -79,7 +81,8 @@ namespace TriggerConverter
             string toConvertText = textBoxConvert.Text;
             string escapedText = xmlTools.EscapeXml(toConvertText);
             string[] lines = escapedText.Split("\r\n");
-            for(int i = 0; i < lines.Length; i++) {
+            for (int i = 0; i < lines.Length; i++)
+            {
                 lines[i] = "<command>" + lines[i] + "</command>";
             }
             textBoxConvert.Text = String.Join("\r\n", lines);

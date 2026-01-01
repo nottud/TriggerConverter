@@ -14,7 +14,7 @@ namespace TriggerConverter.process
             List<TriggerCondition> triggerConditions = new List<TriggerCondition>();
             foreach (TriggerCondition triggerCondition in triggerAll.Conditions)
             {
-                if (!triggerCondition.DirectCode)
+                if (!triggerCondition.DirectCode && triggerCondition.Name != "Always")
                 {
                     List<TriggerParameter> parameters = new List<TriggerParameter>();
                     parameters.AddRange(triggerCondition.Params);

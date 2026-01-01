@@ -3201,9 +3201,13 @@
             <command>const float __ONSCREEN_UI_SMALL_SCALE_MULTIPLIER = 1.355;</command>
             <command>const float __ONSCREEN_UI_LOOK_DISTANCE = 57.0;</command>
             <command>const float __ONSCREEN_UI_OFFSCREEN_Z = 1000.0;</command>
+            <command>void(int, ref __Parameters) __ONSCREEN_UI_EMPTY_DYNAMIC_CONTENT = [](int pToUse = 1, ref __Parameters parametersToUse) -&gt; void {};</command>
             <command></command>
             <command>int[] __onscreenUiRelicTechArray = default;</command>
             <command>int __onscreenUiSystemContextPlayer = -1;</command>
+            <command>string __onscreenUiSystemDynamicContent = "";</command>
+            <command>string __onscreenUiSystemDynamicRolloverName = "";</command>
+            <command>string __onscreenUiSystemDynamicRolloverDescription = "";</command>
             <command></command>
             <command>class __OnscreenUiEntry {</command>
             <command>    string unitType = "";</command>
@@ -3216,12 +3220,14 @@
             <command>    string content = "";</command>
             <command>    string rolloverName = "";</command>
             <command>    string rolloverDescription = "";</command>
+            <command>    void(int, ref __Parameters) calculateContent = __ONSCREEN_UI_EMPTY_DYNAMIC_CONTENT;</command>
             <command>    bool showBackground = false;</command>
             <command>    __Parameters parameters;</command>
             <command>    void (int, ref __Parameters) handler = [](int pToUse = 1, ref __Parameters parametersToUse) -&gt; void {};</command>
             <command>    int[] clickableUnitArray = default;</command>
             <command>    int id = -1;</command>
             <command>    int rolloverId = -1;</command>
+            <command>    bool dynamic = false;</command>
             <command>    void destroyUnits(int p = 1){</command>
             <command>        for (int i = 0; i &lt; clickableUnitArray.size(); i++){</command>
             <command>            trUnitSelectClear();</command>
@@ -3237,16 +3243,26 @@
             <command>    }</command>
             <command>    void show(int p = 1, vector lookAt = cOriginVector, vector xAxisDirection = cOriginVector, vector yAxisDirection = cOriginVector, float lookAtHeading = 0.0, float lookAtTilt = 0.0, </command>
             <command>           int page = 0, bool fakeShow = false, bool debug = false, bool disableClick = false, vector cameraPosition = cOriginVector){</command>
+            <command>        if(dynamic){</command>
+            <command>           content = "";</command>
+            <command>           rolloverName = "";</command>
+            <command>           rolloverDescription = "";</command>
+            <command>           calculateContent(p, parameters);</command>
+            <command>           content = __onscreenUiSystemDynamicContent;</command>
+            <command>           rolloverName = __onscreenUiSystemDynamicRolloverName;</command>
+            <command>           rolloverDescription = __onscreenUiSystemDynamicRolloverDescription;</command>
+            <command>        }</command>
+            <command>        string adjustedContent = (showBackground &amp;&amp; content != "") ? content : ("&lt;icon=(1,10000)(0)&gt;\n" + content);</command>
             <command>        if (fakeShow){</command>
-            <command>            if (trCurrentPlayer() == p &amp;&amp; content != ""){</command>
-            <command>                trWorldSpacePromptArea("__OnscreenUiSystem" + id + "Page" + page, lookAt + xAxisDirection * x + yAxisDirection * (y + __ONSCREEN_UI_OFFSCREEN_Z), content, cOriginVector, showBackground);</command>
+            <command>            if (trCurrentPlayer() == p &amp;&amp; adjustedContent != ""){</command>
+            <command>                trWorldSpacePromptArea("__OnscreenUiSystem" + id + "Page" + page, lookAt + xAxisDirection * x + yAxisDirection * (y + __ONSCREEN_UI_OFFSCREEN_Z), adjustedContent, cOriginVector, showBackground);</command>
             <command>            }</command>
             <command>            return;</command>
             <command>        }</command>
-            <command>        if (trCurrentPlayer() == p &amp;&amp; content != ""){</command>
+            <command>        if (trCurrentPlayer() == p &amp;&amp; adjustedContent != ""){</command>
             <command>            vector promptLocation = lookAt + xAxisDirection * x + yAxisDirection * y;</command>;
             <command>            vector directionVector = xsVectorNormalize(promptLocation - cameraPosition);</command>
-            <command>            trWorldSpacePromptArea("__OnscreenUiSystem" + id + "Page" + page, cameraPosition + directionVector * 100000000.0, content, cOriginVector, showBackground);</command>
+            <command>            trWorldSpacePromptArea("__OnscreenUiSystem" + id + "Page" + page, cameraPosition + directionVector * 100000000.0, adjustedContent, cOriginVector, showBackground);</command>
             <command>        }</command>
             <command>        if (hoverable){</command>
             <command>            trTechHideEffects(__onscreenUiRelicTechArray[rolloverId], p, true);</command>
@@ -3307,6 +3323,39 @@
             <command>            clickableUnitArray.add(unit);</command>
             <command>        }</command>
             <command>    }</command>
+            <command>    void dynamicUpdate(int p = 1, vector lookAt = cOriginVector, vector xAxisDirection = cOriginVector, vector yAxisDirection = cOriginVector, float lookAtHeading = 0.0, float lookAtTilt = 0.0, </command>
+            <command>            int page = 0, vector cameraPosition = cOriginVector){</command>
+            <command>        if(dynamic == false){</command>
+            <command>            return;</command>
+            <command>        }</command>
+            <command>        __onscreenUiSystemDynamicContent = content;</command>
+            <command>        __onscreenUiSystemDynamicRolloverName = rolloverName;</command>
+            <command>        __onscreenUiSystemDynamicRolloverDescription = rolloverDescription;</command>
+            <command>        calculateContent(p, parameters);</command>
+            <command>        if(__onscreenUiSystemDynamicContent != content){</command>
+            <command>            content = __onscreenUiSystemDynamicContent;</command>
+            <command>            string adjustedContent = (showBackground &amp;&amp; content != "") ? content : ("&lt;icon=(1,10000)(0)&gt;\n" + content);</command>
+            <command>            if(trCurrentPlayer() == p){</command>
+            <command>                if(adjustedContent != ""){</command>
+            <command>                    vector promptLocation = lookAt + xAxisDirection * x + yAxisDirection * y;</command>
+            <command>                    vector directionVector = xsVectorNormalize(promptLocation - cameraPosition);</command>
+            <command>                    trWorldSpacePromptArea("__OnscreenUiSystem" + id + "Page" + page, cameraPosition + directionVector * 100000000.0, adjustedContent, cOriginVector, showBackground);</command>
+            <command>                } else {</command>
+            <command>                    trWorldSpacePromptHide("__OnscreenUiSystem" + id + "Page" + page);</command>
+            <command>                }</command>
+            <command>            }</command>
+            <command>        }</command>
+            <command>        if(hoverable){</command>
+            <command>            if(__onscreenUiSystemDynamicRolloverName != rolloverName){</command>
+            <command>                rolloverName = __onscreenUiSystemDynamicRolloverName;</command>
+            <command>                trTechSetStringID(__onscreenUiRelicTechArray[rolloverId], p, rolloverName + "&lt;color=0,0,0&gt;", cXSTechEffectDisplayName);</command>
+            <command>            }</command>
+            <command>            if(__onscreenUiSystemDynamicRolloverDescription != rolloverDescription){</command>
+            <command>                rolloverDescription = __onscreenUiSystemDynamicRolloverDescription;</command>
+            <command>                trTechSetStringID(__onscreenUiRelicTechArray[rolloverId], p, "&lt;/color&gt;\n" + rolloverDescription, cXSTechEffectRollover);</command>
+            <command>            }</command>
+            <command>        }</command>
+            <command>    }</command>
             <command>};</command>
             <command></command>
             <command>__OnscreenUiEntry __DUMMY_ONSCREEN_UI_ENTRY;</command>
@@ -3349,6 +3398,13 @@
             <command>            realShow = -1;</command>
             <command>        } else {</command>
             <command>            delayDestroy = xsGetTimeMS();</command>
+            <command>        }</command>
+            <command>    }</command>
+            <command>    void dynamicUpdate(int p = 1, vector lookAt = cOriginVector, vector xAxisDirection = cOriginVector, vector yAxisDirection = cOriginVector, float lookAtHeading = 0.0, float lookAtTilt = 0.0, </command>
+            <command>            vector cameraPosition = cOriginVector){</command>
+            <command>        for(int i = 0; i &lt; onscreenUiEntryArray.size(); i++){</command>
+            <command>            __OnscreenUiEntry entry = onscreenUiEntryArray[i];</command>
+            <command>            entry.dynamicUpdate(p, lookAt, xAxisDirection, yAxisDirection, lookAtHeading, lookAtTilt, page, cameraPosition);</command>
             <command>        }</command>
             <command>    }</command>
             <command>};</command>
@@ -3507,7 +3563,7 @@
             <command>    void clear(){</command>
             <command>        if(showingPage == 0) {</command>
             <command>            page0.requestDestroy(p, false);</command>
-            <command>        } else if(addPage == 1) {</command>
+            <command>        } else if(showingPage == 1) {</command>
             <command>            page1.requestDestroy(p, false);</command>
             <command>        } else {</command>
             <command>            page2.requestDestroy(p, false);</command>
@@ -3521,7 +3577,7 @@
             <command>        entry.hoverable = false;</command>
             <command>        entry.x = x;</command>
             <command>        entry.y = y;</command>
-            <command>        entry.content = showBackground ? content : ("&lt;icon=(1,10000)(0)&gt;\n" + content);</command>
+            <command>        entry.content = content;</command>
             <command>        entry.showBackground = showBackground;</command>
             <command>        if(addPage == 0){</command>
             <command>            entry.id = page0.onscreenUiEntryArray.size();</command>
@@ -3548,7 +3604,7 @@
             <command>        entry.y = y;</command>
             <command>        entry.width = width;</command>
             <command>        entry.height = height;</command>
-            <command>        entry.content = showBackground ? content : ("&lt;icon=(1,10000)(0)&gt;\n" + content);</command>
+            <command>        entry.content = content;</command>
             <command>        entry.rolloverName = rolloverName;</command>
             <command>        entry.rolloverDescription = rolloverDescription;</command>
             <command>        entry.showBackground = showBackground;</command>
@@ -3570,7 +3626,7 @@
             <command>            entry.id = page2.onscreenUiEntryArray.add(entry);</command>
             <command>        }</command>
             <command>    }</command>
-            <command>    void addClickable(float x = 0.0, float y = 0.0, float width = 0.0, float height = 0.0, string content = "", bool showBackground = false, ref __Parameters parameters,</command>
+            <command>    void addClickable(float x = 0.0, float y = 0.0, float width = 0.0, float height = 0.0, string content = "", bool showBackground = false, ref __Parameters parameters, </command>
             <command>            void(int, ref __Parameters) handler = [](int pToUse = 1, ref __Parameters parametersToUse) -&gt; void {}){</command>
             <command>        __OnscreenUiEntry entry;</command>
             <command>        entry.unitType = __ONSCREEN_UI_UNIT;</command>
@@ -3580,7 +3636,7 @@
             <command>        entry.y = y;</command>
             <command>        entry.width = width;</command>
             <command>        entry.height = height;</command>
-            <command>        entry.content = showBackground ? content : ("&lt;icon=(1,10000)(0)&gt;\n" + content);</command>
+            <command>        entry.content = content;</command>
             <command>        entry.showBackground = showBackground;</command>
             <command>        if(addPage == 0){</command>
             <command>            entry.id = page0.onscreenUiEntryArray.size();</command>
@@ -3600,7 +3656,7 @@
             <command>            entry.id = page2.onscreenUiEntryArray.add(entry);</command>
             <command>        }</command>
             <command>    }</command>
-            <command>    void addClickableWithHover(float x = 0.0, float y = 0.0, float width = 0.0, float height = 0.0, string content = "", string rolloverName = "", string rolloverDescription = "", bool showBackground = false, ref __Parameters parameters,</command>
+            <command>    void addClickableWithHover(float x = 0.0, float y = 0.0, float width = 0.0, float height = 0.0, string content = "", string rolloverName = "", string rolloverDescription = "", bool showBackground = false, ref __Parameters parameters, </command>
             <command>            void(int, ref __Parameters) handler = [](int pToUse = 1, ref __Parameters parametersToUse) -&gt; void {}){</command>
             <command>        __OnscreenUiEntry entry;</command>
             <command>        entry.unitType = __ONSCREEN_UI_UNIT2;</command>
@@ -3610,9 +3666,134 @@
             <command>        entry.y = y;</command>
             <command>        entry.width = width;</command>
             <command>        entry.height = height;</command>
-            <command>        entry.content = showBackground ? content : ("&lt;icon=(1,10000)(0)&gt;\n" + content);</command>
+            <command>        entry.content = content;</command>
             <command>        entry.rolloverName = rolloverName;</command>
             <command>        entry.rolloverDescription = rolloverDescription;</command>
+            <command>        entry.showBackground = showBackground;</command>
+            <command>        entry.parameters = parameters;</command>
+            <command>        entry.handler = handler;</command>
+            <command>        if(addPage == 0){</command>
+            <command>            entry.id = page0.onscreenUiEntryArray.size();</command>
+            <command>        } else if(addPage == 1) {</command>
+            <command>            entry.id = page1.onscreenUiEntryArray.size();</command>
+            <command>        } else {</command>
+            <command>            entry.id = page2.onscreenUiEntryArray.size();</command>
+            <command>        }</command>
+            <command>        entry.rolloverId = rolloverCount;</command>
+            <command>        rolloverCount++;</command>
+            <command>        entry.show(p, lookAt, xAxisDirection, yAxisDirection, lookAtHeading, lookAtTilt, addPage, true, debug, disableClick, cameraPosition);</command>
+            <command>        if(addPage == 0){</command>
+            <command>            entry.id = page0.onscreenUiEntryArray.add(entry);</command>
+            <command>        } else if(addPage == 1) {</command>
+            <command>            entry.id = page1.onscreenUiEntryArray.add(entry);</command>
+            <command>        } else {</command>
+            <command>            entry.id = page2.onscreenUiEntryArray.add(entry);</command>
+            <command>        }</command>
+            <command>    }</command>
+            <command>    void addDisplayDynamic(float x = 0.0, float y = 0.0, bool showBackground = false, ref __Parameters parameters, void(int, ref __Parameters) calculateContent = __ONSCREEN_UI_EMPTY_DYNAMIC_CONTENT){</command>
+            <command>        __OnscreenUiEntry entry;</command>
+            <command>        entry.dynamic = true;</command>
+            <command>        entry.unitType = __ONSCREEN_UI_UNIT;</command>
+            <command>        entry.clickable = false;</command>
+            <command>        entry.hoverable = false;</command>
+            <command>        entry.x = x;</command>
+            <command>        entry.y = y;</command>
+            <command>        entry.calculateContent = calculateContent;</command>
+            <command>        entry.showBackground = showBackground;</command>
+            <command>        entry.parameters = parameters;</command>
+            <command>        if(addPage == 0){</command>
+            <command>            entry.id = page0.onscreenUiEntryArray.size();</command>
+            <command>        } else if(addPage == 1) {</command>
+            <command>            entry.id = page1.onscreenUiEntryArray.size();</command>
+            <command>        } else {</command>
+            <command>            entry.id = page2.onscreenUiEntryArray.size();</command>
+            <command>        }</command>
+            <command>        entry.show(p, lookAt, xAxisDirection, yAxisDirection, lookAtHeading, lookAtTilt, addPage, true, debug, disableClick, cameraPosition);</command>
+            <command>        if(addPage == 0){</command>
+            <command>            entry.id = page0.onscreenUiEntryArray.add(entry);</command>
+            <command>        } else if(addPage == 1) {</command>
+            <command>            entry.id = page1.onscreenUiEntryArray.add(entry);</command>
+            <command>        } else {</command>
+            <command>            entry.id = page2.onscreenUiEntryArray.add(entry);</command>
+            <command>        }</command>
+            <command>    }</command>
+            <command>    void addDisplayWithHoverDynamic(float x = 0.0, float y = 0.0, float width = 0.0, float height = 0.0, </command>
+            <command>               bool showBackground = false, ref __Parameters parameters, void(int, ref __Parameters) calculateContent = __ONSCREEN_UI_EMPTY_DYNAMIC_CONTENT){</command>
+            <command>        __OnscreenUiEntry entry;</command>
+            <command>        entry.dynamic = true;</command>
+            <command>        entry.unitType = __ONSCREEN_UI_UNIT2;</command>
+            <command>        entry.clickable = false;</command>
+            <command>        entry.hoverable = true;</command>
+            <command>        entry.x = x;</command>
+            <command>        entry.y = y;</command>
+            <command>        entry.width = width;</command>
+            <command>        entry.height = height;</command>
+            <command>        entry.calculateContent = calculateContent;</command>
+            <command>        entry.showBackground = showBackground;</command>
+            <command>        entry.parameters = parameters;</command>
+            <command>        if(addPage == 0){</command>
+            <command>            entry.id = page0.onscreenUiEntryArray.size();</command>
+            <command>        } else if(addPage == 1) {</command>
+            <command>            entry.id = page1.onscreenUiEntryArray.size();</command>
+            <command>        } else {</command>
+            <command>            entry.id = page2.onscreenUiEntryArray.size();</command>
+            <command>        }</command>
+            <command>        entry.rolloverId = rolloverCount;</command>
+            <command>        rolloverCount++;</command>
+            <command>        entry.show(p, lookAt, xAxisDirection, yAxisDirection, lookAtHeading, lookAtTilt, addPage, true, debug, disableClick, cameraPosition);</command>
+            <command>        if(addPage == 0){</command>
+            <command>            entry.id = page0.onscreenUiEntryArray.add(entry);</command>
+            <command>        } else if(addPage == 1) {</command>
+            <command>            entry.id = page1.onscreenUiEntryArray.add(entry);</command>
+            <command>        } else {</command>
+            <command>            entry.id = page2.onscreenUiEntryArray.add(entry);</command>
+            <command>        }</command>
+            <command>    }</command>
+            <command>    void addClickableDynamic(float x = 0.0, float y = 0.0, float width = 0.0, float height = 0.0, </command>
+            <command>            bool showBackground = false, ref __Parameters parameters, void(int, ref __Parameters) calculateContent = __ONSCREEN_UI_EMPTY_DYNAMIC_CONTENT, </command>
+            <command>            void(int, ref __Parameters) handler = [](int pToUse = 1, ref __Parameters parametersToUse) -&gt; void {}){</command>
+            <command>        __OnscreenUiEntry entry;</command>
+            <command>        entry.dynamic = true;</command>
+            <command>        entry.unitType = __ONSCREEN_UI_UNIT;</command>
+            <command>        entry.clickable = true;</command>
+            <command>        entry.hoverable = false;</command>
+            <command>        entry.x = x;</command>
+            <command>        entry.y = y;</command>
+            <command>        entry.width = width;</command>
+            <command>        entry.height = height;</command>
+            <command>        entry.calculateContent = calculateContent;</command>
+            <command>        entry.showBackground = showBackground;</command>
+            <command>        if(addPage == 0){</command>
+            <command>            entry.id = page0.onscreenUiEntryArray.size();</command>
+            <command>        } else if(addPage == 1) {</command>
+            <command>            entry.id = page1.onscreenUiEntryArray.size();</command>
+            <command>        } else {</command>
+            <command>            entry.id = page2.onscreenUiEntryArray.size();</command>
+            <command>        }</command>
+            <command>        entry.parameters = parameters;</command>
+            <command>        entry.handler = handler;</command>
+            <command>        entry.show(p, lookAt, xAxisDirection, yAxisDirection, lookAtHeading, lookAtTilt, addPage, true, debug, disableClick, cameraPosition);</command>
+            <command>        if(addPage == 0){</command>
+            <command>            entry.id = page0.onscreenUiEntryArray.add(entry);</command>
+            <command>        } else if(addPage == 1) {</command>
+            <command>            entry.id = page1.onscreenUiEntryArray.add(entry);</command>
+            <command>        } else {</command>
+            <command>            entry.id = page2.onscreenUiEntryArray.add(entry);</command>
+            <command>        }</command>
+            <command>    }</command>
+            <command>    void addClickableWithHoverDynamic(float x = 0.0, float y = 0.0, float width = 0.0, float height = 0.0, </command>
+            <command>            bool showBackground = false, ref __Parameters parameters, void(int, ref __Parameters) calculateContent = __ONSCREEN_UI_EMPTY_DYNAMIC_CONTENT, </command>
+            <command>            void(int, ref __Parameters) handler = [](int pToUse = 1, ref __Parameters parametersToUse) -&gt; void {}){</command>
+            <command>        __OnscreenUiEntry entry;</command>
+            <command>        entry.dynamic = true;</command>
+            <command>        entry.unitType = __ONSCREEN_UI_UNIT2;</command>
+            <command>        entry.clickable = true;</command>
+            <command>        entry.hoverable = true;</command>
+            <command>        entry.x = x;</command>
+            <command>        entry.y = y;</command>
+            <command>        entry.width = width;</command>
+            <command>        entry.height = height;</command>
+            <command>        entry.calculateContent = calculateContent;</command>
             <command>        entry.showBackground = showBackground;</command>
             <command>        entry.parameters = parameters;</command>
             <command>        entry.handler = handler;</command>
@@ -3672,7 +3853,7 @@
             <command>            } else if (clickedEntryIndex &gt;= 0){</command>
             <command>                if(showingPage == 0) {</command>
             <command>                    page0.requestDestroy(p, false);</command>
-            <command>                } else if(addPage == 1) {</command>
+            <command>                } else if(showingPage == 1) {</command>
             <command>                    page1.requestDestroy(p, false);</command>
             <command>                } else {</command>
             <command>                    page2.requestDestroy(p, false);</command>
@@ -3680,6 +3861,15 @@
             <command>                rolloverCount = 0;</command>
             <command>                __OnscreenUiEntry entry = onscreenUiEntryArray[clickedEntryIndex];</command>
             <command>                return entry;</command>
+            <command>            }</command>
+            <command>            if(validClick == false || clickedEntryIndex &lt; 0){</command>
+            <command>                if(showingPage == 0) {</command>
+            <command>                    page0.dynamicUpdate(p, lookAt, xAxisDirection, yAxisDirection, lookAtHeading, lookAtTilt, cameraPosition);</command>
+            <command>                } else if(showingPage == 1) {</command>
+            <command>                    page1.dynamicUpdate(p, lookAt, xAxisDirection, yAxisDirection, lookAtHeading, lookAtTilt, cameraPosition);</command>
+            <command>                } else {</command>
+            <command>                    page2.dynamicUpdate(p, lookAt, xAxisDirection, yAxisDirection, lookAtHeading, lookAtTilt, cameraPosition);</command>
+            <command>                }</command>
             <command>            }</command>
             <command>            if (trCurrentPlayer() == p){</command>
             <command>                trExecuteConsoleCommand("uiDeleteSelectedUnit(true)");</command>
@@ -3963,6 +4153,14 @@
             <command>    __attachParameters.process();</command>
             <command>    __physics.process();</command>
             <command>    __physicsParameters.process();</command>
+            <command>}</command>
+            <command></command>
+            <command>rule __Trigger__Loader__Nottud__RunImmediately</command>
+            <command>highFrequency</command>
+            <command>active</command>
+            <command>runImmediately</command>
+            <command>{</command>
+            <command>   xsDisableRule("__Trigger__Loader__Nottud__RunImmediately");</command>
         </effect>
         <effect name="Global: Start {">
             <command>}</command>
@@ -7770,6 +7968,136 @@
         <effect name="Screen UI V2 NTL: Add Clickable End }">
             <command>    });</command>
             <command>    __onscreenUiSystemArray[__onscreenUiSystemContextPlayer] = __onscreenUiSystemBeingAddedTo;</command>
+            <command>}</command>
+        </effect>
+        <effect name="Screen UI V2 NTL: Add Visual Dynamic">
+            <param name="X" dispname="X" vartype="stringid">0.0</param>
+            <param name="Y" dispname="Y" vartype="stringid">0.0</param>
+            <param name="ShowBackground" dispname="ShowBackground" vartype="bool">false</param>
+            <param name="Variable" dispname="Player Variable" vartype="stringid">p</param>
+            <param name="GetContent" dispname="Content ->" vartype="stringid">""</param>
+            <command>{</command>
+            <command>   __OnscreenUiSystem __onscreenUiSystem = __onscreenUiSystemArray[__onscreenUiSystemContextPlayer];</command>
+            <command>   __onscreenUiSystem.addDisplayDynamic(%X%, %Y%, %ShowBackground%, __EMPTY_PARAMETERS, [](int %Variable% = 1, ref __Parameters __uiSystemUnusedParameters) -&gt; void {</command>
+            <command>      __onscreenUiSystemDynamicContent = %GetContent%;</command>
+            <command>   });</command>
+            <command>   __onscreenUiSystemArray[__onscreenUiSystemContextPlayer] = __onscreenUiSystem;</command>
+            <command>}</command>
+        </effect>
+        <effect name="Screen UI V2 NTL: Add Visual Dynamic Parameters">
+            <param name="X" dispname="X" vartype="stringid">0.0</param>
+            <param name="Y" dispname="Y" vartype="stringid">0.0</param>
+            <param name="ShowBackground" dispname="ShowBackground" vartype="bool">false</param>
+            <param name="Variable" dispname="Player Variable" vartype="stringid">p</param>
+            <param name="Parameters" dispname="Parameters" vartype="stringid">parameters</param>
+            <param name="GetContent" dispname="Content ->" vartype="stringid">""</param>
+            <command>{</command>
+            <command>   __OnscreenUiSystem __onscreenUiSystem = __onscreenUiSystemArray[__onscreenUiSystemContextPlayer];</command>
+            <command>   __onscreenUiSystem.addDisplayDynamic(%X%, %Y%, %ShowBackground%, %Parameters%, [](int %Variable% = 1, ref __Parameters %Parameters%) -&gt; void {</command>
+            <command>      __onscreenUiSystemDynamicContent = %GetContent%;</command>
+            <command>   });</command>
+            <command>   __onscreenUiSystemArray[__onscreenUiSystemContextPlayer] = __onscreenUiSystem;</command>
+            <command>}</command>
+        </effect>
+        <effect name="Screen UI V2 NTL: Add Visual Dynamic Start -> {">
+            <param name="X" dispname="X" vartype="stringid">0.0</param>
+            <param name="Y" dispname="Y" vartype="stringid">0.0</param>
+            <param name="ShowBackground" dispname="ShowBackground" vartype="bool">false</param>
+            <param name="Variable" dispname="Player Variable" vartype="stringid">p</param>
+            <command>{</command>
+            <command>   __OnscreenUiSystem __onscreenUiSystem = __onscreenUiSystemArray[__onscreenUiSystemContextPlayer];</command>
+            <command>   __onscreenUiSystem.addDisplayDynamic(%X%, %Y%, %ShowBackground%, __EMPTY_PARAMETERS, [](int %Variable% = 1, ref __Parameters __uiSystemUnusedParameters) -&gt; void {</command>
+        </effect>
+        <effect name="Screen UI V2 NTL: Add Visual Dynamic Parameters Start -> {">
+            <param name="X" dispname="X" vartype="stringid">0.0</param>
+            <param name="Y" dispname="Y" vartype="stringid">0.0</param>
+            <param name="ShowBackground" dispname="ShowBackground" vartype="bool">false</param>
+            <param name="Variable" dispname="Player Variable" vartype="stringid">p</param>
+            <param name="Parameters" dispname="Parameters" vartype="stringid">parameters</param>
+            <command>{</command>
+            <command>   __OnscreenUiSystem __onscreenUiSystem = __onscreenUiSystemArray[__onscreenUiSystemContextPlayer];</command>
+            <command>   __onscreenUiSystem.addDisplayDynamic(%X%, %Y%, %ShowBackground%, %Parameters%, [](int %Variable% = 1, ref __Parameters %Parameters%) -&gt; void {</command>
+        </effect>
+        <effect name="Screen UI V2 NTL: Add Visual Dynamic End }">
+            <param name="Content" dispname="Content" vartype="stringid">""</param>
+            <command>      __onscreenUiSystemDynamicContent = %Content%;</command>
+            <command>   });</command>
+            <command>   __onscreenUiSystemArray[__onscreenUiSystemContextPlayer] = __onscreenUiSystem;</command>
+            <command>}</command>
+        </effect>
+        <effect name="Screen UI V2 NTL: Add Visual Rollover Dynamic">
+            <param name="X" dispname="X" vartype="stringid">0.0</param>
+            <param name="Y" dispname="Y" vartype="stringid">0.0</param>
+            <param name="Width" dispname="Width" vartype="stringid">0.1</param>
+            <param name="Height" dispname="Height" vartype="stringid">0.1</param>
+            <param name="ShowBackground" dispname="ShowBackground" vartype="bool">false</param>
+            <param name="Variable" dispname="Player Variable" vartype="stringid">p</param>
+            <param name="GetContent" dispname="Content ->" vartype="stringid">""</param>
+            <param name="GetRolloverTitle" dispname="Rollover Title ->" vartype="stringid">""</param>
+            <param name="GetRolloverContent" dispname="Rollover Content ->" vartype="stringid">""</param>
+            <command>{</command>
+            <command>   __OnscreenUiSystem __onscreenUiSystem = __onscreenUiSystemArray[__onscreenUiSystemContextPlayer];</command>
+            <command>   __onscreenUiSystem.addDisplayWithHoverDynamic(%X%, %Y%, %Width%, %Height%, %ShowBackground%, __EMPTY_PARAMETERS, [](int %Variable% = 1, ref __Parameters __uiSystemUnusedParameters) -&gt; void {</command>
+            <command>      __onscreenUiSystemDynamicContent = %GetContent%;</command>
+            <command>      __onscreenUiSystemDynamicRolloverName = %GetRolloverTitle%;</command>
+            <command>      __onscreenUiSystemDynamicRolloverDescription = %GetRolloverContent%;</command>
+            <command>   });</command>
+            <command>   __onscreenUiSystemArray[__onscreenUiSystemContextPlayer] = __onscreenUiSystem;</command>
+            <command>}</command>
+        </effect>
+        <effect name="Screen UI V2 NTL: Add Visual Rollover Dynamic Parameters">
+            <param name="X" dispname="X" vartype="stringid">0.0</param>
+            <param name="Y" dispname="Y" vartype="stringid">0.0</param>
+            <param name="Width" dispname="Width" vartype="stringid">0.1</param>
+            <param name="Height" dispname="Height" vartype="stringid">0.1</param>
+            <param name="ShowBackground" dispname="ShowBackground" vartype="bool">false</param>
+            <param name="Variable" dispname="Player Variable" vartype="stringid">p</param>
+            <param name="Parameters" dispname="Parameters" vartype="stringid">parameters</param>
+            <param name="GetContent" dispname="Content ->" vartype="stringid">""</param>
+            <param name="GetRolloverTitle" dispname="Rollover Title ->" vartype="stringid">""</param>
+            <param name="GetRolloverContent" dispname="Rollover Content ->" vartype="stringid">""</param>
+            <command>{</command>
+            <command>   __OnscreenUiSystem __onscreenUiSystem = __onscreenUiSystemArray[__onscreenUiSystemContextPlayer];</command>
+            <command>   __onscreenUiSystem.addDisplayWithHoverDynamic(%X%, %Y%, %Width%, %Height%, %ShowBackground%, %Parameters%, [](int %Variable% = 1, ref __Parameters %Parameters%) -&gt; void {</command>
+            <command>      __onscreenUiSystemDynamicContent = %GetContent%;</command>
+            <command>      __onscreenUiSystemDynamicRolloverName = %GetRolloverTitle%;</command>
+            <command>      __onscreenUiSystemDynamicRolloverDescription = %GetRolloverContent%;</command>
+            <command>   });</command>
+            <command>   __onscreenUiSystemArray[__onscreenUiSystemContextPlayer] = __onscreenUiSystem;</command>
+            <command>}</command>
+        </effect>
+        <effect name="Screen UI V2 NTL: Add Visual Rollover Dynamic Start -> {">
+            <param name="X" dispname="X" vartype="stringid">0.0</param>
+            <param name="Y" dispname="Y" vartype="stringid">0.0</param>
+            <param name="Width" dispname="Width" vartype="stringid">0.1</param>
+            <param name="Height" dispname="Height" vartype="stringid">0.1</param>
+            <param name="ShowBackground" dispname="ShowBackground" vartype="bool">false</param>
+            <param name="Variable" dispname="Player Variable" vartype="stringid">p</param>
+            <command>{</command>
+            <command>   __OnscreenUiSystem __onscreenUiSystem = __onscreenUiSystemArray[__onscreenUiSystemContextPlayer];</command>
+            <command>   __onscreenUiSystem.addDisplayWithHoverDynamic(%X%, %Y%, %Width%, %Height%, %ShowBackground%, __EMPTY_PARAMETERS, [](int %Variable% = 1, ref __Parameters __uiSystemUnusedParameters) -&gt; void {</command>
+        </effect>
+        <effect name="Screen UI V2 NTL: Add Visual Rollover Dynamic Parameters Start -> {">
+            <param name="X" dispname="X" vartype="stringid">0.0</param>
+            <param name="Y" dispname="Y" vartype="stringid">0.0</param>
+            <param name="Width" dispname="Width" vartype="stringid">0.1</param>
+            <param name="Height" dispname="Height" vartype="stringid">0.1</param>
+            <param name="ShowBackground" dispname="ShowBackground" vartype="bool">false</param>
+            <param name="Variable" dispname="Player Variable" vartype="stringid">p</param>
+            <param name="Parameters" dispname="Parameters" vartype="stringid">parameters</param>
+            <command>{</command>
+            <command>   __OnscreenUiSystem __onscreenUiSystem = __onscreenUiSystemArray[__onscreenUiSystemContextPlayer];</command>
+            <command>   __onscreenUiSystem.addDisplayWithHoverDynamic(%X%, %Y%, %Width%, %Height%, %ShowBackground%, %Parameters%, [](int %Variable% = 1, ref __Parameters %Parameters%) -&gt; void {</command>
+        </effect>
+        <effect name="Screen UI V2 NTL: Add Visual Rollover Dynamic End }">
+            <param name="Content" dispname="Content" vartype="stringid">""</param>
+            <param name="RolloverTitle" dispname="Rollover Title" vartype="stringid">""</param>
+            <param name="RolloverContent" dispname="Rollover Content" vartype="stringid">""</param>
+            <command>      __onscreenUiSystemDynamicContent = %Content%;</command>
+            <command>      __onscreenUiSystemDynamicRolloverName = %RolloverTitle%;</command>
+            <command>      __onscreenUiSystemDynamicRolloverDescription = %RolloverContent%;</command>
+            <command>   });</command>
+            <command>   __onscreenUiSystemArray[__onscreenUiSystemContextPlayer] = __onscreenUiSystem;</command>
             <command>}</command>
         </effect>
         <effect name="Screen UI V2 NTL: Exit">
